@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "dobedobe"
 include(":app")
- 
+include(":core:designsystem")
