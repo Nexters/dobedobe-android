@@ -15,7 +15,7 @@ ksp = "2.1.0-1.0.29"
 # android
 agp = "8.7.3"
 activityCompose = "1.9.3"
-androidxComposeFoundation = "1.7.6"
+androidxComposeFoundation = "1.8.0-alpha07"
 androidxLifecycle = "2.8.7"
 androidxNavigation = "2.8.5"
 androidxCoreSplashscreen = "1.0.1"
