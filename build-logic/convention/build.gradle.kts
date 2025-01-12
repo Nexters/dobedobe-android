@@ -20,3 +20,11 @@ dependencies {
     compileOnly(libs.compose.gradlePlugin)
 }
 
+gradlePlugin {
+    plugins {
+        register("jvm-library") {
+            id = libs.plugins.dobedobe.jvm.get().pluginId
+            implementationClass = "JvmLibraryPlugin"
+        }
+    }
+}
