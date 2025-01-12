@@ -35,9 +35,9 @@ protobuf = "4.29.2"
 protobufPlugin = "0.9.4"
 
 # third-party
-koin = "4.0.0"
 coil = "2.7.0"
 moduleGraph = "2.7.1"
+koin = "4.0.0"
 ktlint = "12.1.0"
 
 # test
