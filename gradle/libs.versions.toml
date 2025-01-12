@@ -42,10 +42,10 @@ ktlint = "12.1.0"
 
 # test
 androidJunit5Plugin = "1.10.0.0"
+androidJunit5Core = "1.4.0"
 mockk = "1.13.9"
 truth = "1.4.4"
 junit4 = "4.13.2"
-junit5Plugin = "1.10.0.0"
 junit5Jupiter = "5.10.2"
 kotestRunnerJunit5 = "5.8.0"
 
@@ -111,8 +111,8 @@ koin-android-test = { group = "io.insert-koin", name = "koin-android-test" }
 # test
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 junit5 = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit5Jupiter" }
-junit5-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit5Jupiter" }
-junit5-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit5Jupiter" }
+junit5-android-test-core = { module = "de.mannodermaus.junit5:android-test-core", version.ref = "androidJunit5Core" }
+junit5-android-test-runner = { module = "de.mannodermaus.junit5:android-test-runner", version.ref = "androidJunit5Core" }
 junit5-vintage = { module = "org.junit.vintage:junit-vintage-engine", version.ref = "junit5Jupiter" }
 kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotestRunnerJunit5" }
 
@@ -138,4 +138,5 @@ ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 ## dobedobe plugins
-dobedobe-jvm = { id = "dobedobe.jvm.library"}
+dobedobe-android-library = { id = "dobedobe.android.library" }
+dobedobe-jvm = { id = "dobedobe.jvm.library" }
