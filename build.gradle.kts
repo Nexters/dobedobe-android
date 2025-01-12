@@ -12,3 +12,7 @@ plugins {
     alias(libs.plugins.ktlint) apply false
     alias(libs.plugins.module.graph) apply false
 }
+
+allprojects {
+    apply(plugin = rootProject.libs.plugins.ktlint.get().pluginId)
+}
