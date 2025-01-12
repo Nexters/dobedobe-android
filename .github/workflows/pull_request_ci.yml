@@ -2,7 +2,7 @@ name: PR Builder
 
 on:
   pull_request:
-    branches: [ develop, main, chore/*, feat/*, test/*, fix/* ]
+    branches: [ develop, main, chore/*, feat/*, test/*, fix/*, refactor/* ]
 
 jobs:
   build:
