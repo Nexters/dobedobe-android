@@ -33,6 +33,9 @@ android {
 }
 
 dependencies {
+    api(projects.core.common)
+    api(projects.core.database)
+    api(projects.core.datastore)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
