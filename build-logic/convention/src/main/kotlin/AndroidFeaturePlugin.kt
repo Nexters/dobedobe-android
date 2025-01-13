@@ -11,8 +11,7 @@ class AndroidFeaturePlugin : Plugin<Project> {
             apply<KotlinSerializationPlugin>()
 
             dependencies {
-                // TODO: 준혁님과 논의 후, 삭제 결정?! Plugin 에 모듈 의존성을 넣는게 좋으려나
-                // "implementation"(project(":core:designsystem"))
+                 "implementation"(project(":core:designsystem"))
 
                 "implementation"(libs.findLibrary("androidx.lifecycle.runtimeCompose").get())
                 "implementation"(libs.findLibrary("androidx.lifecycle.viewModelCompose").get())
