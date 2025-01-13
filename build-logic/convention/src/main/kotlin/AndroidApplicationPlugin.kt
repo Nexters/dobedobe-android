@@ -32,23 +32,6 @@ class AndroidApplicationPlugin : Plugin<Project> {
                 defaultConfig.testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                 defaultConfig.testInstrumentationRunnerArguments["runnerBuilder"] =
                     "de.mannodermaus.junit5.AndroidJUnit5Builder"
-
-                buildTypes {
-                    release {
-                        isMinifyEnabled = true
-                        isShrinkResources = true
-                        proguardFiles(
-                            getDefaultProguardFile("proguard-android-optimize.txt"),
-                            "proguard-rules.pro",
-                        )
-                    }
-                }
-
-                packaging {
-                    resources.excludes.apply {
-                        add("META-INF/**")
-                    }
-                }
             }
 
             dependencies {
