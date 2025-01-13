@@ -39,10 +39,8 @@ class AndroidLibraryPlugin : Plugin<Project> {
             dependencies {
                 "implementation"(libs.findLibrary("kotlinx.coroutines.android").get())
                 "implementation"(libs.findLibrary("kotlinx.datetime").get())
-                // test
                 "testImplementation"(libs.findBundle("unit.test").get())
                 "testRuntimeOnly"(libs.findLibrary("junit5.vintage").get())
-                // androidTest
                 "androidTestImplementation"(libs.findBundle("androidx.android.test").get())
                 "androidTestImplementation"(libs.findBundle("unit.test").get())
                 "androidTestImplementation"(libs.findLibrary("junit5.android.test.core").get())

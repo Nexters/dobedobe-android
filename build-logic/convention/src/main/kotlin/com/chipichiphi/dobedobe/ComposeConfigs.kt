@@ -32,11 +32,9 @@ internal fun Project.configureAndroidCompose(
             "implementation"(platform(bom))
             "implementation"(libs.findBundle("compose").get())
             "implementation"(libs.findLibrary("coil.kt.compose").get())
-            // test
             "testImplementation"(platform(bom))
             "testImplementation"(libs.findLibrary("robolectric").get())
             "testImplementation"(libs.findLibrary("androidx.compose.ui.test.junit4").get())
-            // androidTest
             "androidTestImplementation"(platform(bom))
             "androidTestImplementation"(libs.findLibrary("androidx.compose.ui.test.junit4").get())
             "debugImplementation"(libs.findLibrary("androidx.compose.ui.tooling").get())
