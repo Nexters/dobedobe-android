@@ -33,3 +33,6 @@ jobs:
 
       - name: Lint Check
         run: ./gradlew ktlintCheck
+
+      - name: debug unit test
+        run: ./gradlew testDebugUnitTest
