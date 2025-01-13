@@ -1,9 +1,5 @@
 plugins {
-    alias(libs.plugins.dobedobe.android.compose)
-}
-
-android {
-    namespace = "com.chipichipi.dobedobe.core.common"
+    alias(libs.plugins.dobedobe.jvm)
 }
 
 dependencies {
