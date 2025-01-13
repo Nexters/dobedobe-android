@@ -22,6 +22,11 @@ dependencies {
 
 gradlePlugin {
     plugins {
+        create("kotlin-serialization") {
+            id = libs.plugins.dobedobe.kotlinx.serialization.get().pluginId
+            implementationClass =
+                "KotlinSerializationPlugin"
+        }
         create("compose") {
             id = libs.plugins.dobedobe.compose.get().pluginId
             implementationClass = "ComposePlugin"
