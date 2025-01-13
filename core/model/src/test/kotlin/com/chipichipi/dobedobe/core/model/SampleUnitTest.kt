@@ -13,9 +13,10 @@ class SampleUnitTest {
     }
 
     @Test
-    fun `compose_test`() = runTest {
-        delay(10)
-    }
+    fun `compose_test`() =
+        runTest {
+            delay(10)
+        }
 
     @Test
     fun `datetime_test`() {
