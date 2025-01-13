@@ -156,8 +156,8 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 
 ## dobedobe plugins
 dobedobe-android-application = { id = "dobedobe.android.application" }
-dobedobe-android-library = { id = "dobedobe.android.library" }
-dobedobe-jvm = { id = "dobedobe.jvm.library" }
 dobedobe-android-compose = { id = "dobedobe.android.compose" }
+dobedobe-android-feature = { id = "dobedobe.feature" }
+dobedobe-android-library = { id = "dobedobe.android.library" }
 dobedobe-kotlinx-serialization = { id = "dobedobe.kotlinx.serialization" }
-dobedobe-feature = { id = "dobedobe.feature" }
+dobedobe-jvm = { id = "dobedobe.jvm.library" }

@@ -31,7 +31,7 @@ gradlePlugin {
             implementationClass = "ComposeLibraryPlugin"
         }
         create("android-feature") {
-            id = libs.plugins.dobedobe.feature.get().pluginId
+            id = libs.plugins.dobedobe.android.feature.get().pluginId
             implementationClass = "AndroidFeaturePlugin"
         }
         create("android-library") {
