@@ -7,9 +7,10 @@ import org.gradle.kotlin.dsl.getByType
 
 class ComposeLibraryPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
+        apply(plugin = "com.android.library")
         apply(plugin = "org.jetbrains.kotlin.plugin.compose")
-        apply<AndroidLibraryPlugin>()
 
-        configureAndroidCompose(extensions.getByType<LibraryExtension>())
+        val extension = extensions.getByType<LibraryExtension>()
+        configureAndroidCompose(extension)
     }
 }

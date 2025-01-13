@@ -7,7 +7,7 @@ import org.gradle.kotlin.dsl.dependencies
 class AndroidFeaturePlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            apply<ComposeLibraryPlugin>()
+            apply<AndroidLibraryPlugin>()
             apply<KotlinSerializationPlugin>()
 
             dependencies {

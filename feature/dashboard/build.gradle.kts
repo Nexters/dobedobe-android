@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.dobedobe.android.feature)
+    alias(libs.plugins.dobedobe.android.compose)
 }
 
 android {
