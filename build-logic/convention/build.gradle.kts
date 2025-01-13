@@ -22,6 +22,10 @@ dependencies {
 
 gradlePlugin {
     plugins {
+        create("android-application") {
+            id = libs.plugins.dobedobe.android.application.get().pluginId
+            implementationClass = "AndroidApplicationPlugin"
+        }
         create("android-compose") {
             id = libs.plugins.dobedobe.android.compose.get().pluginId
             implementationClass = "ComposeLibraryPlugin"

@@ -155,6 +155,7 @@ ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 ## dobedobe plugins
+dobedobe-android-application = { id = "dobedobe.android.application" }
 dobedobe-android-library = { id = "dobedobe.android.library" }
 dobedobe-jvm = { id = "dobedobe.jvm.library" }
 dobedobe-android-compose = { id = "dobedobe.android.compose" }
