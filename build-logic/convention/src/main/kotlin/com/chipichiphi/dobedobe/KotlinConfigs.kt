@@ -76,15 +76,5 @@ private inline fun <reified T : KotlinBaseExtension> Project.configureKotlin() =
              */
             "-Xconsistent-data-class-copy-visibility",
         )
-        /**
-         * Compose stability configuration
-         */
-        freeCompilerArgs.addAll(
-            listOf(
-                "-P",
-                "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=" +
-                        "${project.rootDir.absolutePath}/compose_compiler_config.config",
-            ),
-        )
     }
 }
