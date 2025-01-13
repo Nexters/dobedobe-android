@@ -4,6 +4,7 @@ import com.chipichiphi.dobedobe.configureKotlinAndroid
 import com.moya.funch.plugins.utils.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
@@ -11,10 +12,8 @@ import org.gradle.kotlin.dsl.getByType
 class AndroidLibraryPlugin : Plugin<Project> {
     override fun apply(target: Project) =
         with(target) {
-            with(pluginManager) {
-                apply("com.android.library")
-                apply("kotlin-android")
-            }
+            apply(plugin = "com.android.library")
+            apply(plugin = "kotlin-android")
 
             extensions.getByType<BaseExtension>().apply {
                 buildFeatures.apply {

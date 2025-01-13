@@ -2,13 +2,12 @@ import com.chipichiphi.dobedobe.configureKotlinJvm
 import com.moya.funch.plugins.utils.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.dependencies
 
 class JvmLibraryPlugin : Plugin<Project> {
     override fun apply(target: Project): Unit = with(target) {
-        with(plugins) {
-            apply("org.jetbrains.kotlin.jvm")
-        }
+        apply(plugin = "org.jetbrains.kotlin.jvm")
 
         configureKotlinJvm()
 

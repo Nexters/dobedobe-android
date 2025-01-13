@@ -5,6 +5,7 @@ import com.chipichiphi.dobedobe.configureKotlinAndroid
 import com.moya.funch.plugins.utils.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
@@ -12,11 +13,9 @@ import org.gradle.kotlin.dsl.getByType
 class AndroidApplicationPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            with(pluginManager) {
-                apply("com.android.application")
-                apply("org.jetbrains.kotlin.plugin.compose")
-                apply("kotlin-android")
-            }
+            apply(plugin = "com.android.application")
+            apply(plugin = "org.jetbrains.kotlin.plugin.compose")
+            apply(plugin = "kotlin-android")
 
             extensions.getByType<BaseExtension>().apply {
                 buildFeatures.apply {
