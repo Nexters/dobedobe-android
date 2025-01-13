@@ -22,6 +22,10 @@ dependencies {
 
 gradlePlugin {
     plugins {
+        create("android-feature") {
+            id = libs.plugins.dobedobe.feature.get().pluginId
+            implementationClass = "AndroidFeaturePlugin"
+        }
         create("kotlin-serialization") {
             id = libs.plugins.dobedobe.kotlinx.serialization.get().pluginId
             implementationClass =
