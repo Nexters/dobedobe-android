@@ -28,6 +28,7 @@ internal fun Project.configureKotlinAndroid(
         compileOptions {
             sourceCompatibility = JavaVersion.VERSION_17
             targetCompatibility = JavaVersion.VERSION_17
+
         }
     }
 
@@ -74,6 +75,16 @@ private inline fun <reified T : KotlinBaseExtension> Project.configureKotlin() =
              * '-Xconsistent-data-class-copy-visibility' compiler flag and ConsistentCopyVisibility annotation are now unnecessary.
              */
             "-Xconsistent-data-class-copy-visibility",
+        )
+        /**
+         * Compose stability configuration
+         */
+        freeCompilerArgs.addAll(
+            listOf(
+                "-P",
+                "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=" +
+                        "${project.rootDir.absolutePath}/compose_compiler_config.config",
+            ),
         )
     }
 }
