@@ -3,12 +3,11 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.kotlin
 
 class AndroidFeaturePlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            apply<ComposePlugin>()
+            apply<ComposeLibraryPlugin>()
             apply<KotlinSerializationPlugin>()
 
             dependencies {

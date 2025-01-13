@@ -5,7 +5,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.getByType
 
-class ComposePlugin : Plugin<Project> {
+class ComposeLibraryPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         with(plugins) {
             apply("org.jetbrains.kotlin.plugin.compose")

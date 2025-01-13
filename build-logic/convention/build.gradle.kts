@@ -22,22 +22,22 @@ dependencies {
 
 gradlePlugin {
     plugins {
+        create("android-compose") {
+            id = libs.plugins.dobedobe.android.compose.get().pluginId
+            implementationClass = "ComposeLibraryPlugin"
+        }
         create("android-feature") {
             id = libs.plugins.dobedobe.feature.get().pluginId
             implementationClass = "AndroidFeaturePlugin"
+        }
+        create("android-library") {
+            id = libs.plugins.dobedobe.android.library.get().pluginId
+            implementationClass = "AndroidLibraryPlugin"
         }
         create("kotlin-serialization") {
             id = libs.plugins.dobedobe.kotlinx.serialization.get().pluginId
             implementationClass =
                 "KotlinSerializationPlugin"
-        }
-        create("compose") {
-            id = libs.plugins.dobedobe.compose.get().pluginId
-            implementationClass = "ComposePlugin"
-        }
-        create("android-library") {
-            id = libs.plugins.dobedobe.android.library.get().pluginId
-            implementationClass = "AndroidLibraryPlugin"
         }
         register("jvm-library") {
             id = libs.plugins.dobedobe.jvm.get().pluginId
