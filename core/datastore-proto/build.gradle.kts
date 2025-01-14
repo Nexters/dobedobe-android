@@ -1,25 +1,10 @@
 plugins {
-    alias(libs.plugins.android.library)
+    alias(libs.plugins.dobedobe.android.library)
     alias(libs.plugins.protobuf)
 }
 
 android {
     namespace = "com.chipichipi.dobedobe.core.datastore.proto"
-    compileSdk = 35
-
-    defaultConfig {
-        minSdk = 26
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
 }
 
 protobuf {
