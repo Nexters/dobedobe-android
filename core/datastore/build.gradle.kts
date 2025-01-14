@@ -4,6 +4,10 @@ plugins {
 
 android {
     namespace = "com.chipichipi.dobedobe.core.datastore"
+
+    defaultConfig {
+        consumerProguardFiles("consumer-proguard-rules.pro")
+    }
 }
 
 dependencies {
