@@ -1,7 +1,6 @@
 package com.chipichiphi.dobedobe
 
 import com.android.build.api.dsl.CommonExtension
-import com.moya.funch.plugins.utils.libs
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.configure

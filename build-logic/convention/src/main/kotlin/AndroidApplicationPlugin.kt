@@ -2,7 +2,7 @@ import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.gradle.BaseExtension
 import com.chipichiphi.dobedobe.configureAndroidCompose
 import com.chipichiphi.dobedobe.configureKotlinAndroid
-import com.moya.funch.plugins.utils.libs
+import com.chipichiphi.dobedobe.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
