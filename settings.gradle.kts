@@ -33,3 +33,4 @@ include(":core:datastore-proto")
 
 include(":feature:dashboard")
 include(":feature:goal")
+include(":feature:setting")
