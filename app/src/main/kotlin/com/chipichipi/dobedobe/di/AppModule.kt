@@ -6,12 +6,14 @@ import com.chipichipi.dobedobe.feature.goal.di.goalModule
 import com.chipichipi.dobedobe.feature.setting.di.settingModule
 import org.koin.dsl.module
 
-val featureModule = module {
-    includes(dashboardModule, goalModule, settingModule)
-}
+val featureModule =
+    module {
+        includes(dashboardModule, goalModule, settingModule)
+    }
 
-val appModule = module {
-    includes(featureModule)
+val appModule =
+    module {
+        includes(featureModule)
 
-    includes(dataModule, featureModule)
-}
+        includes(dataModule, featureModule)
+    }
