@@ -43,7 +43,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewModelCompose)
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.androidx.compose)
-
+    testImplementation(libs.koin.test.junit5)
+    testImplementation(libs.koin.android.test)
     testImplementation(libs.androidx.navigation.testing)
 
     androidTestImplementation(libs.androidx.lifecycle.runtimeTesting)
