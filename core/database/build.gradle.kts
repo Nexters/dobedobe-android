@@ -8,4 +8,6 @@ android {
 
 dependencies {
     api(projects.core.model)
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.core)
 }
