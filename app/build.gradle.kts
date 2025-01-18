@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.dobedobe.android.application)
+    alias(libs.plugins.dobedobe.kotlinx.serialization)
 }
 
 android {
