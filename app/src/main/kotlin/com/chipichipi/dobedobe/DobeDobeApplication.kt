@@ -1,6 +1,7 @@
 package com.chipichipi.dobedobe
 
 import android.app.Application
+import com.chipichipi.dobedobe.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -12,6 +13,7 @@ class DobeDobeApplication : Application() {
         startKoin {
             androidLogger(level = Level.DEBUG)
             androidContext(applicationContext)
+            modules(appModule)
         }
     }
 }

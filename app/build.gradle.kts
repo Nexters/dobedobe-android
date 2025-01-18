@@ -30,6 +30,8 @@ android {
 
 dependencies {
     implementation(projects.feature.dashboard)
+    implementation(projects.feature.goal)
+    implementation(projects.feature.setting)
 
     implementation(projects.core.common)
     implementation(projects.core.data)
