@@ -40,6 +40,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.runtimeCompose)
     implementation(libs.androidx.lifecycle.viewModelCompose)
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.androidx.compose)
 
     testImplementation(libs.androidx.navigation.testing)
 
