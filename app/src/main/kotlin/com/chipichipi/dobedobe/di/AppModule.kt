@@ -13,7 +13,5 @@ val featureModule =
 
 val appModule =
     module {
-        includes(featureModule)
-
         includes(dataModule, featureModule)
     }
