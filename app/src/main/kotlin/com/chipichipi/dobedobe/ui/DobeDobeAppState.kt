@@ -25,7 +25,7 @@ internal fun rememberDobeDobeAppState(
 }
 
 @Stable
-internal class DobeDobeAppState(
+class DobeDobeAppState(
     coroutineScope: CoroutineScope,
     val navController: NavHostController,
 )

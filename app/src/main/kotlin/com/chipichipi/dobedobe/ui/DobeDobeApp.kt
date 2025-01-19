@@ -11,14 +11,16 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
+import androidx.compose.material3.SnackbarResult.ActionPerformed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBackground
+import com.chipichipi.dobedobe.navigation.DobeDobeNavHost
 
 @Composable
 internal fun DobeDobeApp(
@@ -48,8 +50,15 @@ internal fun DobeDobeApp(
                         ),
                     ),
             ) {
-                Text(
-                    text = "TEST",
+                DobeDobeNavHost(
+                    appState = appState,
+                    onShowSnackbar = { message, action ->
+                        snackbarHostState.showSnackbar(
+                            message = message,
+                            actionLabel = action,
+                            duration = SnackbarDuration.Short,
+                        ) == ActionPerformed
+                    },
                 )
             }
         }
