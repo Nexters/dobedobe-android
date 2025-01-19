@@ -4,5 +4,5 @@ option java_package = "com.chipichipi.dobedobe.core.datastore";
 option java_multiple_files = true;
 
 message UserPreferences {
-    bool is_onboarding_required = 1;
+    bool is_onboarding_completed = 1;
 }

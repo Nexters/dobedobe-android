@@ -5,4 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
     val userData: Flow<UserData>
+
+    suspend fun setOnboardingCompleted(isOnboardingRequired: Boolean): Result<Unit>
 }
