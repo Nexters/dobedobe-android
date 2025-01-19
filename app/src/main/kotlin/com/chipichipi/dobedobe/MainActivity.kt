@@ -11,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.chipichipi.dobedobe.core.designsystem.theme.DobedobeTheme
+import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import org.koin.compose.KoinContext
 
 class MainActivity : ComponentActivity() {
@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            DobedobeTheme {
+            DobeDobeTheme {
                 KoinContext {
                     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                         Greeting(
@@ -44,7 +44,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    DobedobeTheme {
+    DobeDobeTheme {
         Greeting("Android")
     }
 }
