@@ -46,10 +46,10 @@ fun DobeDobeOutlinedButton(
         enabled = enabled,
         colors = ButtonDefaults.outlinedButtonColors(),
         border =
-        BorderStroke(
-            width = 1.dp,
-            color = MaterialTheme.colorScheme.outline,
-        ),
+            BorderStroke(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.outline,
+            ),
         contentPadding = ButtonDefaults.ContentPadding,
         content = content,
     )
