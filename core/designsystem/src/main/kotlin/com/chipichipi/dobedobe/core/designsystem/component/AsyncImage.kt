@@ -65,8 +65,7 @@ fun DobDobeAsyncImage(
             is AsyncImagePainter.State.Loading -> {
                 onLoading()
             }
-            is AsyncImagePainter.State.Error,
-            -> {
+            is AsyncImagePainter.State.Error -> {
                 onError()
             }
             else -> {}
