@@ -37,7 +37,7 @@ protobufPlugin = "0.9.4"
 # third-party
 coil = "2.7.0"
 moduleGraph = "2.7.1"
-koin = "4.0.0"
+koin = "4.0.1"
 ktlint = "12.1.0"
 
 # test
@@ -102,12 +102,13 @@ protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref 
 coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
-koin-core = { group = "io.insert-koin", name = "koin-core" }
-koin-test-junit5 = { group = "io.insert-koin", name = "test-junit5" }
 koin-android = { group = "io.insert-koin", name = "koin-android" }
 koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
 koin-androidx-compose-navigation = { group = "io.insert-koin", name = "koin-androidx-compose-navigation" }
 koin-android-test = { group = "io.insert-koin", name = "koin-android-test" }
+koin-core = { group = "io.insert-koin", name = "koin-core" }
+koin-androidx-startup = { group = "io.insert-koin", name = "koin-androidx-startup" }
+koin-test-junit5 = { group = "io.insert-koin", name = "koin-test-junit5" }
 
 # test
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }

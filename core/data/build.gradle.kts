@@ -10,4 +10,7 @@ dependencies {
     api(projects.core.common)
     api(projects.core.database)
     api(projects.core.datastore)
+
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.core)
 }

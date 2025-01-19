@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.dobedobe.android.application)
+    alias(libs.plugins.dobedobe.kotlinx.serialization)
 }
 
 android {
@@ -22,13 +23,15 @@ android {
 
     packaging {
         resources.excludes.apply {
-            add("META-INF/**")
+            add("/META-INF/{AL2.0,LGPL2.1}")
         }
     }
 }
 
 dependencies {
     implementation(projects.feature.dashboard)
+    implementation(projects.feature.goal)
+    implementation(projects.feature.setting)
 
     implementation(projects.core.common)
     implementation(projects.core.data)
@@ -40,7 +43,12 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.runtimeCompose)
     implementation(libs.androidx.lifecycle.viewModelCompose)
-
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.androidx.startup)
+    testImplementation(libs.koin.test.junit5)
+    testImplementation(libs.koin.android.test)
     testImplementation(libs.androidx.navigation.testing)
 
     androidTestImplementation(libs.androidx.lifecycle.runtimeTesting)

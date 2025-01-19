@@ -16,4 +16,6 @@ dependencies {
     api(projects.core.model)
 
     implementation(projects.core.common)
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.core)
 }
