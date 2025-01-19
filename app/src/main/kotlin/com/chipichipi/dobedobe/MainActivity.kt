@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
-import org.koin.compose.KoinContext
+import org.koin.androidx.compose.KoinAndroidContext
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,8 +20,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             DobeDobeTheme {
-                KoinContext {
-                    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                KoinAndroidContext {
+                    Scaffold(
+                        modifier = Modifier.fillMaxSize(),
+                    ) { innerPadding ->
                         Greeting(
                             "Android",
                             modifier = Modifier.padding(innerPadding),
