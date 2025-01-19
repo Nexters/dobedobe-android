@@ -17,8 +17,8 @@ class AndroidFeaturePlugin : Plugin<Project> {
                 "implementation"(libs.findLibrary("androidx.lifecycle.viewModelCompose").get())
                 "implementation"(libs.findLibrary("androidx.navigation.compose").get())
                 "implementation"(platform(libs.findLibrary("koin.bom").get()))
-                "implementation"(libs.findLibrary("koin-android").get())
-                "implementation"(libs.findLibrary("koin-androidx-compose").get())
+                "implementation"(libs.findLibrary("koin.android").get())
+                "implementation"(libs.findLibrary("koin.androidx.compose").get())
                 "testImplementation"(libs.findLibrary("androidx.navigation.testing").get())
                 "androidTestImplementation"(
                     libs.findLibrary("androidx.lifecycle.runtimeTesting").get(),
