@@ -1,0 +1,12 @@
+package com.chipichipi.dobedobe.core.data.repository
+
+import com.chipichipi.dobedobe.core.datastore.UserPreferencesDataSource
+import com.chipichipi.dobedobe.core.model.UserData
+import kotlinx.coroutines.flow.Flow
+
+internal class UserRepositoryImpl(
+    private val userPreferencesDataSource: UserPreferencesDataSource,
+) : UserRepository {
+    override val userData: Flow<UserData> =
+        userPreferencesDataSource.userData
+}
