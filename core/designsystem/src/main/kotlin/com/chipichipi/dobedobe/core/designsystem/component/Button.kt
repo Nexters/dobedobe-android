@@ -46,10 +46,10 @@ fun DobeDobeOutlinedButton(
         enabled = enabled,
         colors = ButtonDefaults.outlinedButtonColors(),
         border =
-            BorderStroke(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.outline,
-            ),
+        BorderStroke(
+            width = 1.dp,
+            color = MaterialTheme.colorScheme.outline,
+        ),
         contentPadding = ButtonDefaults.ContentPadding,
         content = content,
     )
@@ -57,7 +57,7 @@ fun DobeDobeOutlinedButton(
 
 @ThemePreviews
 @Composable
-fun DobeDobeTextButtonPreview() {
+private fun DobeDobeTextButtonPreview() {
     DobeDobeTheme {
         DobeDobeBackground(
             modifier = Modifier.size(120.dp, 50.dp),
@@ -73,7 +73,7 @@ fun DobeDobeTextButtonPreview() {
 
 @ThemePreviews
 @Composable
-fun DobeDobeOutlinedButtonPreview() {
+private fun DobeDobeOutlinedButtonPreview() {
     DobeDobeTheme {
         DobeDobeBackground(
             modifier = Modifier.size(120.dp, 50.dp),
