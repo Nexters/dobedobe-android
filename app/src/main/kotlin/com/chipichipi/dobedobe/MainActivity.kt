@@ -11,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.chipichipi.dobedobe.ui.theme.DobedobeTheme
+import com.chipichipi.dobedobe.core.designsystem.theme.DobedobeTheme
 import org.koin.compose.KoinContext
 
 class MainActivity : ComponentActivity() {

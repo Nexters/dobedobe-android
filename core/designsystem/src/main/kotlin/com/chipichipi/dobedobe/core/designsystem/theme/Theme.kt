@@ -1,4 +1,4 @@
-package com.chipichipi.dobedobe.ui.theme
+package com.chipichipi.dobedobe.core.designsystem.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
