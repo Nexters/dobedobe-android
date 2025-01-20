@@ -1,4 +1,4 @@
-package com.chipichipi.dobedobe.ui.theme
+package com.chipichipi.dobedobe.core.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
