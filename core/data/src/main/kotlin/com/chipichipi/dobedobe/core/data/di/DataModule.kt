@@ -1,5 +1,6 @@
 package com.chipichipi.dobedobe.core.data.di
 
+import com.chipichipi.dobedobe.core.common.coroutineScopesModule
 import com.chipichipi.dobedobe.core.data.repository.UserRepository
 import com.chipichipi.dobedobe.core.data.repository.UserRepositoryImpl
 import com.chipichipi.dobedobe.core.database.di.daoModule
@@ -11,6 +12,7 @@ import org.koin.dsl.module
 val dataModule =
     module {
         includes(
+            coroutineScopesModule,
             daoModule,
             dataStoreModule,
         )
