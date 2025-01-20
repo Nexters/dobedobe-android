@@ -38,13 +38,12 @@ private fun OnboardingScreen(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier =
-            modifier
-                .onboardingModifier(),
+        modifier = modifier.onboardingModifier(),
         horizontalAlignment = Alignment.Start,
     ) {
         val textState = rememberTextFieldState()
 
+        // TODO : Writing 수정 필요
         Text(
             text = "어떤 목표를 이루고 싶나요?",
             fontWeight = FontWeight.Bold,
@@ -53,6 +52,7 @@ private fun OnboardingScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
+        // TODO : Writing 수정 필요
         Text(
             text = "목표 이름",
             fontWeight = FontWeight.Bold,
@@ -76,8 +76,9 @@ private fun OnboardingScreen(
                     .heightIn(54.dp),
             onClick = completeOnboarding,
         ) {
+            // TODO : Writing 수정 필요
             Text(
-                "저장하기",
+                "목표 저장하기",
             )
         }
     }
