@@ -10,9 +10,9 @@ internal class UserRepositoryImpl(
     override val userData: Flow<UserData> =
         userPreferencesDataSource.userData
 
-    override suspend fun setOnboardingCompleted(isOnboardingCompleted: Boolean): Result<Unit> {
+    override suspend fun completeOnBoarding(): Result<Unit> {
         return runCatching {
-            userPreferencesDataSource.setOnboardingCompleted(isOnboardingCompleted)
+            userPreferencesDataSource.completeOnBoarding()
         }
     }
 }

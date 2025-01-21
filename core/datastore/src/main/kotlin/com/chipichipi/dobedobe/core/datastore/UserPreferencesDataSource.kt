@@ -16,11 +16,11 @@ class UserPreferencesDataSource(
                 preferences.toModel()
             }
 
-    suspend fun setOnboardingCompleted(isOnboardingCompleted: Boolean) {
+    suspend fun completeOnBoarding() {
         try {
             preferences.updateData {
                 it.copy {
-                    this.isOnboardingCompleted = isOnboardingCompleted
+                    this.isOnboardingCompleted = true
                 }
             }
         } catch (ioException: IOException) {
