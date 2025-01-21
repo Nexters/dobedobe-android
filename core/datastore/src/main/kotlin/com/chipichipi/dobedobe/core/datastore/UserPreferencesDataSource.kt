@@ -4,12 +4,13 @@ import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.IOException
 import com.chipichipi.dobedobe.core.model.UserData
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class UserPreferencesDataSource(
     private val preferences: DataStore<UserPreferences>,
 ) {
-    val userData =
+    val userData: Flow<UserData> =
         preferences.data
             .map { preferences ->
                 preferences.toModel()
