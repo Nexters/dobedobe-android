@@ -11,20 +11,29 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration.Short
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
+import androidx.compose.material3.SnackbarResult.ActionPerformed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBackground
+import com.chipichipi.dobedobe.navigation.DobeDobeNavHost
+import com.chipichipi.dobedobe.onboarding.OnboardingRoute
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun DobeDobeApp(
     appState: DobeDobeAppState,
     modifier: Modifier = Modifier,
+    viewModel: MainViewModel = koinViewModel(),
 ) {
+    val mainUiState by viewModel.mainUiState.collectAsStateWithLifecycle()
+
     DobeDobeBackground(
         modifier = modifier,
     ) {
@@ -48,9 +57,25 @@ internal fun DobeDobeApp(
                         ),
                     ),
             ) {
-                Text(
-                    text = "TEST",
-                )
+                when (mainUiState) {
+                    is MainUiState.Loading -> Unit
+                    is MainUiState.Onboarding -> {
+                        OnboardingRoute()
+                    }
+                    is MainUiState.Success -> {
+                        DobeDobeNavHost(
+                            modifier = modifier,
+                            appState = appState,
+                            onShowSnackbar = { message, action ->
+                                snackbarHostState.showSnackbar(
+                                    message = message,
+                                    actionLabel = action,
+                                    duration = Short,
+                                ) == ActionPerformed
+                            },
+                        )
+                    }
+                }
             }
         }
     }
