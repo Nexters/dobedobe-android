@@ -19,7 +19,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Pin
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.BottomSheetScaffold
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -44,6 +43,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeCheckBox
 import com.chipichipi.dobedobe.core.model.Goal
 import com.chipichipi.dobedobe.feature.dashboard.preview.GoalPreviewParameterProvider
 
@@ -176,10 +176,10 @@ private fun Goal(
                     .padding(start = 15.dp, top = 17.dp, bottom = 18.dp, end = 15.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            GoalCheckBox(
+            DobeDobeCheckBox(
                 modifier = Modifier.size(29.dp),
                 checked = goal.isDone,
-                onCheckedChange = { onGoalDone() },
+                onCheckedChange = onGoalDone,
             )
             Spacer(modifier = Modifier.width(11.dp))
             Text(
@@ -200,20 +200,6 @@ private fun Goal(
             }
         }
     }
-}
-
-@Composable
-private fun GoalCheckBox(
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    // TODO : CheckBox Customizing 필요
-    Checkbox(
-        modifier = modifier,
-        checked = checked,
-        onCheckedChange = onCheckedChange,
-    )
 }
 
 @Preview
