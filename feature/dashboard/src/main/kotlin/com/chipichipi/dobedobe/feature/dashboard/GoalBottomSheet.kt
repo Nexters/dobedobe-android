@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Pin
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.Checkbox
@@ -163,7 +164,7 @@ private fun GoalItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 15.dp, top = 17.dp, bottom = 18.dp),
+                .padding(start = 15.dp, top = 17.dp, bottom = 18.dp, end = 15.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             GoalItemCheckBox(
@@ -179,6 +180,13 @@ private fun GoalItem(
                 lineHeight = 21.sp,
                 style = MaterialTheme.typography.bodyLarge, // TODO : font 조절 필요 ,
             )
+            Spacer(modifier = Modifier.weight(1f))
+            if (goal.isPinned) { // TODO : 임시 값, 추후 디자인 변경 필요
+                Icon(
+                    imageVector = Icons.Default.Pin,
+                    contentDescription = "고정된 목표", // TODO : stringResource 추가 필요
+                )
+            }
         }
     }
 }
