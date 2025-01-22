@@ -60,7 +60,6 @@ internal fun GoalBottomSheet(
             bottomSheetState =
                 rememberStandardBottomSheetState(
                     initialValue = SheetValue.PartiallyExpanded,
-                    skipHiddenState = true,
                 ),
         )
 
