@@ -48,12 +48,7 @@ internal fun GoalBottomSheetContent(
     onGoalClicked: (Goal) -> Unit,
 ) {
     Column {
-        GoalBottomSheetHeader(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
-        )
+        GoalBottomSheetHeader()
         Spacer(modifier = Modifier.height(15.dp))
         GoalContent(
             goals = goals,
@@ -64,12 +59,13 @@ internal fun GoalBottomSheetContent(
 }
 
 @Composable
-private fun GoalBottomSheetHeader(
-    modifier: Modifier = Modifier,
-) {
+private fun GoalBottomSheetHeader() {
     // TODO: 검색 기능 추가, parameter 는 그때 추가
     Row(
-        modifier = modifier,
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
