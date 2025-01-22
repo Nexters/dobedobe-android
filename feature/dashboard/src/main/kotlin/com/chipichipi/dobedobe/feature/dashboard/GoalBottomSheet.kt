@@ -47,7 +47,7 @@ import com.chipichipi.dobedobe.feature.dashboard.preview.GoalPreviewParameterPro
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GoalBottomSheet(
+internal fun GoalBottomSheet(
     goals: List<Goal>,
     onGoalItemDone: (Goal) -> Unit,
     onGoalItemClick: (Goal) -> Unit,
