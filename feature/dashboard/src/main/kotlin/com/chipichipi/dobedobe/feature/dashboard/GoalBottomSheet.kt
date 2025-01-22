@@ -161,7 +161,7 @@ private fun GoalItem(
                 .padding(start = 15.dp, top = 17.dp, bottom = 18.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Checkbox(
+            GoalItemCheckBox(
                 modifier = Modifier.size(29.dp),
                 checked = isDoneGoal,
                 onCheckedChange = { onGoalItemDone(goal) },
@@ -176,6 +176,20 @@ private fun GoalItem(
             )
         }
     }
+}
+
+@Composable
+private fun GoalItemCheckBox(
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    // TODO : CheckBox Customizing 필요
+    Checkbox(
+        modifier = modifier,
+        checked = checked,
+        onCheckedChange = onCheckedChange,
+    )
 }
 
 @Preview
