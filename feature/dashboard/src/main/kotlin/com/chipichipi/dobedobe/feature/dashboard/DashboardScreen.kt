@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.chipichipi.dobedobe.core.model.fakeGoals
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -29,6 +31,12 @@ private fun DashboardScreen(
     ) {
         Text(
             "Dashboard",
+        )
+        GoalBottomSheet(
+            sheetPeekHeight = 200.dp, // TODO 임시 peekHeight 값
+            goals = fakeGoals(20), // TODO 임시 goal 데이터
+            onGoalItemDone = {},
+            onGoalItemClick = {},
         )
     }
 }

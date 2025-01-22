@@ -40,6 +40,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -49,6 +50,7 @@ import com.chipichipi.dobedobe.feature.dashboard.preview.GoalPreviewParameterPro
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun GoalBottomSheet(
+    sheetPeekHeight: Dp,
     goals: List<Goal>,
     onGoalItemDone: (Goal) -> Unit,
     onGoalItemClick: (Goal) -> Unit,
@@ -69,7 +71,7 @@ internal fun GoalBottomSheet(
                 onGoalItemClick = onGoalItemClick,
             )
         },
-        sheetPeekHeight = 300.dp, // 임시 값
+        sheetPeekHeight = sheetPeekHeight,
     ) {}
 }
 
@@ -224,6 +226,7 @@ private fun GoalBottomSheetPreview(
         }
     }
     GoalBottomSheet(
+        sheetPeekHeight = 300.dp,
         goals = goals,
         onGoalItemDone = toggleGoalItem,
         onGoalItemClick = {},
