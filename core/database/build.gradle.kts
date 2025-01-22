@@ -6,6 +6,10 @@ plugins {
 
 android {
     namespace = "com.chipichipi.dobedobe.core.database"
+
+    sourceSets {
+        getByName("androidTest").assets.srcDir("$projectDir/schemas")
+    }
 }
 
 ksp {

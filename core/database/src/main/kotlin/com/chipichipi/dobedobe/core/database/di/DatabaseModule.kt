@@ -13,6 +13,7 @@ internal val databaseModule =
                 DobeDobeDatabase::class.java,
                 DobeDobeDatabase.DATABASE_NAME,
             ).fallbackToDestructiveMigration() // TODO: 최초 배포 시 삭제
+                .addMigrations(*DobeDobeDatabase.MIGRATIONS)
                 .build()
         }
     }
