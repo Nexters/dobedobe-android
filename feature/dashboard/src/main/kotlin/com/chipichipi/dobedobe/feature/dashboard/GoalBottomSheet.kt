@@ -29,6 +29,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -195,9 +199,22 @@ private fun GoalItemCheckBox(
 @Preview
 @Composable
 private fun GoalBottomSheetPreview() {
+    var goals by remember { mutableStateOf(fakeGoals(10)) }
+    val toggleGoalItem: (Goal) -> Unit = {
+        goals = goals.map { goal ->
+            if (goal.id == it.id) {
+                return@map if (goal.state == Goal.State.Done) {
+                    goal.copy(state = Goal.State.Todo)
+                } else {
+                    goal.copy(state = Goal.State.Done)
+                }
+            }
+            goal
+        }
+    }
     GoalBottomSheet(
-        goals = fakeGoals(10),
-        onGoalItemDone = {},
+        goals = goals,
+        onGoalItemDone = toggleGoalItem,
         onGoalItemClick = {},
     )
 }
