@@ -7,7 +7,7 @@ data class Goal(
     val state: State,
 ) {
     enum class State {
-        Todo, Doing, Done
+        Todo, Doing, Done // TODO: Goal State 기능 확정나면 수정
     }
 }
 
