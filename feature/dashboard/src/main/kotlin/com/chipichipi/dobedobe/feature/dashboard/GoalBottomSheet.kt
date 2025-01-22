@@ -163,7 +163,7 @@ private fun Goal(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun GoalBottomSheetContentPreview(
     @PreviewParameter(GoalPreviewParameterProvider::class) pGoals: List<Goal>,
