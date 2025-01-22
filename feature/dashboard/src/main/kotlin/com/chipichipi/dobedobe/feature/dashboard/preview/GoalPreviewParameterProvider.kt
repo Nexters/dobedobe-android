@@ -4,7 +4,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.chipichipi.dobedobe.core.model.Goal
 import com.chipichipi.dobedobe.core.model.fakeGoals
 
-class GoalPreviewParameterProvider : PreviewParameterProvider<List<Goal>> {
+internal class GoalPreviewParameterProvider : PreviewParameterProvider<List<Goal>> {
     override val values: Sequence<List<Goal>>
         get() =
             sequenceOf(
