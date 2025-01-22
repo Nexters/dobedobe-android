@@ -52,8 +52,8 @@ import com.chipichipi.dobedobe.feature.dashboard.preview.GoalPreviewParameterPro
 internal fun GoalBottomSheet(
     sheetPeekHeight: Dp,
     goals: List<Goal>,
-    onGoalItemDone: (Goal) -> Unit,
-    onGoalItemClick: (Goal) -> Unit,
+    onGoalDone: (Goal) -> Unit,
+    onGoalClicked: (Goal) -> Unit,
 ) {
     val bottomSheetScaffoldState =
         rememberBottomSheetScaffoldState(
@@ -68,8 +68,8 @@ internal fun GoalBottomSheet(
         sheetContent = {
             GoalBottomSheetContent(
                 goals = goals,
-                onGoalItemDone = onGoalItemDone,
-                onGoalItemClick = onGoalItemClick,
+                onGoalDone = onGoalDone,
+                onGoalClicked = onGoalClicked,
             )
         },
         sheetPeekHeight = sheetPeekHeight,
@@ -79,8 +79,8 @@ internal fun GoalBottomSheet(
 @Composable
 private fun GoalBottomSheetContent(
     goals: List<Goal>,
-    onGoalItemDone: (Goal) -> Unit,
-    onGoalItemClick: (Goal) -> Unit,
+    onGoalDone: (Goal) -> Unit,
+    onGoalClicked: (Goal) -> Unit,
 ) {
     Column {
         GoalBottomSheetHeader(
@@ -92,8 +92,8 @@ private fun GoalBottomSheetContent(
         Spacer(modifier = Modifier.height(15.dp))
         GoalContent(
             goals = goals,
-            onGoalItemDone = onGoalItemDone,
-            onGoalItemClick = onGoalItemClick,
+            onGoalDone = onGoalDone,
+            onGoalClicked = onGoalClicked,
         )
     }
 }
@@ -136,8 +136,8 @@ private fun GoalBottomSheetHeader(
 @Composable
 private fun GoalContent(
     goals: List<Goal>,
-    onGoalItemDone: (Goal) -> Unit,
-    onGoalItemClick: (Goal) -> Unit,
+    onGoalDone: (Goal) -> Unit,
+    onGoalClicked: (Goal) -> Unit,
 ) {
     LazyColumn(
         modifier =
@@ -149,26 +149,25 @@ private fun GoalContent(
         contentPadding = PaddingValues(horizontal = 24.dp),
     ) {
         items(goals) { goal ->
-            GoalItem(
+            Goal(
                 goal = goal,
-                onGoalItemDone = onGoalItemDone,
-                onGoalItemClick = onGoalItemClick,
+                onGoalDone = { onGoalDone(goal) },
+                onGoalClicked = { onGoalClicked(goal) },
             )
         }
     }
 }
 
 @Composable
-private fun GoalItem(
+private fun Goal(
     goal: Goal,
-    onGoalItemDone: (Goal) -> Unit,
-    onGoalItemClick: (Goal) -> Unit,
+    onGoalDone: () -> Unit,
+    onGoalClicked: () -> Unit,
 ) {
-    val isDoneGoal: Boolean = (goal.state == Goal.State.Done)
     Surface(
         color = Color.White,
         shape = RoundedCornerShape(24.dp),
-        onClick = { onGoalItemClick(goal) },
+        onClick = onGoalClicked,
     ) {
         Row(
             modifier =
@@ -177,10 +176,10 @@ private fun GoalItem(
                     .padding(start = 15.dp, top = 17.dp, bottom = 18.dp, end = 15.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            GoalItemCheckBox(
+            GoalCheckBox(
                 modifier = Modifier.size(29.dp),
-                checked = isDoneGoal,
-                onCheckedChange = { onGoalItemDone(goal) },
+                checked = goal.isDone,
+                onCheckedChange = { onGoalDone() },
             )
             Spacer(modifier = Modifier.width(11.dp))
             Text(
@@ -204,7 +203,7 @@ private fun GoalItem(
 }
 
 @Composable
-private fun GoalItemCheckBox(
+private fun GoalCheckBox(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -223,7 +222,7 @@ private fun GoalBottomSheetPreview(
     @PreviewParameter(GoalPreviewParameterProvider::class) pGoals: List<Goal>,
 ) {
     var goals by remember { mutableStateOf(pGoals) }
-    val toggleGoalItem: (Goal) -> Unit = {
+    val onGoalDone: (Goal) -> Unit = {
         goals =
             goals.map { goal ->
                 if (goal.id == it.id) {
@@ -239,7 +238,7 @@ private fun GoalBottomSheetPreview(
     GoalBottomSheet(
         sheetPeekHeight = 300.dp,
         goals = goals,
-        onGoalItemDone = toggleGoalItem,
-        onGoalItemClick = {},
+        onGoalDone = onGoalDone,
+        onGoalClicked = {},
     )
 }

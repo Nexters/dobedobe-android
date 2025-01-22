@@ -6,10 +6,12 @@ data class Goal(
     val isPinned: Boolean,
     val state: State,
 ) {
+    val isDone: Boolean
+        get() = state == State.Done
+
     enum class State {
         Todo,
-        Doing,
-        Done, // TODO: Goal State 기능 확정나면 수정
+        Done,
     }
 }
 
@@ -17,7 +19,7 @@ private val fakeGoals: List<Goal> =
     listOf(
         Goal(1, "3대 500 달성하기", true, Goal.State.Todo),
         Goal(2, "영어 단어 하루 10개 외우기", false, Goal.State.Done),
-        Goal(3, "두비두비 출시", false, Goal.State.Doing),
+        Goal(3, "두비두비 출시", false, Goal.State.Todo),
         Goal(4, "주간 러닝 3회", true, Goal.State.Todo),
         Goal(5, "하루 2L 물 마시기", false, Goal.State.Todo),
         Goal(6, "책 5권 읽기", false, Goal.State.Todo),
