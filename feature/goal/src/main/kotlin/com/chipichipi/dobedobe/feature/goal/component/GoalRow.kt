@@ -26,6 +26,7 @@ import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeCheckBox
 import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.core.model.Goal
+import kotlinx.datetime.Instant
 
 @Composable
 fun GoalRow(
@@ -83,6 +84,8 @@ private fun GoalRowPreview() {
                         title = "Todo",
                         isPinned = false,
                         state = Goal.State.Todo,
+                        createdAt = Instant.DISTANT_PAST,
+                        completedAt = null,
                     ),
                 onGoalDone = {},
                 onGoalClicked = {},
@@ -94,6 +97,8 @@ private fun GoalRowPreview() {
                         title = "Done",
                         isPinned = false,
                         state = Goal.State.Done,
+                        createdAt = Instant.DISTANT_PAST,
+                        completedAt = Instant.DISTANT_PAST,
                     ),
                 onGoalDone = {},
                 onGoalClicked = {},
@@ -105,6 +110,8 @@ private fun GoalRowPreview() {
                         title = "Pinned",
                         isPinned = true,
                         state = Goal.State.Done,
+                        createdAt = Instant.DISTANT_PAST,
+                        completedAt = Instant.DISTANT_PAST,
                     ),
                 onGoalDone = {},
                 onGoalClicked = {},
