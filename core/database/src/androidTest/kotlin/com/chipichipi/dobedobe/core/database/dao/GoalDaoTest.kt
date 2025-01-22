@@ -27,42 +27,45 @@ class GoalDaoTest {
     }
 
     @Test
-    fun 목표_저장_테스트() = runTest {
-        // given
-        val goals: List<GoalEntity> = fakeGoalEntities("준원", "준혁")
+    fun 목표_저장_테스트() =
+        runTest {
+            // given
+            val goals: List<GoalEntity> = fakeGoalEntities("준원", "준혁")
 
-        // when
-        goalDao.saveGoals(goals)
+            // when
+            goalDao.saveGoals(goals)
 
-        // then
-        val retrievedGoals: List<GoalEntity> = goalDao.getGoals().first()
-        val retrievedGoalTitles = retrievedGoals.map { it.title }
-        retrievedGoals.shouldHaveSize(2)
-        retrievedGoalTitles shouldBe listOf("준원", "준혁")
-    }
-
-    @Test
-    fun 목표_저장후_삭제_테스트() = runTest {
-        // given
-        val goal: GoalEntity = fakeGoalEntity(id = 1L, title = "준원")
-
-        // when
-        goalDao.saveGoal(goal)
-        goalDao.deleteGoal(goalId = 1L)
-        // then
-        val retrievedGoals: List<GoalEntity> = goalDao.getGoals().first()
-        retrievedGoals.shouldHaveSize(0)
-    }
+            // then
+            val retrievedGoals: List<GoalEntity> = goalDao.getGoals().first()
+            val retrievedGoalTitles = retrievedGoals.map { it.title }
+            retrievedGoals.shouldHaveSize(2)
+            retrievedGoalTitles shouldBe listOf("준원", "준혁")
+        }
 
     @Test
-    fun 목표_완료하기_테스트() = runTest {
-        // given
-        val goal: GoalEntity = fakeGoalEntity(id = 1L, title = "준원", state = Goal.State.Todo)
-        // when
-        goalDao.saveGoal(goal)
-        goalDao.updateGoal(goal.copy(state = Goal.State.Done))
-        // then
-        val retrievedGoal: GoalEntity = goalDao.getGoal(1L).first()
-        retrievedGoal.state shouldBe Goal.State.Done
-    }
+    fun 목표_저장후_삭제_테스트() =
+        runTest {
+            // given
+            val goal: GoalEntity = fakeGoalEntity(id = 1L, title = "준원")
+
+            // when
+            goalDao.saveGoal(goal)
+            goalDao.deleteGoal(goalId = 1L)
+            // then
+            val retrievedGoals: List<GoalEntity> = goalDao.getGoals().first()
+            retrievedGoals.shouldHaveSize(0)
+        }
+
+    @Test
+    fun 목표_완료하기_테스트() =
+        runTest {
+            // given
+            val goal: GoalEntity = fakeGoalEntity(id = 1L, title = "준원", state = Goal.State.Todo)
+            // when
+            goalDao.saveGoal(goal)
+            goalDao.updateGoal(goal.copy(state = Goal.State.Done))
+            // then
+            val retrievedGoal: GoalEntity = goalDao.getGoal(1L).first()
+            retrievedGoal.state shouldBe Goal.State.Done
+        }
 }
