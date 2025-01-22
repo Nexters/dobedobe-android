@@ -33,8 +33,10 @@ private fun DashboardScreen(
             "Dashboard",
         )
         GoalBottomSheet(
-            sheetPeekHeight = 200.dp, // TODO 임시 peekHeight 값
-            goals = fakeGoals(20), // TODO 임시 goal 데이터
+            sheetPeekHeight = 200.dp,
+            // TODO 임시 peekHeight 값
+            goals = fakeGoals(20),
+            // TODO 임시 goal 데이터
             onGoalItemDone = {},
             onGoalItemClick = {},
         )

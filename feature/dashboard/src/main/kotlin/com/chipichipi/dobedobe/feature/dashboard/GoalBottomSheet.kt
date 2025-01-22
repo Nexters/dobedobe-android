@@ -55,12 +55,14 @@ internal fun GoalBottomSheet(
     onGoalItemDone: (Goal) -> Unit,
     onGoalItemClick: (Goal) -> Unit,
 ) {
-    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = rememberStandardBottomSheetState(
-            initialValue = SheetValue.PartiallyExpanded,
-            skipHiddenState = true,
-        ),
-    )
+    val bottomSheetScaffoldState =
+        rememberBottomSheetScaffoldState(
+            bottomSheetState =
+                rememberStandardBottomSheetState(
+                    initialValue = SheetValue.PartiallyExpanded,
+                    skipHiddenState = true,
+                ),
+        )
 
     BottomSheetScaffold(
         scaffoldState = bottomSheetScaffoldState,
@@ -83,9 +85,10 @@ private fun GoalBottomSheetContent(
 ) {
     Column {
         GoalBottomSheetHeader(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
         )
         Spacer(modifier = Modifier.height(15.dp))
         GoalContent(
@@ -107,22 +110,25 @@ private fun GoalBottomSheetHeader(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            "나의 목표",  // TODO : stringResource 추가 필요
+            "나의 목표",
+            // TODO : stringResource 추가 필요
             fontSize = 24.sp,
             fontWeight = FontWeight.SemiBold,
         )
         IconButton(
-            modifier = Modifier
-                .size(42.dp)
-                .offset {
-                    IntOffset(x = 12.dp.roundToPx(), y = 0)
-                },
+            modifier =
+                Modifier
+                    .size(42.dp)
+                    .offset {
+                        IntOffset(x = 12.dp.roundToPx(), y = 0)
+                    },
             onClick = {},
         ) {
             Icon(
                 imageVector = Icons.Default.Search,
                 modifier = Modifier.size(18.dp),
-                contentDescription = "목표 검색", // TODO : stringResource 추가 필요
+                contentDescription = "목표 검색",
+                // TODO : stringResource 추가 필요
             )
         }
     }
@@ -135,9 +141,11 @@ private fun GoalContent(
     onGoalItemClick: (Goal) -> Unit,
 ) {
     LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth()
-            .requiredHeightIn(min = 200.dp), // TODO: 최소 높이 조절 필요
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .requiredHeightIn(min = 200.dp),
+        // TODO: 최소 높이 조절 필요
         verticalArrangement = Arrangement.spacedBy(18.dp),
         contentPadding = PaddingValues(horizontal = 24.dp),
     ) {
@@ -164,9 +172,10 @@ private fun GoalItem(
         onClick = { onGoalItemClick(goal) },
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 15.dp, top = 17.dp, bottom = 18.dp, end = 15.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(start = 15.dp, top = 17.dp, bottom = 18.dp, end = 15.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             GoalItemCheckBox(
@@ -180,13 +189,15 @@ private fun GoalItem(
                 fontWeight = FontWeight.Medium,
                 fontSize = 15.sp,
                 lineHeight = 21.sp,
-                style = MaterialTheme.typography.bodyLarge, // TODO : font 조절 필요 ,
+                style = MaterialTheme.typography.bodyLarge,
+                // TODO : font 조절 필요 ,
             )
             Spacer(modifier = Modifier.weight(1f))
             if (goal.isPinned) { // TODO : 임시 값, 추후 디자인 변경 필요
                 Icon(
                     imageVector = Icons.Default.Pin,
-                    contentDescription = "고정된 목표", // TODO : stringResource 추가 필요
+                    contentDescription = "고정된 목표",
+                    // TODO : stringResource 추가 필요
                 )
             }
         }
@@ -214,16 +225,17 @@ private fun GoalBottomSheetPreview(
 ) {
     var goals by remember { mutableStateOf(pGoals) }
     val toggleGoalItem: (Goal) -> Unit = {
-        goals = goals.map { goal ->
-            if (goal.id == it.id) {
-                return@map if (goal.state == Goal.State.Done) {
-                    goal.copy(state = Goal.State.Todo)
-                } else {
-                    goal.copy(state = Goal.State.Done)
+        goals =
+            goals.map { goal ->
+                if (goal.id == it.id) {
+                    return@map if (goal.state == Goal.State.Done) {
+                        goal.copy(state = Goal.State.Todo)
+                    } else {
+                        goal.copy(state = Goal.State.Done)
+                    }
                 }
+                goal
             }
-            goal
-        }
     }
     GoalBottomSheet(
         sheetPeekHeight = 300.dp,
