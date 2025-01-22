@@ -18,16 +18,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Pin
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.BottomSheetScaffold
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,7 +34,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -47,37 +41,8 @@ import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeCheckBox
 import com.chipichipi.dobedobe.core.model.Goal
 import com.chipichipi.dobedobe.feature.dashboard.preview.GoalPreviewParameterProvider
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun GoalBottomSheet(
-    sheetPeekHeight: Dp,
-    goals: List<Goal>,
-    onGoalDone: (Goal) -> Unit,
-    onGoalClicked: (Goal) -> Unit,
-) {
-    val bottomSheetScaffoldState =
-        rememberBottomSheetScaffoldState(
-            bottomSheetState =
-                rememberStandardBottomSheetState(
-                    initialValue = SheetValue.PartiallyExpanded,
-                ),
-        )
-
-    BottomSheetScaffold(
-        scaffoldState = bottomSheetScaffoldState,
-        sheetContent = {
-            GoalBottomSheetContent(
-                goals = goals,
-                onGoalDone = onGoalDone,
-                onGoalClicked = onGoalClicked,
-            )
-        },
-        sheetPeekHeight = sheetPeekHeight,
-    ) {}
-}
-
-@Composable
-private fun GoalBottomSheetContent(
+internal fun GoalBottomSheetContent(
     goals: List<Goal>,
     onGoalDone: (Goal) -> Unit,
     onGoalClicked: (Goal) -> Unit,
@@ -204,7 +169,7 @@ private fun Goal(
 
 @Preview
 @Composable
-private fun GoalBottomSheetPreview(
+private fun GoalBottomSheetContentPreview(
     @PreviewParameter(GoalPreviewParameterProvider::class) pGoals: List<Goal>,
 ) {
     var goals by remember { mutableStateOf(pGoals) }
@@ -221,8 +186,7 @@ private fun GoalBottomSheetPreview(
                 goal
             }
     }
-    GoalBottomSheet(
-        sheetPeekHeight = 300.dp,
+    GoalBottomSheetContent(
         goals = goals,
         onGoalDone = onGoalDone,
         onGoalClicked = {},
