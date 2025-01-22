@@ -38,11 +38,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chipichipi.dobedobe.core.model.Goal
-import com.chipichipi.dobedobe.core.model.fakeGoals
+import com.chipichipi.dobedobe.feature.dashboard.preview.GoalPreviewParameterProvider
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -198,8 +199,10 @@ private fun GoalItemCheckBox(
 
 @Preview
 @Composable
-private fun GoalBottomSheetPreview() {
-    var goals by remember { mutableStateOf(fakeGoals(10)) }
+private fun GoalBottomSheetPreview(
+    @PreviewParameter(GoalPreviewParameterProvider::class) pGoals: List<Goal>,
+) {
+    var goals by remember { mutableStateOf(pGoals) }
     val toggleGoalItem: (Goal) -> Unit = {
         goals = goals.map { goal ->
             if (goal.id == it.id) {
