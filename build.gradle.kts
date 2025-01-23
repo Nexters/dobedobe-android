@@ -14,5 +14,7 @@ plugins {
 }
 
 allprojects {
-    apply(plugin = rootProject.libs.plugins.ktlint.get().pluginId)
+    if (name != "datastore-proto") {
+        apply(plugin = rootProject.libs.plugins.ktlint.get().pluginId)
+    }
 }
