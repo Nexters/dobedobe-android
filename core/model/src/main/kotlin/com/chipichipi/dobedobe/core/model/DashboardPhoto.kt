@@ -1,6 +1,6 @@
 package com.chipichipi.dobedobe.core.model
 
-data class DashboardImage(
+data class DashboardPhoto(
     val id: Int,
-    val imageUrl: String,
+    val url: String,
 )

@@ -70,7 +70,7 @@ internal fun SharedTransitionScope.DashboardPhotoFrameBox(
         rotation = rotation.value,
         isExpanded = isExpanded,
         config = photo.config,
-        imageUrl = photo.imageUrl,
+        url = photo.url,
         onToggleExpansion = onToggleExpansion,
         modifier = Modifier
             .fillMaxSize()
@@ -96,7 +96,7 @@ private fun SharedTransitionScope.CollapsedPhotoFrame(
     rotation: Float,
     isExpanded: Boolean,
     config: DashboardPhotoConfig,
-    imageUrl: String,
+    url: String,
     onToggleExpansion: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -117,7 +117,7 @@ private fun SharedTransitionScope.CollapsedPhotoFrame(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = config.alignment,
                 ) {
-                    if (imageUrl.isNotEmpty()) {
+                    if (url.isNotEmpty()) {
                         AsyncImage(
                             modifier = Modifier
                                 .offset(
@@ -133,7 +133,7 @@ private fun SharedTransitionScope.CollapsedPhotoFrame(
                                 .clip(RoundedCornerShape(10.dp))
                                 .clickable(onClick = onToggleExpansion),
                             contentScale = ContentScale.FillBounds,
-                            model = imageUrl,
+                            model = url,
                             contentDescription = null,
                         )
                     } else {
@@ -211,7 +211,7 @@ private fun SharedTransitionScope.ExpandedPhotoFrame(
                             .rotate(rotation)
                             .clip(RoundedCornerShape(10.dp)),
                         contentScale = ContentScale.FillBounds,
-                        model = state.imageUrl,
+                        model = state.url,
                         contentDescription = "expanded photo",
                     )
                 }
@@ -229,7 +229,7 @@ private fun DashboardPhotoFrameBoxPreview() {
             DashboardPhotoFrameBox(
                 photo = DashboardPhotoState(
                     config = DashboardPhotoConfig.TOP,
-                    imageUrl = "",
+                    url = "",
                 ),
                 innerPadding = PaddingValues(10.dp),
                 isExpanded = false,
