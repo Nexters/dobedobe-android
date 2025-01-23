@@ -1,15 +1,32 @@
 package com.chipichipi.dobedobe.feature.dashboard
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetValue
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBottomSheetScaffold
+import com.chipichipi.dobedobe.feature.dashboard.component.DashboardCharacterBox
+import com.chipichipi.dobedobe.feature.dashboard.component.DashboardPhotoFrameBox
+import com.chipichipi.dobedobe.feature.dashboard.component.DashboardTopAppBar
 import com.chipichipi.dobedobe.feature.dashboard.preview.GoalPreviewParameterProvider
 import org.koin.androidx.compose.koinViewModel
 
@@ -19,28 +36,32 @@ internal fun DashboardRoute(
     modifier: Modifier = Modifier,
     viewModel: DashboardViewModel = koinViewModel(),
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     DashboardScreen(
         modifier = modifier,
         onShowSnackbar = onShowSnackbar,
+        uiState = uiState,
     )
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DashboardScreen(
     onShowSnackbar: suspend (String, String?) -> Boolean,
+    uiState: DashboardUiState,
     modifier: Modifier = Modifier,
 ) {
     val bottomSheetScaffoldState =
         rememberBottomSheetScaffoldState(
-            bottomSheetState =
-                rememberStandardBottomSheetState(
-                    initialValue = SheetValue.PartiallyExpanded,
-                ),
+            bottomSheetState = rememberStandardBottomSheetState(
+                initialValue = SheetValue.PartiallyExpanded,
+            ),
         )
 
     DobeDobeBottomSheetScaffold(
-        modifier = modifier,
+        modifier = modifier.fillMaxSize(),
         scaffoldState = bottomSheetScaffoldState,
         sheetContent = {
             GoalBottomSheetContent(
@@ -50,17 +71,69 @@ private fun DashboardScreen(
                 onGoalClicked = {},
             )
         },
-        sheetPeekHeight = 200.dp,
         // TODO 임시 peekHeight 값
-    ) {
-        Text("Dashboard")
+        sheetPeekHeight = 200.dp,
+        topBar = {
+            // TODO: 기능 추가 필요
+            DashboardTopAppBar(
+                onEditClick = {},
+                onSettingClick = {}
+            )
+        }
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            when (uiState) {
+                is DashboardUiState.Error,
+                is DashboardUiState.Loading -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+                is DashboardUiState.Success -> {
+                    DashboardBody(
+                        uiState = uiState,
+                        innerPadding = innerPadding
+                    )
+                }
+            }
+        }
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-@Preview
-private fun DashboardScreenPreview() {
-    DashboardScreen(
-        onShowSnackbar = { _, _ -> false },
-    )
+private fun DashboardBody(
+    uiState: DashboardUiState.Success,
+    innerPadding: PaddingValues,
+    modifier: Modifier = Modifier
+) {
+    val photoFrameState = rememberDashboardPhotoFrameState()
+
+    SharedTransitionLayout(
+        modifier = modifier
+            .fillMaxSize()
+            // TODO : 색상 변경 필요
+            .background(
+                color = Color(0xFFFDFDFD),
+            ),
+    ) {
+        DashboardCharacterBox(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(top = 100.dp)
+                .zIndex(0.5f),
+        )
+
+        uiState.photoState.forEach { photo ->
+            DashboardPhotoFrameBox(
+                photo = photo,
+                isExpanded = photoFrameState.isExpanded(photo.config.id),
+                toggleExpansion = photoFrameState::toggleExpansion,
+                innerPadding = innerPadding,
+            )
+        }
+    }
 }
