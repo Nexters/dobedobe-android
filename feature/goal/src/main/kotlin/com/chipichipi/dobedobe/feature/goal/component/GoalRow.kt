@@ -39,10 +39,9 @@ fun GoalRow(
         onClick = onGoalClicked,
     ) {
         Row(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(start = 15.dp, top = 17.dp, bottom = 18.dp, end = 15.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 15.dp, top = 17.dp, bottom = 18.dp, end = 15.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             DobeDobeCheckBox(
@@ -77,35 +76,32 @@ private fun GoalRowPreview() {
     DobeDobeTheme {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             GoalRow(
-                goal =
-                    Goal(
-                        id = 1L,
-                        title = "Todo",
-                        isPinned = false,
-                        state = Goal.State.Todo,
-                    ),
+                goal = Goal(
+                    id = 1L,
+                    title = "Todo",
+                    isPinned = false,
+                    state = Goal.State.Todo,
+                ),
                 onGoalDone = {},
                 onGoalClicked = {},
             )
             GoalRow(
-                goal =
-                    Goal(
-                        id = 1L,
-                        title = "Done",
-                        isPinned = false,
-                        state = Goal.State.Done,
-                    ),
+                goal = Goal(
+                    id = 1L,
+                    title = "Done",
+                    isPinned = false,
+                    state = Goal.State.Done,
+                ),
                 onGoalDone = {},
                 onGoalClicked = {},
             )
             GoalRow(
-                goal =
-                    Goal(
-                        id = 1L,
-                        title = "Pinned",
-                        isPinned = true,
-                        state = Goal.State.Done,
-                    ),
+                goal = Goal(
+                    id = 1L,
+                    title = "Pinned",
+                    isPinned = true,
+                    state = Goal.State.Done,
+                ),
                 onGoalDone = {},
                 onGoalClicked = {},
             )

@@ -35,11 +35,10 @@ fun DobeDobeTextField(
         state = state,
         enabled = enabled,
         readOnly = readOnly,
-        textStyle =
-            TextStyle(
-                fontSize = 24.sp,
-                fontWeight = FontWeight.SemiBold,
-            ),
+        textStyle = TextStyle(
+            fontSize = 24.sp,
+            fontWeight = FontWeight.SemiBold,
+        ),
         decorator = { innerTextField ->
             Column(
                 modifier =
@@ -55,11 +54,10 @@ fun DobeDobeTextField(
                 )
             }
         },
-        keyboardOptions =
-            KeyboardOptions(
-                keyboardType = keyboardType,
-                imeAction = imeAction,
-            ),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = keyboardType,
+            imeAction = imeAction,
+        ),
         modifier = modifier,
     )
 }

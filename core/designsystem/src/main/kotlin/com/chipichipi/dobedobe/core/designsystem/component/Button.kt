@@ -29,11 +29,10 @@ fun DobeDobeTextButton(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
-        colors =
-            ButtonDefaults.textButtonColors(
-                contentColor = Color.White,
-                containerColor = Color.Black,
-            ),
+        colors = ButtonDefaults.textButtonColors(
+            contentColor = Color.White,
+            containerColor = Color.Black,
+        ),
         shape = RoundedCornerShape(20.dp),
         contentPadding = ButtonDefaults.TextButtonContentPadding,
         content = content,
@@ -52,11 +51,10 @@ fun DobeDobeOutlinedButton(
         modifier = modifier,
         enabled = enabled,
         colors = ButtonDefaults.outlinedButtonColors(),
-        border =
-            BorderStroke(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.outline,
-            ),
+        border = BorderStroke(
+            width = 1.dp,
+            color = MaterialTheme.colorScheme.outline,
+        ),
         contentPadding = ButtonDefaults.ContentPadding,
         content = content,
     )
