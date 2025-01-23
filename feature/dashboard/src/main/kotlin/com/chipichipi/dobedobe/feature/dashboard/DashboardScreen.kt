@@ -125,10 +125,12 @@ private fun DashboardBody(
         )
 
         uiState.photoState.forEach { photo ->
+            // TODO : EmptyFrameClick 처리
             DashboardPhotoFrameBox(
                 photo = photo,
                 isExpanded = photoFrameState.isExpanded(photo.config.id),
                 toggleExpansion = photoFrameState::toggleExpansion,
+                onEmptyFrameClick = { },
                 innerPadding = innerPadding,
             )
         }

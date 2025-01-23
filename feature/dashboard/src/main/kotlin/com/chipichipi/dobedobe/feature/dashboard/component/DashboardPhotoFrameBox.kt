@@ -47,6 +47,7 @@ internal fun SharedTransitionScope.DashboardPhotoFrameBox(
     photo: DashboardPhotoState,
     isExpanded: Boolean,
     toggleExpansion: (Int) -> Unit,
+    onEmptyFrameClick: () -> Unit,
     innerPadding: PaddingValues,
 ) {
     val rotation = remember {
@@ -72,6 +73,7 @@ internal fun SharedTransitionScope.DashboardPhotoFrameBox(
         config = photo.config,
         url = photo.url,
         onToggleExpansion = onToggleExpansion,
+        onEmptyFrameClick = onEmptyFrameClick,
         modifier = Modifier
             .fillMaxSize()
             .padding(innerPadding)
@@ -98,6 +100,7 @@ private fun SharedTransitionScope.CollapsedPhotoFrame(
     config: DashboardPhotoConfig,
     url: String,
     onToggleExpansion: () -> Unit,
+    onEmptyFrameClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     AnimatedContent(
@@ -137,7 +140,7 @@ private fun SharedTransitionScope.CollapsedPhotoFrame(
                             contentDescription = null,
                         )
                     } else {
-                        Box(
+                        EmptyPhotoFrame(
                             modifier = Modifier
                                 .offset(
                                     x = config.offsetX.dp,
@@ -146,18 +149,9 @@ private fun SharedTransitionScope.CollapsedPhotoFrame(
                                 .size(config.size.dp)
                                 .rotate(rotation)
                                 .clip(RoundedCornerShape(10.dp))
-                                .background(Color(0xFF616161)),
-                            // TODO: 컬러 변경 필요
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            // TODO: 아이콘 변경 필요
-                            Icon(
-                                modifier = Modifier.size(24.dp),
-                                imageVector = Icons.Rounded.Add,
-                                contentDescription = "add",
-                                tint = Color.White,
-                            )
-                        }
+                                .background(Color(0xFF616161))
+                                .clickable(onClick = onEmptyFrameClick)
+                        )
                     }
                 }
             }
@@ -220,6 +214,24 @@ private fun SharedTransitionScope.ExpandedPhotoFrame(
     }
 }
 
+@Composable
+private fun EmptyPhotoFrame(
+    modifier: Modifier = Modifier
+) {
+    // TODO : 디자인 나오면 변경 필요
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center,
+    ) {
+        Icon(
+            modifier = Modifier.size(24.dp),
+            imageVector = Icons.Rounded.Add,
+            contentDescription = "add",
+            tint = Color.White,
+        )
+    }
+}
+
 @OptIn(ExperimentalSharedTransitionApi::class)
 @ThemePreviews
 @Composable
@@ -234,6 +246,7 @@ private fun DashboardPhotoFrameBoxPreview() {
                 innerPadding = PaddingValues(10.dp),
                 isExpanded = false,
                 toggleExpansion = {},
+                onEmptyFrameClick = {}
             )
         }
     }
