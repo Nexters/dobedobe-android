@@ -140,7 +140,7 @@ private fun GoalRow(
             DobeDobeCheckBox(
                 modifier = Modifier.size(29.dp),
                 checked = goal.isDone,
-                onCheckedChange = onGoalDone,
+                onCheckedChange = { onGoalDone() },
             )
             Spacer(modifier = Modifier.width(11.dp))
             Text(

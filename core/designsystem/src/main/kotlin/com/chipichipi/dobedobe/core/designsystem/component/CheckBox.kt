@@ -8,13 +8,13 @@ import androidx.compose.ui.Modifier
 @Composable
 fun DobeDobeCheckBox(
     checked: Boolean,
-    onCheckedChange: () -> Unit,
+    onCheckedChange: ((Boolean) -> Unit)? = null,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
 ) {
     Checkbox(
         checked = checked,
-        onCheckedChange = { onCheckedChange() },
+        onCheckedChange = onCheckedChange,
         enabled = enabled,
         modifier = modifier,
     )
