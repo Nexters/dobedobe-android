@@ -44,7 +44,7 @@ internal fun GoalBottomSheetContent(
     Column {
         GoalBottomSheetHeader()
         Spacer(modifier = Modifier.height(15.dp))
-        GoalContent(
+        GoalBottomSheetBody(
             goals = goals,
             onGoalDone = onGoalDone,
             onGoalClicked = onGoalClicked,
@@ -89,7 +89,7 @@ private fun GoalBottomSheetHeader() {
 }
 
 @Composable
-private fun GoalContent(
+private fun GoalBottomSheetBody(
     goals: List<Goal>,
     onGoalDone: (Goal) -> Unit,
     onGoalClicked: (Goal) -> Unit,
