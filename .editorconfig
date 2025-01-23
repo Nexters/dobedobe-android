@@ -12,6 +12,5 @@ ktlint_standard_function-literal = disabled
 ktlint_standard_function-type-modifier-spacing = disabled
 ktlint_standard_multiline-loop = disabled
 ktlint_standard_function-signature = disabled
-# TODO : compose Modifier 체이닝 메서드 라인 포멧 이상한거 수정
 ktlint_standard_string-template-indent = disabled
 ktlint_standard_multiline-expression-wrapping = disabled
