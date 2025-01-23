@@ -57,9 +57,9 @@ private fun GoalBottomSheetHeader() {
     // TODO: 검색 기능 추가, parameter 는 그때 추가
     Row(
         modifier =
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -71,11 +71,11 @@ private fun GoalBottomSheetHeader() {
         )
         IconButton(
             modifier =
-            Modifier
-                .size(42.dp)
-                .offset {
-                    IntOffset(x = 12.dp.roundToPx(), y = 0)
-                },
+                Modifier
+                    .size(42.dp)
+                    .offset {
+                        IntOffset(x = 12.dp.roundToPx(), y = 0)
+                    },
             onClick = {},
         ) {
             Icon(
@@ -96,9 +96,9 @@ private fun GoalBottomSheetBody(
 ) {
     LazyColumn(
         modifier =
-        Modifier
-            .fillMaxWidth()
-            .requiredHeightIn(min = 200.dp),
+            Modifier
+                .fillMaxWidth()
+                .requiredHeightIn(min = 200.dp),
         // TODO: 최소 높이 조절 필요
         verticalArrangement = Arrangement.spacedBy(18.dp),
         contentPadding = PaddingValues(horizontal = 24.dp),
