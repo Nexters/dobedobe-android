@@ -110,7 +110,7 @@ private fun GoalContent(
         contentPadding = PaddingValues(horizontal = 24.dp),
     ) {
         items(goals) { goal ->
-            Goal(
+            GoalRow(
                 goal = goal,
                 onGoalDone = { onGoalDone(goal) },
                 onGoalClicked = { onGoalClicked(goal) },
@@ -120,7 +120,7 @@ private fun GoalContent(
 }
 
 @Composable
-private fun Goal(
+private fun GoalRow(
     goal: Goal,
     onGoalDone: () -> Unit,
     onGoalClicked: () -> Unit,
