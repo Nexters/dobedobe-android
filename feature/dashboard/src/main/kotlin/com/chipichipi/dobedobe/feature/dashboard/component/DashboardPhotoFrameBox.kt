@@ -2,6 +2,7 @@ package com.chipichipi.dobedobe.feature.dashboard.component
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
@@ -33,6 +34,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
+import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
+import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoConfig
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
 import com.chipichipi.dobedobe.feature.dashboard.rememberDashboardPhotoFrameState
@@ -42,25 +45,25 @@ private const val animationDuration = 500
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 internal fun SharedTransitionScope.DashboardPhotoFrameBox(
-    image: DashboardPhotoState,
+    photo: DashboardPhotoState,
     innerPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
     val photoFrameState = rememberDashboardPhotoFrameState()
     val rotation = remember {
-        Animatable(initialValue = image.config.rotationZ)
+        Animatable(initialValue = photo.config.rotationZ)
     }
-    val isExpanded = photoFrameState.isExpanded(image.config.id)
+    val isExpanded = photoFrameState.isExpanded(photo.config.id)
 
     val onToggleExpansion: () -> Unit = {
         if (!rotation.isRunning) {
-            photoFrameState.toggleExpansion(image.config.id)
+            photoFrameState.toggleExpansion(photo.config.id)
         }
     }
 
     LaunchedEffect(isExpanded) {
         rotation.animateTo(
-            targetValue = if (isExpanded) 0f else image.config.rotationZ,
+            targetValue = if (isExpanded) 0f else photo.config.rotationZ,
             animationSpec = tween(durationMillis = animationDuration),
         )
     }
@@ -71,8 +74,8 @@ internal fun SharedTransitionScope.DashboardPhotoFrameBox(
         CollapsedPhotoFrame(
             rotation = rotation.value,
             isExpanded = isExpanded,
-            config = image.config,
-            imageUrl = image.imageUrl,
+            config = photo.config,
+            imageUrl = photo.imageUrl,
             onToggleExpansion = onToggleExpansion,
             modifier = Modifier
                 .padding(innerPadding)
@@ -82,7 +85,7 @@ internal fun SharedTransitionScope.DashboardPhotoFrameBox(
         ExpandedPhotoFrame(
             rotation = rotation.value,
             isExpanded = isExpanded,
-            state = image,
+            state = photo,
             onToggleExpansion = onToggleExpansion,
             innerPadding = innerPadding,
             modifier = Modifier
@@ -216,6 +219,23 @@ private fun SharedTransitionScope.ExpandedPhotoFrame(
                     )
                 }
             }
+        }
+    }
+}
+
+@OptIn(ExperimentalSharedTransitionApi::class)
+@ThemePreviews
+@Composable
+private fun DashboardPhotoFrameBoxPreview() {
+    DobeDobeTheme {
+        SharedTransitionLayout {
+            DashboardPhotoFrameBox(
+                photo = DashboardPhotoState(
+                    config = DashboardPhotoConfig.TOP,
+                    imageUrl = ""
+                ),
+                innerPadding = PaddingValues(10.dp)
+            )
         }
     }
 }
