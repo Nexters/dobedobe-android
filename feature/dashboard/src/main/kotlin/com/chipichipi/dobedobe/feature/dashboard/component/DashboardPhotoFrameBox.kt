@@ -39,7 +39,7 @@ import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoConfig
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
 
-private const val animationDuration = 500
+private const val ANIMATION_DURATION = 500
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -62,7 +62,7 @@ internal fun SharedTransitionScope.DashboardPhotoFrameBox(
     LaunchedEffect(isExpanded) {
         rotation.animateTo(
             targetValue = if (isExpanded) 0f else photo.config.rotationZ,
-            animationSpec = tween(durationMillis = animationDuration),
+            animationSpec = tween(durationMillis = ANIMATION_DURATION),
         )
     }
 
@@ -146,12 +146,14 @@ private fun SharedTransitionScope.CollapsedPhotoFrame(
                                 .size(config.size.dp)
                                 .rotate(rotation)
                                 .clip(RoundedCornerShape(10.dp))
-                                .background(Color(0xFF616161)), // TODO: 컬러 변경 필요
+                                .background(Color(0xFF616161)),
+                            // TODO: 컬러 변경 필요
                             contentAlignment = Alignment.Center,
                         ) {
+                            // TODO: 아이콘 변경 필요
                             Icon(
                                 modifier = Modifier.size(24.dp),
-                                imageVector = Icons.Rounded.Add, // TODO: 아이콘 변경 필요
+                                imageVector = Icons.Rounded.Add,
                                 contentDescription = "add",
                                 tint = Color.White,
                             )
@@ -227,11 +229,11 @@ private fun DashboardPhotoFrameBoxPreview() {
             DashboardPhotoFrameBox(
                 photo = DashboardPhotoState(
                     config = DashboardPhotoConfig.TOP,
-                    imageUrl = ""
+                    imageUrl = "",
                 ),
                 innerPadding = PaddingValues(10.dp),
                 isExpanded = false,
-                toggleExpansion = {}
+                toggleExpansion = {},
             )
         }
     }

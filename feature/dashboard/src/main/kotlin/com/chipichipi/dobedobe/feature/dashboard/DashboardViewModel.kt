@@ -12,32 +12,32 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 // TODO : 제거 필요
-private val fakeDashboardImageState = MutableStateFlow(
-    listOf(
-        DashboardImage(1, "https://picsum.photos/id/237/200/300"),
-        DashboardImage(2, "https://picsum.photos/id/233/200/300"),
-    ),
-)
+private val fakeDashboardImageState =
+    MutableStateFlow(
+        listOf(
+            DashboardImage(1, "https://picsum.photos/id/237/200/300"),
+            DashboardImage(2, "https://picsum.photos/id/233/200/300"),
+        ),
+    )
 
-class DashboardViewModel(
+class DashboardViewModel() : ViewModel() {
+    val uiState: StateFlow<DashboardUiState> =
+        fakeDashboardImageState
+            .map { imageData ->
+                val dashboardPhotoStates =
+                    DashboardPhotoConfig.entries.map { definition ->
+                        val matchingData = imageData.find { it.id == definition.id }
 
-) : ViewModel() {
-
-    val uiState: StateFlow<DashboardUiState> = fakeDashboardImageState
-        .map { imageData ->
-            val dashboardPhotoStates = DashboardPhotoConfig.entries.map { definition ->
-                val matchingData = imageData.find { it.id == definition.id }
-
-                DashboardPhotoState(
-                    config = definition,
-                    imageUrl = matchingData?.imageUrl.orEmpty(),
-                )
+                        DashboardPhotoState(
+                            config = definition,
+                            imageUrl = matchingData?.imageUrl.orEmpty(),
+                        )
+                    }
+                DashboardUiState.Success(dashboardPhotoStates)
             }
-            DashboardUiState.Success(dashboardPhotoStates)
-        }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = DashboardUiState.Loading,
-        )
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = DashboardUiState.Loading,
+            )
 }

@@ -2,7 +2,6 @@ package com.chipichipi.dobedobe.feature.dashboard
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,10 +15,8 @@ import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -45,7 +42,6 @@ internal fun DashboardRoute(
     )
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DashboardScreen(
@@ -53,12 +49,11 @@ private fun DashboardScreen(
     uiState: DashboardUiState,
     modifier: Modifier = Modifier,
 ) {
-    val bottomSheetScaffoldState =
-        rememberBottomSheetScaffoldState(
-            bottomSheetState = rememberStandardBottomSheetState(
-                initialValue = SheetValue.PartiallyExpanded,
-            ),
-        )
+    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = rememberStandardBottomSheetState(
+            initialValue = SheetValue.PartiallyExpanded,
+        ),
+    )
 
     DobeDobeBottomSheetScaffold(
         modifier = modifier.fillMaxSize(),
@@ -77,24 +72,25 @@ private fun DashboardScreen(
             // TODO: 기능 추가 필요
             DashboardTopAppBar(
                 onEditClick = {},
-                onSettingClick = {}
+                onSettingClick = {},
             )
-        }
+        },
     ) { innerPadding ->
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             when (uiState) {
                 is DashboardUiState.Error,
-                is DashboardUiState.Loading -> {
+                is DashboardUiState.Loading,
+                    -> {
                     CircularProgressIndicator(
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(24.dp),
                     )
                 }
                 is DashboardUiState.Success -> {
                     DashboardBody(
                         uiState = uiState,
-                        innerPadding = innerPadding
+                        innerPadding = innerPadding,
                     )
                 }
             }
@@ -107,7 +103,7 @@ private fun DashboardScreen(
 private fun DashboardBody(
     uiState: DashboardUiState.Success,
     innerPadding: PaddingValues,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val photoFrameState = rememberDashboardPhotoFrameState()
 

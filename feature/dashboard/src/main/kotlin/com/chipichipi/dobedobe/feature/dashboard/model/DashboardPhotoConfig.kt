@@ -16,7 +16,7 @@ enum class DashboardPhotoConfig(
         alignment = Alignment.TopStart,
         offsetY = 25f,
         offsetX = 0f,
-        size = 150
+        size = 150,
     ),
     MIDDLE(
         id = 2,
@@ -24,7 +24,7 @@ enum class DashboardPhotoConfig(
         alignment = Alignment.TopEnd,
         offsetY = 180f,
         offsetX = 0f,
-        size = 140
+        size = 140,
     ),
     BOTTOM(
         id = 3,
@@ -32,6 +32,6 @@ enum class DashboardPhotoConfig(
         alignment = Alignment.TopStart,
         offsetY = 350f,
         offsetX = -15f,
-        size = 100
-    );
+        size = 100,
+    ),
 }

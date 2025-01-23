@@ -34,7 +34,7 @@ internal fun DashboardTopAppBar(
             ) {
                 // TODO: 아이콘 교체 필요
                 IconButton(
-                    onClick = onEditClick
+                    onClick = onEditClick,
                 ) {
                     Icon(
                         Icons.AutoMirrored.Filled.HelpOutline,
@@ -43,7 +43,7 @@ internal fun DashboardTopAppBar(
                 }
                 // TODO: 아이콘 교체 필요
                 IconButton(
-                    onClick = onSettingClick
+                    onClick = onSettingClick,
                 ) {
                     Icon(
                         Icons.AutoMirrored.Filled.AltRoute,
@@ -65,7 +65,7 @@ private fun DashboardTopAppBarPreview() {
     DobeDobeTheme {
         DashboardTopAppBar(
             onEditClick = {},
-            onSettingClick = {}
+            onSettingClick = {},
         )
     }
 }
