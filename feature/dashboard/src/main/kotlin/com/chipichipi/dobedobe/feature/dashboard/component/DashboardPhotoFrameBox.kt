@@ -38,7 +38,6 @@ import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoConfig
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
-import com.chipichipi.dobedobe.feature.dashboard.rememberDashboardPhotoFrameState
 
 private const val animationDuration = 500
 
@@ -46,18 +45,17 @@ private const val animationDuration = 500
 @Composable
 internal fun SharedTransitionScope.DashboardPhotoFrameBox(
     photo: DashboardPhotoState,
+    isExpanded: Boolean,
+    toggleExpansion: (Int) -> Unit,
     innerPadding: PaddingValues,
-    modifier: Modifier = Modifier
 ) {
-    val photoFrameState = rememberDashboardPhotoFrameState()
     val rotation = remember {
         Animatable(initialValue = photo.config.rotationZ)
     }
-    val isExpanded = photoFrameState.isExpanded(photo.config.id)
 
     val onToggleExpansion: () -> Unit = {
         if (!rotation.isRunning) {
-            photoFrameState.toggleExpansion(photo.config.id)
+            toggleExpansion(photo.config.id)
         }
     }
 
@@ -68,31 +66,28 @@ internal fun SharedTransitionScope.DashboardPhotoFrameBox(
         )
     }
 
-    Box(
-        modifier = modifier.fillMaxSize()
-    ) {
-        CollapsedPhotoFrame(
-            rotation = rotation.value,
-            isExpanded = isExpanded,
-            config = photo.config,
-            imageUrl = photo.imageUrl,
-            onToggleExpansion = onToggleExpansion,
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
-        )
+    CollapsedPhotoFrame(
+        rotation = rotation.value,
+        isExpanded = isExpanded,
+        config = photo.config,
+        imageUrl = photo.imageUrl,
+        onToggleExpansion = onToggleExpansion,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(innerPadding)
+            .zIndex(0f),
+    )
 
-        ExpandedPhotoFrame(
-            rotation = rotation.value,
-            isExpanded = isExpanded,
-            state = photo,
-            onToggleExpansion = onToggleExpansion,
-            innerPadding = innerPadding,
-            modifier = Modifier
-                .fillMaxSize()
-                .zIndex(1f),
-        )
-    }
+    ExpandedPhotoFrame(
+        rotation = rotation.value,
+        isExpanded = isExpanded,
+        state = photo,
+        onToggleExpansion = onToggleExpansion,
+        innerPadding = innerPadding,
+        modifier = Modifier
+            .fillMaxSize()
+            .zIndex(1f),
+    )
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -234,7 +229,9 @@ private fun DashboardPhotoFrameBoxPreview() {
                     config = DashboardPhotoConfig.TOP,
                     imageUrl = ""
                 ),
-                innerPadding = PaddingValues(10.dp)
+                innerPadding = PaddingValues(10.dp),
+                isExpanded = false,
+                toggleExpansion = {}
             )
         }
     }
