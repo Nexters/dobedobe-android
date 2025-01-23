@@ -9,4 +9,5 @@ android {
 
 dependencies {
     implementation(projects.core.data)
+    implementation(projects.feature.goal)
 }
