@@ -36,6 +36,7 @@ fun DobeDobeTopAppBar(
         modifier = modifier,
         title = title,
         navigationIcon = navigationIcon,
+        expandedHeight = 60.dp,
         actions = actions,
         windowInsets = windowInsets,
         colors = colors,
