@@ -76,6 +76,7 @@ private fun DashboardScreen(
             )
         },
     ) { innerPadding ->
+        // Dim 처리로 인해 innerPadding은 Box에 적용 안하고 우선 component별로 각각 적용하도록 처리
         Box(
             modifier = Modifier.fillMaxSize(),
         ) {
