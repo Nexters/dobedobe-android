@@ -33,7 +33,7 @@ class GoalDaoTest {
             val goals: List<GoalEntity> = fakeGoalEntities("준원", "준혁")
 
             // when
-            goalDao.saveGoals(goals)
+            goalDao.insertGoals(goals)
 
             // then
             val retrievedGoals: List<GoalEntity> = goalDao.getGoals().first()
@@ -49,7 +49,7 @@ class GoalDaoTest {
             val goal: GoalEntity = fakeGoalEntity(id = 1L, title = "준원")
 
             // when
-            goalDao.saveGoal(goal)
+            goalDao.insertGoal(goal)
             goalDao.deleteGoal(goalId = 1L)
             // then
             val retrievedGoals: List<GoalEntity> = goalDao.getGoals().first()
@@ -62,7 +62,7 @@ class GoalDaoTest {
             // given
             val goal: GoalEntity = fakeGoalEntity(id = 1L, title = "준원", state = Goal.State.Todo)
             // when
-            goalDao.saveGoal(goal)
+            goalDao.insertGoal(goal)
             goalDao.updateGoal(goal.copy(state = Goal.State.Done))
             // then
             val retrievedGoal: GoalEntity = goalDao.getGoal(1L).first()

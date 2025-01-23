@@ -17,10 +17,10 @@ interface GoalDao {
     fun getGoal(id: Long): Flow<GoalEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveGoal(goals: GoalEntity)
+    suspend fun insertGoal(goals: GoalEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveGoals(goals: List<GoalEntity>)
+    suspend fun insertGoals(goals: List<GoalEntity>)
 
     @Query("DELETE FROM Goal WHERE id = :goalId")
     suspend fun deleteGoal(goalId: Long)
