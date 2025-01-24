@@ -94,6 +94,7 @@ private fun DashboardScreen(
                     DashboardBody(
                         uiState = uiState,
                         innerPadding = innerPadding,
+                        modifier = Modifier.fillMaxSize()
                     )
                 }
             }
@@ -112,7 +113,6 @@ private fun DashboardBody(
 
     SharedTransitionLayout(
         modifier = modifier
-            .fillMaxSize()
             // TODO : 색상 변경 필요
             .background(
                 color = Color(0xFFFDFDFD),
