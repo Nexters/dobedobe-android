@@ -15,6 +15,7 @@ import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -79,6 +80,7 @@ private fun DashboardScreen(
         // Dim 처리로 인해 innerPadding은 Box에 적용 안하고 우선 component별로 각각 적용하도록 처리
         Box(
             modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
             when (uiState) {
                 is DashboardUiState.Error,
