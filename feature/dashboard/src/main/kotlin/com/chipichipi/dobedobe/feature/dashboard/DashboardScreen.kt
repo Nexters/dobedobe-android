@@ -106,7 +106,7 @@ private fun DashboardBody(
     innerPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
-    val photoFrameState = rememberDashboardPhotoFrameState()
+    val photoFramesState = rememberDashboardPhotoFramesState()
 
     SharedTransitionLayout(
         modifier = modifier
@@ -128,8 +128,8 @@ private fun DashboardBody(
             // TODO : EmptyFrameClick 처리
             DashboardPhotoFrameBox(
                 photo = photo,
-                isExpanded = photoFrameState.isExpanded(photo.config.id),
-                toggleExpansion = photoFrameState::toggleExpansion,
+                isExpanded = photoFramesState.isExpanded(photo.config.id),
+                toggleExpansion = photoFramesState::toggleExpansion,
                 onEmptyFrameClick = { },
                 innerPadding = innerPadding,
             )

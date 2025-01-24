@@ -8,12 +8,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 
 @Composable
-internal fun rememberDashboardPhotoFrameState(): DashboardPhotoFrameState {
-    return remember { DashboardPhotoFrameState() }
+internal fun rememberDashboardPhotoFramesState(): DashboardPhotoFramesState {
+    return remember { DashboardPhotoFramesState() }
 }
 
 @Stable
-class DashboardPhotoFrameState {
+class DashboardPhotoFramesState {
     private var photoId: Int? by mutableStateOf(null)
 
     val isExpanded: Boolean
