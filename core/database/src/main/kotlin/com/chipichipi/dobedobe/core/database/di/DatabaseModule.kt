@@ -1,13 +1,12 @@
 package com.chipichipi.dobedobe.core.database.di
 
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.chipichipi.dobedobe.core.database.db.DobeDobeDatabase
 import org.koin.dsl.module
 
 internal val databaseModule =
     module {
-        single<RoomDatabase> {
+        single<DobeDobeDatabase> {
             Room.databaseBuilder(
                 get(),
                 DobeDobeDatabase::class.java,
