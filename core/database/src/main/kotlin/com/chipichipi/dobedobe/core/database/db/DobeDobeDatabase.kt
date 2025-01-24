@@ -8,12 +8,12 @@ import com.chipichipi.dobedobe.core.database.convertor.InstantConverter
 import com.chipichipi.dobedobe.core.database.dao.GoalDao
 import com.chipichipi.dobedobe.core.database.entity.GoalEntity
 
-@TypeConverters(
-    InstantConverter::class,
-)
 @Database(
     entities = [GoalEntity::class],
     version = 1,
+)
+@TypeConverters(
+    InstantConverter::class,
 )
 internal abstract class DobeDobeDatabase : RoomDatabase() {
     abstract fun goalDao(): GoalDao
