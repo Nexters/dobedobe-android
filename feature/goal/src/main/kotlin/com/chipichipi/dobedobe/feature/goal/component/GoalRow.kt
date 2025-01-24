@@ -47,7 +47,7 @@ fun GoalRow(
         ) {
             DobeDobeCheckBox(
                 modifier = Modifier.size(29.dp),
-                checked = goal.isDone,
+                checked = goal.isCompleted,
                 onCheckedChange = { onGoalDone() },
             )
             Spacer(modifier = Modifier.width(11.dp))
@@ -81,7 +81,7 @@ private fun GoalRowPreview() {
                     id = 1L,
                     title = "Todo",
                     isPinned = false,
-                    state = Goal.State.Todo,
+                    isCompleted = false,
                     createdAt = Instant.DISTANT_PAST,
                     completedAt = null,
                 ),
@@ -93,7 +93,7 @@ private fun GoalRowPreview() {
                     id = 1L,
                     title = "Done",
                     isPinned = false,
-                    state = Goal.State.Done,
+                    isCompleted = false,
                     createdAt = Instant.DISTANT_PAST,
                     completedAt = Instant.DISTANT_PAST,
                 ),
@@ -105,7 +105,7 @@ private fun GoalRowPreview() {
                     id = 1L,
                     title = "Pinned",
                     isPinned = true,
-                    state = Goal.State.Done,
+                    isCompleted = false,
                     createdAt = Instant.DISTANT_PAST,
                     completedAt = Instant.DISTANT_PAST,
                 ),

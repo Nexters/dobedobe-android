@@ -6,11 +6,12 @@ import com.chipichipi.dobedobe.core.database.db.DobeDobeDatabase
 import com.chipichipi.dobedobe.core.database.entity.GoalEntity
 import com.chipichipi.dobedobe.core.database.fixtures.fakeGoalEntities
 import com.chipichipi.dobedobe.core.database.fixtures.fakeGoalEntity
-import com.chipichipi.dobedobe.core.model.Goal
+import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.Instant
 import org.junit.Before
 import kotlin.test.Test
 
@@ -60,12 +61,12 @@ class GoalDaoTest {
     fun 목표_완료하기_테스트() =
         runTest {
             // given
-            val goal: GoalEntity = fakeGoalEntity(id = 1L, title = "준원", state = Goal.State.Todo)
+            val goal: GoalEntity = fakeGoalEntity(id = 1L, title = "준원", isCompleted = false)
             // when
             goalDao.insertGoal(goal)
-            goalDao.updateGoal(goal.copy(state = Goal.State.Done))
+            goalDao.updateGoal(goal.copy(isCompleted = true, completedAt = Instant.DISTANT_FUTURE))
             // then
             val retrievedGoal: GoalEntity = goalDao.getGoal(1L).first()
-            retrievedGoal.state shouldBe Goal.State.Done
+            retrievedGoal.isCompleted.shouldBeTrue()
         }
 }

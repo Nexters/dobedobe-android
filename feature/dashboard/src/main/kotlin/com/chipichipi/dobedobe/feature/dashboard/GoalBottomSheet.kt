@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import com.chipichipi.dobedobe.core.model.Goal
 import com.chipichipi.dobedobe.feature.dashboard.preview.GoalPreviewParameterProvider
 import com.chipichipi.dobedobe.feature.goal.component.GoalRow
+import kotlinx.datetime.Instant
 
 @Composable
 internal fun GoalBottomSheetContent(
@@ -118,10 +119,10 @@ private fun GoalBottomSheetContentPreview(
     val onGoalDone: (Goal) -> Unit = {
         goals = goals.map { goal ->
             if (goal.id == it.id) {
-                return@map if (goal.state == Goal.State.Done) {
-                    goal.copy(state = Goal.State.Todo)
+                return@map if (goal.isCompleted) {
+                    goal.copy(isCompleted = false)
                 } else {
-                    goal.copy(state = Goal.State.Done)
+                    goal.copy(isCompleted = true, completedAt = Instant.DISTANT_FUTURE)
                 }
             }
             goal

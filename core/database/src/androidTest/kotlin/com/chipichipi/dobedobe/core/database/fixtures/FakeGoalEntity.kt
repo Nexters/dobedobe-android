@@ -1,7 +1,6 @@
 package com.chipichipi.dobedobe.core.database.fixtures
 
 import com.chipichipi.dobedobe.core.database.entity.GoalEntity
-import com.chipichipi.dobedobe.core.model.Goal
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
@@ -20,7 +19,7 @@ fun fakeGoalEntity(
     id: Long,
     title: String,
     isPinned: Boolean = false,
-    state: Goal.State = Goal.State.Todo,
+    isCompleted: Boolean = false,
     createdAt: Instant = Clock.System.now(),
     completedAt: Instant? = null,
 ): GoalEntity {
@@ -28,7 +27,7 @@ fun fakeGoalEntity(
         id = id,
         title = title,
         isPinned = isPinned,
-        state = state,
+        isCompleted = isCompleted,
         createdAt = createdAt,
         completedAt = completedAt,
     )
