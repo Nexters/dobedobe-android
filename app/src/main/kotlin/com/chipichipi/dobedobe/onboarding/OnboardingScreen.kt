@@ -70,10 +70,9 @@ private fun OnboardingScreen(
 
         // TODO : 클릭 시 Goal DB에 저장 필요
         DobeDobeTextButton(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .heightIn(54.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(54.dp),
             onClick = completeOnboarding,
         ) {
             // TODO : Writing 수정 필요

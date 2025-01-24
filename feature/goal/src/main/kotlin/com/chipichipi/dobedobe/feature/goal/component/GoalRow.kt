@@ -40,10 +40,9 @@ fun GoalRow(
         onClick = onGoalClicked,
     ) {
         Row(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(start = 15.dp, top = 17.dp, bottom = 18.dp, end = 15.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 15.dp, top = 17.dp, bottom = 18.dp, end = 15.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             DobeDobeCheckBox(
@@ -78,8 +77,7 @@ private fun GoalRowPreview() {
     DobeDobeTheme {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             GoalRow(
-                goal =
-                    Goal(
+                goal = Goal(
                         id = 1L,
                         title = "Todo",
                         isPinned = false,
@@ -91,8 +89,7 @@ private fun GoalRowPreview() {
                 onGoalClicked = {},
             )
             GoalRow(
-                goal =
-                    Goal(
+                goal = Goal(
                         id = 1L,
                         title = "Done",
                         isPinned = false,
@@ -104,8 +101,7 @@ private fun GoalRowPreview() {
                 onGoalClicked = {},
             )
             GoalRow(
-                goal =
-                    Goal(
+                goal = Goal(
                         id = 1L,
                         title = "Pinned",
                         isPinned = true,
