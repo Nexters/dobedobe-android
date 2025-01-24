@@ -70,12 +70,9 @@ private fun GoalBottomSheetHeader() {
             fontWeight = FontWeight.SemiBold,
         )
         IconButton(
-            modifier =
-                Modifier
-                    .size(42.dp)
-                    .offset {
-                        IntOffset(x = 12.dp.roundToPx(), y = 0)
-                    },
+            modifier = Modifier
+                .size(42.dp)
+                .offset { IntOffset(x = 12.dp.roundToPx(), y = 0) },
             onClick = {},
         ) {
             Icon(
@@ -95,10 +92,9 @@ private fun GoalBottomSheetBody(
     onGoalClicked: (Goal) -> Unit,
 ) {
     LazyColumn(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .requiredHeightIn(min = 200.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .requiredHeightIn(min = 200.dp),
         // TODO: 최소 높이 조절 필요
         verticalArrangement = Arrangement.spacedBy(18.dp),
         contentPadding = PaddingValues(horizontal = 24.dp),
@@ -120,17 +116,16 @@ private fun GoalBottomSheetContentPreview(
 ) {
     var goals by remember { mutableStateOf(pGoals) }
     val onGoalDone: (Goal) -> Unit = {
-        goals =
-            goals.map { goal ->
-                if (goal.id == it.id) {
-                    return@map if (goal.state == Goal.State.Done) {
-                        goal.copy(state = Goal.State.Todo)
-                    } else {
-                        goal.copy(state = Goal.State.Done)
-                    }
+        goals = goals.map { goal ->
+            if (goal.id == it.id) {
+                return@map if (goal.state == Goal.State.Done) {
+                    goal.copy(state = Goal.State.Todo)
+                } else {
+                    goal.copy(state = Goal.State.Done)
                 }
-                goal
             }
+            goal
+        }
     }
     GoalBottomSheetContent(
         goals = goals,

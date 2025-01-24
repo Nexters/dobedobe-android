@@ -48,11 +48,10 @@ fun DobDobeAsyncImage(
 
     val imageLoader =
         rememberAsyncImagePainter(
-            model =
-                ImageRequest.Builder(LocalContext.current)
-                    .data(model)
-                    .crossfade(true)
-                    .build(),
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(model)
+                .crossfade(true)
+                .build(),
             contentScale = contentScale,
             onState = { state -> imagePainterState = state },
         )
@@ -65,9 +64,11 @@ fun DobDobeAsyncImage(
             is AsyncImagePainter.State.Loading -> {
                 onLoading()
             }
+
             is AsyncImagePainter.State.Error -> {
                 onError()
             }
+
             is AsyncImagePainter.State.Empty,
             is AsyncImagePainter.State.Success,
             -> Unit
