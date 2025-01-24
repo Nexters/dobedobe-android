@@ -15,7 +15,7 @@ import com.chipichipi.dobedobe.core.database.entity.GoalEntity
     entities = [GoalEntity::class],
     version = 1,
 )
-abstract class DobeDobeDatabase : RoomDatabase() {
+internal abstract class DobeDobeDatabase : RoomDatabase() {
     abstract fun goalDao(): GoalDao
 
     companion object {
