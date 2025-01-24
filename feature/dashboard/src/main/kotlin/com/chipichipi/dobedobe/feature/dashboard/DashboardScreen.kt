@@ -81,12 +81,12 @@ private fun DashboardScreen(
         // Dim 처리로 인해 innerPadding은 Box에 적용 안하고 우선 component별로 각각 적용하도록 처리
         Box(
             modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             when (uiState) {
                 is DashboardUiState.Error,
                 is DashboardUiState.Loading,
-                    -> {
+                -> {
                     CircularProgressIndicator(
                         modifier = Modifier.size(24.dp),
                     )
@@ -96,7 +96,7 @@ private fun DashboardScreen(
                         uiState = uiState,
                         photoFramesState = photoFramesState,
                         innerPadding = innerPadding,
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
                     )
                 }
             }

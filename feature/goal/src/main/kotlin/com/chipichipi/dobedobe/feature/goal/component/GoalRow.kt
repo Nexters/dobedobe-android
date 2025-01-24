@@ -78,37 +78,37 @@ private fun GoalRowPreview() {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             GoalRow(
                 goal = Goal(
-                        id = 1L,
-                        title = "Todo",
-                        isPinned = false,
-                        state = Goal.State.Todo,
-                        createdAt = Instant.DISTANT_PAST,
-                        completedAt = null,
-                    ),
+                    id = 1L,
+                    title = "Todo",
+                    isPinned = false,
+                    state = Goal.State.Todo,
+                    createdAt = Instant.DISTANT_PAST,
+                    completedAt = null,
+                ),
                 onGoalDone = {},
                 onGoalClicked = {},
             )
             GoalRow(
                 goal = Goal(
-                        id = 1L,
-                        title = "Done",
-                        isPinned = false,
-                        state = Goal.State.Done,
-                        createdAt = Instant.DISTANT_PAST,
-                        completedAt = Instant.DISTANT_PAST,
-                    ),
+                    id = 1L,
+                    title = "Done",
+                    isPinned = false,
+                    state = Goal.State.Done,
+                    createdAt = Instant.DISTANT_PAST,
+                    completedAt = Instant.DISTANT_PAST,
+                ),
                 onGoalDone = {},
                 onGoalClicked = {},
             )
             GoalRow(
                 goal = Goal(
-                        id = 1L,
-                        title = "Pinned",
-                        isPinned = true,
-                        state = Goal.State.Done,
-                        createdAt = Instant.DISTANT_PAST,
-                        completedAt = Instant.DISTANT_PAST,
-                    ),
+                    id = 1L,
+                    title = "Pinned",
+                    isPinned = true,
+                    state = Goal.State.Done,
+                    createdAt = Instant.DISTANT_PAST,
+                    completedAt = Instant.DISTANT_PAST,
+                ),
                 onGoalDone = {},
                 onGoalClicked = {},
             )

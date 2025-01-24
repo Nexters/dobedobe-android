@@ -150,7 +150,7 @@ private fun SharedTransitionScope.CollapsedPhotoFrame(
                                 .rotate(rotation)
                                 .clip(RoundedCornerShape(10.dp))
                                 .background(Color(0xFF616161))
-                                .clickable(onClick = onEmptyFrameClick)
+                                .clickable(onClick = onEmptyFrameClick),
                         )
                     }
                 }
@@ -216,7 +216,7 @@ private fun SharedTransitionScope.ExpandedPhotoFrame(
 
 @Composable
 private fun EmptyPhotoFrame(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     // TODO : 디자인 나오면 변경 필요
     Box(
@@ -246,7 +246,7 @@ private fun DashboardPhotoFrameBoxPreview() {
                 innerPadding = PaddingValues(10.dp),
                 isExpanded = false,
                 toggleExpansion = {},
-                onEmptyFrameClick = {}
+                onEmptyFrameClick = {},
             )
         }
     }
