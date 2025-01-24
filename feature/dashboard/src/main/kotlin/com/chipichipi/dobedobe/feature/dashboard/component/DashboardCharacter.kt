@@ -11,7 +11,7 @@ import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.feature.dashboard.R
 
 @Composable
-internal fun DashboardCharacterBox(
+internal fun DashboardCharacter(
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -28,8 +28,8 @@ internal fun DashboardCharacterBox(
 
 @ThemePreviews
 @Composable
-private fun DashboardCharacterBoxPreview() {
+private fun DashboardCharacterPreview() {
     DobeDobeTheme {
-        DashboardCharacterBox()
+        DashboardCharacter()
     }
 }

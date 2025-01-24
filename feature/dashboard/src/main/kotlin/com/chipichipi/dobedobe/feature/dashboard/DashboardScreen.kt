@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBottomSheetScaffold
-import com.chipichipi.dobedobe.feature.dashboard.component.DashboardCharacterBox
+import com.chipichipi.dobedobe.feature.dashboard.component.DashboardCharacter
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardPhotoFrameBox
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardTopAppBar
 import com.chipichipi.dobedobe.feature.dashboard.preview.GoalPreviewParameterProvider
@@ -118,7 +118,7 @@ private fun DashboardBody(
                 color = Color(0xFFFDFDFD),
             ),
     ) {
-        DashboardCharacterBox(
+        DashboardCharacter(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
