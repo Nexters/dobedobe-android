@@ -55,6 +55,7 @@ private fun DashboardScreen(
             initialValue = SheetValue.PartiallyExpanded,
         ),
     )
+    val photoFramesState = rememberDashboardPhotoFramesState()
 
     DobeDobeBottomSheetScaffold(
         modifier = modifier.fillMaxSize(),
@@ -93,6 +94,7 @@ private fun DashboardScreen(
                 is DashboardUiState.Success -> {
                     DashboardBody(
                         uiState = uiState,
+                        photoFramesState = photoFramesState,
                         innerPadding = innerPadding,
                         modifier = Modifier.fillMaxSize()
                     )
@@ -106,11 +108,10 @@ private fun DashboardScreen(
 @Composable
 private fun DashboardBody(
     uiState: DashboardUiState.Success,
+    photoFramesState: DashboardPhotoFramesState,
     innerPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
-    val photoFramesState = rememberDashboardPhotoFramesState()
-
     SharedTransitionLayout(
         modifier = modifier
             // TODO : 색상 변경 필요
