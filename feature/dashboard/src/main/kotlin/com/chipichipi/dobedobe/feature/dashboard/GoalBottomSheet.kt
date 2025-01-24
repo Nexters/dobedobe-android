@@ -57,10 +57,9 @@ internal fun GoalBottomSheetContent(
 private fun GoalBottomSheetHeader() {
     // TODO: 검색 기능 추가, parameter 는 그때 추가
     Row(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
