@@ -1,6 +1,5 @@
 package com.chipichipi.dobedobe.feature.setting
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -89,20 +88,17 @@ private fun SettingBody(
         SettingRow(
             label = "알림",
         ) {
-            Box(
+            DobeDobeSwitch(
                 modifier = Modifier.padding(end = 8.dp),
-            ) {
-                DobeDobeSwitch(
-                    checked = isGoalNotificationChecked,
-                    onCheckedChange = { checked ->
-                        NotificationUtil.handleNotificationToggle(
-                            context = context,
-                            checked = checked,
-                            onNotificationToggled = onNotificationToggled,
-                        )
-                    },
-                )
-            }
+                checked = isGoalNotificationChecked,
+                onCheckedChange = { checked ->
+                    NotificationUtil.handleNotificationToggle(
+                        context = context,
+                        checked = checked,
+                        onNotificationToggled = onNotificationToggled,
+                    )
+                },
+            )
         }
 
         // TODO : 언어 대응 필요
