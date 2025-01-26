@@ -61,5 +61,5 @@ private fun UserPreferences.toModel() =
     UserData(
         isOnboardingCompleted = isOnboardingCompleted,
         isGoalNotificationChecked = notificationSetting.isGoalNotificationChecked,
-        isSystemNotificationDialogDisabled = notificationSetting.isSystemNotificationDialogDisabled
+        isSystemNotificationDialogDisabled = notificationSetting.isSystemNotificationDialogDisabled,
     )

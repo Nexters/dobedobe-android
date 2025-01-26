@@ -104,7 +104,7 @@ private fun DashboardScreen(
             when (uiState) {
                 is DashboardUiState.Error,
                 is DashboardUiState.Loading,
-                    -> {
+                -> {
                     CircularProgressIndicator(
                         modifier = Modifier.size(24.dp),
                     )
@@ -164,7 +164,7 @@ private fun DashboardBody(
     GoalNotificationPermissionEffect(
         isSystemNotificationDialogDisabled = uiState.isSystemNotificationDialogDisabled,
         setGoalNotificationChecked = setGoalNotificationChecked,
-        disableSystemNotificationDialog = disableSystemNotificationDialog
+        disableSystemNotificationDialog = disableSystemNotificationDialog,
     )
 }
 
@@ -173,7 +173,7 @@ private fun DashboardBody(
 private fun GoalNotificationPermissionEffect(
     isSystemNotificationDialogDisabled: Boolean,
     setGoalNotificationChecked: (Boolean) -> Unit,
-    disableSystemNotificationDialog: () -> Unit
+    disableSystemNotificationDialog: () -> Unit,
 ) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
     val notificationsPermissionState = rememberPermissionState(
@@ -184,9 +184,9 @@ private fun GoalNotificationPermissionEffect(
     LaunchedEffect(notificationsPermissionState, isSystemNotificationDialogDisabled) {
         val status = notificationsPermissionState.status
 
-        if (status is PermissionStatus.Denied
-            && !status.shouldShowRationale
-            && !isSystemNotificationDialogDisabled
+        if (status is PermissionStatus.Denied &&
+            !status.shouldShowRationale &&
+            !isSystemNotificationDialogDisabled
         ) {
             showGoalNotificationDialog = true
         }
@@ -198,7 +198,7 @@ private fun GoalNotificationPermissionEffect(
                 showGoalNotificationDialog = false
             },
             // TODO : 변경 필요
-            title = "목표에 대한 알림을 위해\n 권한이 필요합니다."
+            title = "목표에 대한 알림을 위해\n 권한이 필요합니다.",
         ) {
             Button(
                 onClick = {
@@ -206,7 +206,7 @@ private fun GoalNotificationPermissionEffect(
                     setGoalNotificationChecked(true)
                     disableSystemNotificationDialog()
                     showGoalNotificationDialog = false
-                }
+                },
             ) {
                 // TODO : 변경 필요
                 Text("확인")

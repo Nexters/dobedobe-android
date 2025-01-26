@@ -7,7 +7,7 @@ sealed interface DashboardUiState {
 
     data class Success(
         val photoState: List<DashboardPhotoState>,
-        val isSystemNotificationDialogDisabled: Boolean
+        val isSystemNotificationDialogDisabled: Boolean,
     ) : DashboardUiState
 
     data object Error : DashboardUiState
