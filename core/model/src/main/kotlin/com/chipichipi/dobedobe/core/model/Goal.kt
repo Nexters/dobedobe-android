@@ -19,6 +19,18 @@ data class Goal(
         }
     }
 
+    fun toggleCompletion(): Goal {
+        return if (isCompleted) {
+            copy(isCompleted = false, completedAt = null)
+        } else {
+            copy(isCompleted = true, completedAt = Clock.System.now())
+        }
+    }
+
+    fun togglePin(): Goal {
+        return copy(isPinned = !isPinned)
+    }
+
     companion object {
         private const val NO_ID = 0L
 
