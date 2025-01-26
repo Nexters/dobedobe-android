@@ -52,8 +52,6 @@ private fun SettingScreen(
     onNotificationToggled: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
-
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -62,53 +60,68 @@ private fun SettingScreen(
             )
         },
     ) { innerPadding ->
-        Column(
+        SettingBody(
+            isGoalNotificationChecked = isGoalNotificationChecked,
+            onNotificationToggled = onNotificationToggled,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-        ) {
-            // TODO : 언어 대응 필요
-            SettingRow(
-                label = "알림",
-            ) {
-                Box(
-                    modifier = Modifier.padding(end = 8.dp),
-                ) {
-                    DobeDobeSwitch(
-                        checked = isGoalNotificationChecked,
-                        onCheckedChange = { checked ->
-                            NotificationUtil.handleNotificationToggle(
-                                context = context,
-                                checked = checked,
-                                onNotificationToggled = onNotificationToggled,
-                            )
-                        },
-                    )
-                }
-            }
-
-            // TODO : 언어 대응 필요
-            SettingRow(
-                label = "앱 피드백 남기기",
-            ) {
-                IconButton(
-                    modifier = Modifier.size(42.dp),
-                    onClick = { openPlayStore(context) },
-                ) {
-                    // TODO: 아이콘 변경 필요
-                    Icon(
-                        modifier = Modifier.size(24.dp),
-                        imageVector = Icons.Default.ArrowForwardIos,
-                        contentDescription = null,
-                    )
-                }
-            }
-        }
+        )
     }
 
     GoalNotificationEffect(
         onNotificationToggled = onNotificationToggled,
     )
+}
+
+@Composable
+private fun SettingBody(
+    isGoalNotificationChecked: Boolean,
+    onNotificationToggled: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val context = LocalContext.current
+
+    Column(
+        modifier = modifier,
+    ) {
+        // TODO : 언어 대응 필요
+        SettingRow(
+            label = "알림",
+        ) {
+            Box(
+                modifier = Modifier.padding(end = 8.dp),
+            ) {
+                DobeDobeSwitch(
+                    checked = isGoalNotificationChecked,
+                    onCheckedChange = { checked ->
+                        NotificationUtil.handleNotificationToggle(
+                            context = context,
+                            checked = checked,
+                            onNotificationToggled = onNotificationToggled,
+                        )
+                    },
+                )
+            }
+        }
+
+        // TODO : 언어 대응 필요
+        SettingRow(
+            label = "앱 피드백 남기기",
+        ) {
+            IconButton(
+                modifier = Modifier.size(42.dp),
+                onClick = { openPlayStore(context) },
+            ) {
+                // TODO: 아이콘 변경 필요
+                Icon(
+                    modifier = Modifier.size(24.dp),
+                    imageVector = Icons.Default.ArrowForwardIos,
+                    contentDescription = null,
+                )
+            }
+        }
+    }
 }
 
 @Composable
