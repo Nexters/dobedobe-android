@@ -34,43 +34,35 @@ class GoalsTest {
     }
 
     @Test
-    fun `Goal은 pinned, todo 순서대로 정렬된다`() {
+    fun `Goal 은 나중에 생성된 순서대로 정렬된다`() {
         // given
         val goals = Goals(
             listOf(
-                fakeGoal(id = 1, isPinned = true),
-                fakeGoal(id = 2, isPinned = true, isCompleted = true, completedAt = 1),
+                fakeGoal(id = 1, createdAt = 1),
+                fakeGoal(id = 2, createdAt = 2),
             ),
         )
         // when
         val actualIds = goals.sorted().map { it.id }
         // then
-        val expectIds: List<Long> = listOf(1, 2)
+        val expectIds: List<Long> = listOf(2, 1)
         actualIds shouldBe expectIds
     }
 
     @Test
-    fun `Goal 은 Pinned, todo, 최근에 생성된 순서대로 정렬된다`() {
+    fun `Goal은 pinned, 나중에 생성된 순서대로 정렬된다`() {
         // given
         val goals = Goals(
             listOf(
-                fakeGoal(id = 1, isPinned = true, createdAt = 1),
-                fakeGoal(id = 2, isPinned = false, createdAt = 2),
-                fakeGoal(
-                    id = 3,
-                    isPinned = true,
-                    isCompleted = true,
-                    createdAt = 3,
-                    completedAt = 4,
-                ),
-                fakeGoal(id = 4, isPinned = false, createdAt = 4),
+                fakeGoal(id = 1, isPinned = true),
+                fakeGoal(id = 2, isPinned = false, createdAt = 1),
+                fakeGoal(id = 3, isPinned = false, createdAt = 2),
             ),
         )
         // when
         val actualIds = goals.sorted().map { it.id }
-
         // then
-        val expectIds: List<Long> = listOf(1, 3, 4, 2)
+        val expectIds: List<Long> = listOf(1, 3, 2)
         actualIds shouldBe expectIds
     }
 }

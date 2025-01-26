@@ -12,7 +12,6 @@ value class Goals(private val value: List<Goal>) {
         return value.sortedWith(
             compareBy(
                 { it.pinComparable() },
-                { it.isCompleted },
                 { it.createdAtComparable() },
             ),
         )
