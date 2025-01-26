@@ -7,4 +7,6 @@ interface UserRepository {
     val userData: Flow<UserData>
 
     suspend fun completeOnBoarding(): Result<Unit>
+    suspend fun setGoalNotificationChecked(checked: Boolean): Result<Unit>
+    suspend fun disableSystemNotificationDialog(): Result<Unit>
 }

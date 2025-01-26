@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+option java_package = "com.chipichipi.dobedobe.core.datastore";
+option java_multiple_files = true;
+
+message NotificationSetting {
+    bool is_goal_notification_checked = 1;
+    bool is_system_notification_dialog_disabled = 2;
+}
