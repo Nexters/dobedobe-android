@@ -36,6 +36,7 @@ import com.chipichipi.dobedobe.feature.dashboard.component.DashboardTopAppBar
 import com.chipichipi.dobedobe.feature.dashboard.preview.GoalPreviewParameterProvider
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
+import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import org.koin.androidx.compose.koinViewModel
 
@@ -181,14 +182,22 @@ private fun GoalNotificationPermissionEffect(
     )
     var showGoalNotificationDialog by remember { mutableStateOf(false) }
 
-    LaunchedEffect(notificationsPermissionState, isSystemNotificationDialogDisabled) {
+    LaunchedEffect(notificationsPermissionState.status, isSystemNotificationDialogDisabled) {
+        if (isSystemNotificationDialogDisabled) return@LaunchedEffect
         val status = notificationsPermissionState.status
 
-        if (status is PermissionStatus.Denied &&
-            !status.shouldShowRationale &&
-            !isSystemNotificationDialogDisabled
-        ) {
-            showGoalNotificationDialog = true
+        when {
+            status is PermissionStatus.Denied && !status.shouldShowRationale -> {
+                showGoalNotificationDialog = true
+            }
+            status is PermissionStatus.Denied && status.shouldShowRationale -> {
+                setGoalNotificationChecked(false)
+                disableSystemNotificationDialog()
+            }
+            status.isGranted -> {
+                setGoalNotificationChecked(true)
+                disableSystemNotificationDialog()
+            }
         }
     }
 
@@ -203,8 +212,6 @@ private fun GoalNotificationPermissionEffect(
             Button(
                 onClick = {
                     notificationsPermissionState.launchPermissionRequest()
-                    setGoalNotificationChecked(true)
-                    disableSystemNotificationDialog()
                     showGoalNotificationDialog = false
                 },
             ) {
