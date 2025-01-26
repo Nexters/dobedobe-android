@@ -22,6 +22,12 @@ value class Goals(private val value: List<Goal>) {
         return value.first { it.id == id }
     }
 
+    fun checkGoalExists(id: Long) {
+        require(value.any { it.id == id }) {
+            "Goal with id $id not found"
+        }
+    }
+
     fun toggleCompletion(id: Long): Goals {
         checkGoalExists(id)
         return Goals(
@@ -46,12 +52,6 @@ value class Goals(private val value: List<Goal>) {
                 }
             },
         )
-    }
-
-    private fun checkGoalExists(id: Long) {
-        require(value.any { it.id == id }) {
-            "Goal with id $id not found"
-        }
     }
 
     private fun Goal.pinComparable(): Int {
