@@ -93,7 +93,7 @@ private fun DashboardScreen(
             // TODO: 기능 추가 필요
             DashboardTopAppBar(
                 onEditClick = {},
-                onSettingClick = navigateToSetting,
+                navigateToSetting = navigateToSetting,
             )
         },
     ) { innerPadding ->
