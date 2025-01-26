@@ -27,14 +27,13 @@ private val fakeDashboardPhotoState =
 internal class DashboardViewModel(
     private val userRepository: UserRepository,
 ) : ViewModel() {
-
     private val isSystemNotificationDialogDisabledFlow = userRepository.userData
         .map { it.isSystemNotificationDialogDisabled }
         .distinctUntilChanged()
 
     val uiState: StateFlow<DashboardUiState> = combine(
         fakeDashboardPhotoState,
-        isSystemNotificationDialogDisabledFlow
+        isSystemNotificationDialogDisabledFlow,
     ) { photoState, isSystemNotificationDialogDisabled ->
         val dashboardPhotoStates = DashboardPhotoConfig.entries.map { config ->
             val photo = photoState.find { it.id == config.id }
@@ -47,7 +46,7 @@ internal class DashboardViewModel(
 
         DashboardUiState.Success(
             dashboardPhotoStates,
-            isSystemNotificationDialogDisabled
+            isSystemNotificationDialogDisabled,
         )
     }
         .stateIn(

@@ -29,33 +29,33 @@ fun DobeDobeDialog(
     onDismissRequest: () -> Unit,
     title: String,
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(
-            usePlatformDefaultWidth = false
+            usePlatformDefaultWidth = false,
         ),
     ) {
         Surface(
             modifier = modifier
                 .width(253.dp),
             shape = RoundedCornerShape(16.dp),
-            color = Color.White
+            color = Color.White,
         ) {
             Column(
                 modifier = Modifier.padding(
                     vertical = 24.dp,
-                    horizontal = 15.dp
+                    horizontal = 15.dp,
                 ),
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
                     text = title,
                     fontSize = 17.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = Color.Black
+                    color = Color.Black,
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -72,10 +72,10 @@ private fun DobeDobeDialogPreview() {
     DobeDobeTheme {
         DobeDobeDialog(
             onDismissRequest = {},
-            title = "TEST"
+            title = "TEST",
         ) {
             Button(
-                onClick = {}
+                onClick = {},
             ) {
                 Text(text = "TEST")
             }
