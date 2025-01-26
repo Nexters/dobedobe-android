@@ -135,11 +135,11 @@ private fun GoalNotificationEffect(
     }
 
     LifecycleResumeEffect(Unit) {
-        val isSystemNotificationEnabled = checkSystemNotificationEnabled(context)
+        val updatedSystemNotificationEnabled = checkSystemNotificationEnabled(context)
 
-        if (systemNotificationEnabled != isSystemNotificationEnabled) {
-            systemNotificationEnabled = isSystemNotificationEnabled
-            if (isSystemNotificationEnabled) {
+        if (systemNotificationEnabled != updatedSystemNotificationEnabled) {
+            systemNotificationEnabled = updatedSystemNotificationEnabled
+            if (updatedSystemNotificationEnabled) {
                 onNotificationToggled(true)
             }
         }
