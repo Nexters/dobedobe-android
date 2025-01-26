@@ -27,7 +27,7 @@ value class Goals(private val value: List<Goal>) {
         return Goals(
             value.map { goal ->
                 if (goal.id == id) {
-                    goal.copy(isCompleted = !goal.isCompleted)
+                    goal.toggleCompletion()
                 } else {
                     goal
                 }
@@ -35,17 +35,12 @@ value class Goals(private val value: List<Goal>) {
         )
     }
 
-    fun remove(id: Long): Goals {
-        checkGoalExists(id)
-        return Goals(value.filter { it.id != id })
-    }
-
     fun togglePin(id: Long): Goals {
         checkGoalExists(id)
         return Goals(
             value.map { goal ->
                 if (goal.id == id) {
-                    goal.copy(isPinned = !goal.isPinned)
+                    goal.togglePin()
                 } else {
                     goal
                 }
