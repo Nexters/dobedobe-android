@@ -29,13 +29,14 @@ fun DobeDobeDialog(
     onDismissRequest: () -> Unit,
     title: String,
     modifier: Modifier = Modifier,
+    properties: DialogProperties = DialogProperties(
+        usePlatformDefaultWidth = false,
+    ),
     content: @Composable () -> Unit,
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false,
-        ),
+        properties = properties,
     ) {
         Surface(
             modifier = modifier
