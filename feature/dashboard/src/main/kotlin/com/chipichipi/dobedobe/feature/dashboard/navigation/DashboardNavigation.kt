@@ -16,10 +16,12 @@ fun NavController.navigateToDashboard(
 
 fun NavGraphBuilder.dashboardScreen(
     onShowSnackbar: suspend (String, String?) -> Boolean,
+    navigateToSetting: () -> Unit
 ) {
     composable<DashboardRoute> {
         DashboardRoute(
             onShowSnackbar = onShowSnackbar,
+            navigateToSetting = navigateToSetting
         )
     }
 }

@@ -42,6 +42,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 internal fun DashboardRoute(
     onShowSnackbar: suspend (String, String?) -> Boolean,
+    navigateToSetting: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DashboardViewModel = koinViewModel(),
 ) {
@@ -53,6 +54,7 @@ internal fun DashboardRoute(
         uiState = uiState,
         setGoalNotificationChecked = viewModel::setGoalNotificationChecked,
         disableSystemNotificationDialog = viewModel::disableSystemNotificationDialog,
+        navigateToSetting = navigateToSetting
     )
 }
 
@@ -63,6 +65,7 @@ private fun DashboardScreen(
     uiState: DashboardUiState,
     setGoalNotificationChecked: (Boolean) -> Unit,
     disableSystemNotificationDialog: () -> Unit,
+    navigateToSetting: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
@@ -89,7 +92,7 @@ private fun DashboardScreen(
             // TODO: 기능 추가 필요
             DashboardTopAppBar(
                 onEditClick = {},
-                onSettingClick = {},
+                onSettingClick = navigateToSetting
             )
         },
     ) { innerPadding ->
