@@ -56,7 +56,7 @@ internal fun DashboardRoute(
         setGoalNotificationEnabled = viewModel::setGoalNotificationEnabled,
         disableSystemNotificationDialog = viewModel::disableSystemNotificationDialog,
         navigateToSetting = navigateToSetting,
-        onGoalToggled = {},
+        onGoalToggled = viewModel::toggleGoalCompletion,
     )
 }
 
@@ -82,9 +82,11 @@ private fun DashboardScreen(
         modifier = modifier.fillMaxSize(),
         scaffoldState = bottomSheetScaffoldState,
         sheetContent = {
+            val goals = (uiState as? DashboardUiState.Success)?.goals.orEmpty()
             GoalBottomSheetContent(
-                goals = emptyList(),
+                goals = goals,
                 onGoalToggled = onGoalToggled,
+                // TODO : navigateToGoalDetail 연결 필요
                 onGoalClicked = { },
             )
         },

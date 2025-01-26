@@ -1,5 +1,6 @@
 package com.chipichipi.dobedobe.feature.dashboard
 
+import com.chipichipi.dobedobe.core.model.Goal
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
 
 sealed interface DashboardUiState {
@@ -8,6 +9,7 @@ sealed interface DashboardUiState {
     data class Success(
         val photoState: List<DashboardPhotoState>,
         val isSystemNotificationDialogDisabled: Boolean,
+        val goals: List<Goal>,
     ) : DashboardUiState
 
     data object Error : DashboardUiState
