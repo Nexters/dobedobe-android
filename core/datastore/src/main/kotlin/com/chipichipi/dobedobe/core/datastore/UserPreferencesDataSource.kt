@@ -28,12 +28,12 @@ class UserPreferencesDataSource(
         }
     }
 
-    suspend fun setGoalNotificationChecked(checked: Boolean) {
+    suspend fun setGoalNotificationEnabled(enabled: Boolean) {
         try {
             preferences.updateData {
                 it.copy {
                     notificationSetting = notificationSetting.copy {
-                        isGoalNotificationChecked = checked
+                        isGoalNotificationEnabled = enabled
                     }
                 }
             }
@@ -60,6 +60,6 @@ class UserPreferencesDataSource(
 private fun UserPreferences.toModel() =
     UserData(
         isOnboardingCompleted = isOnboardingCompleted,
-        isGoalNotificationChecked = notificationSetting.isGoalNotificationChecked,
+        isGoalNotificationEnabled = notificationSetting.isGoalNotificationEnabled,
         isSystemNotificationDialogDisabled = notificationSetting.isSystemNotificationDialogDisabled,
     )

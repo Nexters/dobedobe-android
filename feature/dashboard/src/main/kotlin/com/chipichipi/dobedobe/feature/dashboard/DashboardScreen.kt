@@ -52,7 +52,7 @@ internal fun DashboardRoute(
         modifier = modifier,
         onShowSnackbar = onShowSnackbar,
         uiState = uiState,
-        setGoalNotificationChecked = viewModel::setGoalNotificationChecked,
+        setGoalNotificationEnabled = viewModel::setGoalNotificationEnabled,
         disableSystemNotificationDialog = viewModel::disableSystemNotificationDialog,
     )
 }
@@ -62,7 +62,7 @@ internal fun DashboardRoute(
 private fun DashboardScreen(
     onShowSnackbar: suspend (String, String?) -> Boolean,
     uiState: DashboardUiState,
-    setGoalNotificationChecked: (Boolean) -> Unit,
+    setGoalNotificationEnabled: (Boolean) -> Unit,
     disableSystemNotificationDialog: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -112,7 +112,7 @@ private fun DashboardScreen(
                         uiState = uiState,
                         photoFramesState = photoFramesState,
                         innerPadding = innerPadding,
-                        setGoalNotificationChecked = setGoalNotificationChecked,
+                        setGoalNotificationEnabled = setGoalNotificationEnabled,
                         disableSystemNotificationDialog = disableSystemNotificationDialog,
                         modifier = Modifier.fillMaxSize(),
                     )
@@ -128,7 +128,7 @@ private fun DashboardBody(
     uiState: DashboardUiState.Success,
     photoFramesState: DashboardPhotoFramesState,
     innerPadding: PaddingValues,
-    setGoalNotificationChecked: (Boolean) -> Unit,
+    setGoalNotificationEnabled: (Boolean) -> Unit,
     disableSystemNotificationDialog: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -161,7 +161,7 @@ private fun DashboardBody(
 
     GoalNotificationPermission(
         isSystemNotificationDialogDisabled = uiState.isSystemNotificationDialogDisabled,
-        setGoalNotificationChecked = setGoalNotificationChecked,
+        setGoalNotificationEnabled = setGoalNotificationEnabled,
         disableSystemNotificationDialog = disableSystemNotificationDialog,
     )
 }
@@ -170,7 +170,7 @@ private fun DashboardBody(
 @OptIn(ExperimentalPermissionsApi::class)
 private fun GoalNotificationPermission(
     isSystemNotificationDialogDisabled: Boolean,
-    setGoalNotificationChecked: (Boolean) -> Unit,
+    setGoalNotificationEnabled: (Boolean) -> Unit,
     disableSystemNotificationDialog: () -> Unit,
 ) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
@@ -188,11 +188,11 @@ private fun GoalNotificationPermission(
                 showGoalNotificationDialog = true
             }
             status is PermissionStatus.Denied && status.shouldShowRationale -> {
-                setGoalNotificationChecked(false)
+                setGoalNotificationEnabled(false)
                 disableSystemNotificationDialog()
             }
             status.isGranted -> {
-                setGoalNotificationChecked(true)
+                setGoalNotificationEnabled(true)
                 disableSystemNotificationDialog()
             }
         }

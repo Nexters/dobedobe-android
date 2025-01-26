@@ -8,7 +8,7 @@ interface UserRepository {
 
     suspend fun completeOnBoarding(): Result<Unit>
 
-    suspend fun setGoalNotificationChecked(checked: Boolean): Result<Unit>
+    suspend fun setGoalNotificationEnabled(enabled: Boolean): Result<Unit>
 
     suspend fun disableSystemNotificationDialog(): Result<Unit>
 }

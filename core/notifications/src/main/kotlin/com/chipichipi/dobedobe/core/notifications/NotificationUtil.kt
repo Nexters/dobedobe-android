@@ -8,10 +8,10 @@ import androidx.core.app.NotificationManagerCompat
 object NotificationUtil {
     fun handleNotificationToggle(
         context: Context,
-        checked: Boolean,
+        enabled: Boolean,
         onNotificationToggled: (Boolean) -> Unit,
     ) {
-        if (checked) {
+        if (enabled) {
             if (areNotificationsEnabled(context)) {
                 onNotificationToggled(true)
             } else {
