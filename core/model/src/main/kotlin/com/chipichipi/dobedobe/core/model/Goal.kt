@@ -17,6 +17,8 @@ data class Goal(
         } else {
             require(completedAt == null) { "completedAt should be null when isCompleted is false" }
         }
+        require(title.isNotBlank()) { "title should not be blank" }
+        require(title.length <= MAX_TITLE_LENGTH) { "title should not exceed $MAX_TITLE_LENGTH characters" }
     }
 
     fun toggleCompletion(): Goal {
@@ -33,6 +35,7 @@ data class Goal(
 
     companion object {
         private const val NO_ID = 0L
+        private const val MAX_TITLE_LENGTH = 20
 
         fun todo(title: String): Goal {
             return Goal(

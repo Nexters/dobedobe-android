@@ -60,4 +60,18 @@ class GoalTest {
         todoGoal.isCompleted.shouldBeFalse()
         todoGoal.completedAt.shouldBeNull()
     }
+
+    @Test
+    fun `목표는 20자 이내의 제목을 가져야 한다`() {
+        shouldThrow<IllegalArgumentException> {
+            Goal.todo("123456789012345678901")
+        }
+    }
+
+    @Test
+    fun `목표는 빈 제목을 가질 수 없다`() {
+        shouldThrow<IllegalArgumentException> {
+            Goal.todo(" ")
+        }
+    }
 }
