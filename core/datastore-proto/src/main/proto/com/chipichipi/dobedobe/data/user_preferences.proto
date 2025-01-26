@@ -1,8 +1,11 @@
 syntax = "proto3";
 
+import "com/chipichipi/dobedobe/data/notification_setting.proto";
+
 option java_package = "com.chipichipi.dobedobe.core.datastore";
 option java_multiple_files = true;
 
 message UserPreferences {
     bool is_onboarding_completed = 1;
+    NotificationSetting notification_setting = 2;
 }

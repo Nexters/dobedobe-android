@@ -1,5 +1,6 @@
 package com.chipichipi.dobedobe.feature.dashboard
 
+import android.os.Build
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.background
@@ -8,13 +9,19 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetValue
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,15 +29,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBottomSheetScaffold
+import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeDialog
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardCharacter
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardPhotoFrameBox
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardTopAppBar
 import com.chipichipi.dobedobe.feature.dashboard.preview.GoalPreviewParameterProvider
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionStatus
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun DashboardRoute(
     onShowSnackbar: suspend (String, String?) -> Boolean,
+    navigateToSetting: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DashboardViewModel = koinViewModel(),
 ) {
@@ -40,6 +53,9 @@ internal fun DashboardRoute(
         modifier = modifier,
         onShowSnackbar = onShowSnackbar,
         uiState = uiState,
+        setGoalNotificationEnabled = viewModel::setGoalNotificationEnabled,
+        disableSystemNotificationDialog = viewModel::disableSystemNotificationDialog,
+        navigateToSetting = navigateToSetting,
     )
 }
 
@@ -48,6 +64,9 @@ internal fun DashboardRoute(
 private fun DashboardScreen(
     onShowSnackbar: suspend (String, String?) -> Boolean,
     uiState: DashboardUiState,
+    setGoalNotificationEnabled: (Boolean) -> Unit,
+    disableSystemNotificationDialog: () -> Unit,
+    navigateToSetting: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
@@ -74,7 +93,7 @@ private fun DashboardScreen(
             // TODO: 기능 추가 필요
             DashboardTopAppBar(
                 onEditClick = {},
-                onSettingClick = {},
+                navigateToSetting = navigateToSetting,
             )
         },
     ) { innerPadding ->
@@ -96,6 +115,8 @@ private fun DashboardScreen(
                         uiState = uiState,
                         photoFramesState = photoFramesState,
                         innerPadding = innerPadding,
+                        setGoalNotificationEnabled = setGoalNotificationEnabled,
+                        disableSystemNotificationDialog = disableSystemNotificationDialog,
                         modifier = Modifier.fillMaxSize(),
                     )
                 }
@@ -110,6 +131,8 @@ private fun DashboardBody(
     uiState: DashboardUiState.Success,
     photoFramesState: DashboardPhotoFramesState,
     innerPadding: PaddingValues,
+    setGoalNotificationEnabled: (Boolean) -> Unit,
+    disableSystemNotificationDialog: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     SharedTransitionLayout(
@@ -136,6 +159,65 @@ private fun DashboardBody(
                 onEmptyFrameClick = { },
                 innerPadding = innerPadding,
             )
+        }
+    }
+
+    GoalNotificationPermission(
+        isSystemNotificationDialogDisabled = uiState.isSystemNotificationDialogDisabled,
+        setGoalNotificationEnabled = setGoalNotificationEnabled,
+        disableSystemNotificationDialog = disableSystemNotificationDialog,
+    )
+}
+
+@Composable
+@OptIn(ExperimentalPermissionsApi::class)
+private fun GoalNotificationPermission(
+    isSystemNotificationDialogDisabled: Boolean,
+    setGoalNotificationEnabled: (Boolean) -> Unit,
+    disableSystemNotificationDialog: () -> Unit,
+) {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
+    val notificationsPermissionState = rememberPermissionState(
+        android.Manifest.permission.POST_NOTIFICATIONS,
+    )
+    var showGoalNotificationDialog by remember { mutableStateOf(false) }
+
+    LaunchedEffect(notificationsPermissionState.status, isSystemNotificationDialogDisabled) {
+        if (isSystemNotificationDialogDisabled) return@LaunchedEffect
+        val status = notificationsPermissionState.status
+
+        when {
+            status is PermissionStatus.Denied && !status.shouldShowRationale -> {
+                showGoalNotificationDialog = true
+            }
+            status is PermissionStatus.Denied && status.shouldShowRationale -> {
+                setGoalNotificationEnabled(false)
+                disableSystemNotificationDialog()
+            }
+            status.isGranted -> {
+                setGoalNotificationEnabled(true)
+                disableSystemNotificationDialog()
+            }
+        }
+    }
+
+    if (showGoalNotificationDialog) {
+        DobeDobeDialog(
+            onDismissRequest = {
+                showGoalNotificationDialog = false
+            },
+            // TODO : 변경 필요
+            title = "목표에 대한 알림을 위해\n 권한이 필요합니다.",
+        ) {
+            Button(
+                onClick = {
+                    notificationsPermissionState.launchPermissionRequest()
+                    showGoalNotificationDialog = false
+                },
+            ) {
+                // TODO : 변경 필요
+                Text("확인")
+            }
         }
     }
 }

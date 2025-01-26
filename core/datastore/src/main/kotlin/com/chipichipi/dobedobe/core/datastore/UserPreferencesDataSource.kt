@@ -27,9 +27,39 @@ class UserPreferencesDataSource(
             Log.e("UserPreferences", "Failed to update preferences", ioException)
         }
     }
+
+    suspend fun setGoalNotificationEnabled(enabled: Boolean) {
+        try {
+            preferences.updateData {
+                it.copy {
+                    notificationSetting = notificationSetting.copy {
+                        isGoalNotificationEnabled = enabled
+                    }
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e("UserPreferences", "Failed to update preferences", ioException)
+        }
+    }
+
+    suspend fun disableSystemNotificationDialog() {
+        try {
+            preferences.updateData {
+                it.copy {
+                    notificationSetting = notificationSetting.copy {
+                        isSystemNotificationDialogDisabled = true
+                    }
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e("UserPreferences", "Failed to update preferences", ioException)
+        }
+    }
 }
 
 private fun UserPreferences.toModel() =
     UserData(
         isOnboardingCompleted = isOnboardingCompleted,
+        isGoalNotificationEnabled = notificationSetting.isGoalNotificationEnabled,
+        isSystemNotificationDialogDisabled = notificationSetting.isSystemNotificationDialogDisabled,
     )
