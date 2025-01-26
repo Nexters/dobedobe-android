@@ -50,6 +50,14 @@ class GoalRepositoryImpl(
             goalDao.updateGoal(toggledGoal.toEntity())
         }
     }
+
+    override suspend fun updateGoal(goal: Goal): Result<Unit> {
+        return runCatching {
+            val goals = goals.firstOrNull() ?: error("if Goals empty, cannot update goal")
+            goals.checkGoalExists(goal.id)
+            goalDao.updateGoal(goal.toEntity())
+        }
+    }
 }
 
 private fun Goal.toEntity(): GoalEntity {

@@ -15,4 +15,6 @@ interface GoalRepository {
     suspend fun togglePin(id: Long): Result<Unit>
 
     suspend fun toggleCompletion(id: Long): Result<Unit>
+
+    suspend fun updateGoal(goal: Goal): Result<Unit>
 }
