@@ -5,32 +5,34 @@ import android.content.Intent
 import android.provider.Settings
 import androidx.core.app.NotificationManagerCompat
 
-internal fun handleNotificationToggle(
-    context: Context,
-    checked: Boolean,
-    onNotificationToggled: (Boolean) -> Unit,
-) {
-    if (checked) {
-        if (checkSystemNotificationEnabled(context)) {
-            onNotificationToggled(true)
+object NotificationUtil {
+    fun handleNotificationToggle(
+        context: Context,
+        checked: Boolean,
+        onNotificationToggled: (Boolean) -> Unit,
+    ) {
+        if (checked) {
+            if (checkSystemNotificationEnabled(context)) {
+                onNotificationToggled(true)
+            } else {
+                openSystemNotificationSetting(context)
+            }
         } else {
-            openSystemNotificationSetting(context)
+            onNotificationToggled(false)
         }
-    } else {
-        onNotificationToggled(false)
     }
-}
 
-internal fun checkSystemNotificationEnabled(context: Context) =
-    NotificationManagerCompat
-        .from(context)
-        .areNotificationsEnabled()
+    fun checkSystemNotificationEnabled(context: Context) =
+        NotificationManagerCompat
+            .from(context)
+            .areNotificationsEnabled()
 
-private fun openSystemNotificationSetting(context: Context) {
-    val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-        .apply {
-            putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
-        }
+    private fun openSystemNotificationSetting(context: Context) {
+        val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+            .apply {
+                putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+            }
 
-    context.startActivity(intent)
+        context.startActivity(intent)
+    }
 }
