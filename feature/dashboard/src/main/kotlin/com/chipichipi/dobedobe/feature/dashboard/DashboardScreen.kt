@@ -55,7 +55,7 @@ internal fun DashboardRoute(
         uiState = uiState,
         setGoalNotificationChecked = viewModel::setGoalNotificationChecked,
         disableSystemNotificationDialog = viewModel::disableSystemNotificationDialog,
-        navigateToSetting = navigateToSetting
+        navigateToSetting = navigateToSetting,
     )
 }
 
@@ -93,7 +93,7 @@ private fun DashboardScreen(
             // TODO: 기능 추가 필요
             DashboardTopAppBar(
                 onEditClick = {},
-                onSettingClick = navigateToSetting
+                onSettingClick = navigateToSetting,
             )
         },
     ) { innerPadding ->

@@ -17,22 +17,22 @@ import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 @Composable
 internal fun SettingTopAppBar(
     navigateToBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     DobeDobeTopAppBar(
         modifier = modifier,
         navigationIcon = {
             IconButton(
                 modifier = Modifier.size(48.dp),
-                onClick = navigateToBack
+                onClick = navigateToBack,
             ) {
                 Icon(
                     modifier = Modifier.size(24.dp),
                     imageVector = Icons.Default.ArrowBackIosNew,
-                    contentDescription = null
+                    contentDescription = null,
                 )
             }
-        }
+        },
     )
 }
 
@@ -41,7 +41,7 @@ internal fun SettingTopAppBar(
 private fun SettingTopAppBarPreview() {
     DobeDobeTheme {
         SettingTopAppBar(
-            navigateToBack = {}
+            navigateToBack = {},
         )
     }
 }

@@ -24,7 +24,7 @@ internal fun DobeDobeNavHost(
     ) {
         dashboardScreen(
             onShowSnackbar = onShowSnackbar,
-            navigateToSetting = navController::navigateToSetting
+            navigateToSetting = navController::navigateToSetting,
         )
 
         settingScreen(

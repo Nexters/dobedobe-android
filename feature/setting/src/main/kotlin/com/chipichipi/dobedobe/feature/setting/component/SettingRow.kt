@@ -22,7 +22,7 @@ import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 internal fun SettingRow(
     label: String,
     modifier: Modifier = Modifier,
-    trailingContent: @Composable () -> Unit
+    trailingContent: @Composable () -> Unit,
 ) {
     Column(
         modifier = modifier,
@@ -34,17 +34,17 @@ internal fun SettingRow(
                 .heightIn(52.dp)
                 .padding(
                     start = 24.dp,
-                    end = 8.dp
+                    end = 8.dp,
                 ),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             // TODO : 폰트 스타일 변경 필요
             Text(
                 text = label,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = Color.Black
+                color = Color.Black,
             )
 
             trailingContent()
@@ -54,7 +54,7 @@ internal fun SettingRow(
         HorizontalDivider(
             modifier = Modifier.fillMaxWidth(),
             thickness = 8.dp,
-            color = Color(0xFFF2F3F6)
+            color = Color(0xFFF2F3F6),
         )
     }
 }
@@ -64,10 +64,10 @@ internal fun SettingRow(
 private fun SettingRowPreview() {
     DobeDobeTheme {
         SettingRow(
-            label = "TEST"
+            label = "TEST",
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(text = "TEST")
             }

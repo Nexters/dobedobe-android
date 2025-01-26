@@ -30,8 +30,8 @@ fun DobeDobeSwitch(
             checkedThumbColor = Color.White,
             checkedTrackColor = Color.Red,
             uncheckedThumbColor = Color.Gray,
-            uncheckedTrackColor = Color.Transparent
-        )
+            uncheckedTrackColor = Color.Transparent,
+        ),
     )
 }
 
@@ -41,7 +41,7 @@ private fun DobeDobeSwitchPreview() {
     DobeDobeTheme {
         DobeDobeSwitch(
             checked = true,
-            onCheckedChange = {}
+            onCheckedChange = {},
         )
     }
 }

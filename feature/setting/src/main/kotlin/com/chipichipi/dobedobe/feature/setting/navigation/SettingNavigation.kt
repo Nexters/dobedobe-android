@@ -16,12 +16,12 @@ fun NavController.navigateToSetting(
 
 fun NavGraphBuilder.settingScreen(
     onShowSnackbar: suspend (String, String?) -> Boolean,
-    navigateToBack: () -> Unit
+    navigateToBack: () -> Unit,
 ) {
     composable<SettingRoute> {
         SettingRoute(
             onShowSnackbar = onShowSnackbar,
-            navigateToBack = navigateToBack
+            navigateToBack = navigateToBack,
         )
     }
 }
