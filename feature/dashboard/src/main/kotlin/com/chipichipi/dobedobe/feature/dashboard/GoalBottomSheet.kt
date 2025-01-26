@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -103,8 +102,8 @@ private fun GoalBottomSheetBody(
         items(goals) { goal ->
             GoalRow(
                 goal = goal,
-                onGoalDone = { onGoalToggled(goal) },
-                onGoalClicked = { onGoalClicked(goal) },
+                onToggleCompleted = { onGoalToggled(goal) },
+                onClick = { onGoalClicked(goal) },
             )
         }
     }

@@ -22,7 +22,7 @@ import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 @Composable
 internal fun DashboardTopAppBar(
     onEditClick: () -> Unit,
-    onSettingClick: () -> Unit,
+    navigateToSetting: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     DobeDobeTopAppBar(
@@ -43,7 +43,7 @@ internal fun DashboardTopAppBar(
                 }
                 // TODO: 아이콘 교체 필요
                 IconButton(
-                    onClick = onSettingClick,
+                    onClick = navigateToSetting,
                 ) {
                     Icon(
                         Icons.AutoMirrored.Filled.AltRoute,
@@ -65,7 +65,7 @@ private fun DashboardTopAppBarPreview() {
     DobeDobeTheme {
         DashboardTopAppBar(
             onEditClick = {},
-            onSettingClick = {},
+            navigateToSetting = {},
         )
     }
 }

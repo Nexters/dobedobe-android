@@ -15,4 +15,16 @@ internal class UserRepositoryImpl(
             userPreferencesDataSource.completeOnBoarding()
         }
     }
+
+    override suspend fun setGoalNotificationEnabled(enabled: Boolean): Result<Unit> {
+        return runCatching {
+            userPreferencesDataSource.setGoalNotificationEnabled(enabled)
+        }
+    }
+
+    override suspend fun disableSystemNotificationDialog(): Result<Unit> {
+        return runCatching {
+            userPreferencesDataSource.disableSystemNotificationDialog()
+        }
+    }
 }

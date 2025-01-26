@@ -10,4 +10,6 @@ android {
 dependencies {
     implementation(projects.core.data)
     implementation(projects.feature.goal)
+
+    implementation(libs.accompanist.permission)
 }

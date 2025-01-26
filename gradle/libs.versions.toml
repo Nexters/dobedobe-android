@@ -33,6 +33,7 @@ robolectric = "4.14.1"
 # google
 protobuf = "4.29.2"
 protobufPlugin = "0.9.4"
+permission = "0.37.0"
 
 # third-party
 coil = "2.7.0"
@@ -95,6 +96,7 @@ androidx-test-truth = { module = "androidx.test.ext:truth", version.ref = "andro
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 
 # google
+accompanist-permission = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "permission" }
 protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
 protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
 
