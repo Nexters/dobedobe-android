@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -39,7 +40,7 @@ import kotlinx.datetime.Instant
 @Composable
 internal fun GoalBottomSheetContent(
     goals: List<Goal>,
-    onGoalDone: (Goal) -> Unit,
+    onGoalToggled: (Goal) -> Unit,
     onGoalClicked: (Goal) -> Unit,
 ) {
     Column {
@@ -47,7 +48,7 @@ internal fun GoalBottomSheetContent(
         Spacer(modifier = Modifier.height(15.dp))
         GoalBottomSheetBody(
             goals = goals,
-            onGoalDone = onGoalDone,
+            onGoalToggled = onGoalToggled,
             onGoalClicked = onGoalClicked,
         )
     }
@@ -88,13 +89,13 @@ private fun GoalBottomSheetHeader() {
 @Composable
 private fun GoalBottomSheetBody(
     goals: List<Goal>,
-    onGoalDone: (Goal) -> Unit,
+    onGoalToggled: (Goal) -> Unit,
     onGoalClicked: (Goal) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier
-            .fillMaxWidth()
-            .requiredHeightIn(min = 200.dp),
+            .requiredHeightIn(min = 200.dp)
+            .fillMaxWidth(),
         // TODO: 최소 높이 조절 필요
         verticalArrangement = Arrangement.spacedBy(18.dp),
         contentPadding = PaddingValues(horizontal = 24.dp),
@@ -102,7 +103,7 @@ private fun GoalBottomSheetBody(
         items(goals) { goal ->
             GoalRow(
                 goal = goal,
-                onGoalDone = { onGoalDone(goal) },
+                onGoalDone = { onGoalToggled(goal) },
                 onGoalClicked = { onGoalClicked(goal) },
             )
         }
@@ -129,7 +130,7 @@ private fun GoalBottomSheetContentPreview(
     }
     GoalBottomSheetContent(
         goals = goals,
-        onGoalDone = onGoalDone,
+        onGoalToggled = onGoalDone,
         onGoalClicked = {},
     )
 }

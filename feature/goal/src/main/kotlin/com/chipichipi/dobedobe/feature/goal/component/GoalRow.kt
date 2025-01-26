@@ -31,13 +31,13 @@ import kotlinx.datetime.Instant
 @Composable
 fun GoalRow(
     goal: Goal,
-    onGoalDone: () -> Unit,
-    onGoalClicked: () -> Unit,
+    onToggleCompleted: () -> Unit,
+    onClick: () -> Unit,
 ) {
     Surface(
         color = Color.White,
         shape = RoundedCornerShape(24.dp),
-        onClick = onGoalClicked,
+        onClick = onClick,
     ) {
         Row(
             modifier = Modifier
@@ -48,7 +48,7 @@ fun GoalRow(
             DobeDobeCheckBox(
                 modifier = Modifier.size(29.dp),
                 checked = goal.isCompleted,
-                onCheckedChange = { onGoalDone() },
+                onCheckedChange = { onToggleCompleted() },
             )
             Spacer(modifier = Modifier.width(11.dp))
             Text(
@@ -85,8 +85,8 @@ private fun GoalRowPreview() {
                     createdAt = Instant.DISTANT_PAST,
                     completedAt = null,
                 ),
-                onGoalDone = {},
-                onGoalClicked = {},
+                onToggleCompleted = {},
+                onClick = {},
             )
             GoalRow(
                 goal = Goal(
@@ -97,8 +97,8 @@ private fun GoalRowPreview() {
                     createdAt = Instant.DISTANT_PAST,
                     completedAt = Instant.DISTANT_PAST,
                 ),
-                onGoalDone = {},
-                onGoalClicked = {},
+                onClick = {},
+                onToggleCompleted = {},
             )
             GoalRow(
                 goal = Goal(
@@ -109,8 +109,8 @@ private fun GoalRowPreview() {
                     createdAt = Instant.DISTANT_PAST,
                     completedAt = Instant.DISTANT_PAST,
                 ),
-                onGoalDone = {},
-                onGoalClicked = {},
+                onClick = {},
+                onToggleCompleted = {},
             )
         }
     }

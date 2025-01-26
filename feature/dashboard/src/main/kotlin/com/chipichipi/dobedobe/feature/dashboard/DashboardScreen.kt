@@ -22,10 +22,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBottomSheetScaffold
+import com.chipichipi.dobedobe.core.model.Goal
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardCharacter
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardPhotoFrameBox
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardTopAppBar
-import com.chipichipi.dobedobe.feature.dashboard.preview.GoalPreviewParameterProvider
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -40,6 +40,7 @@ internal fun DashboardRoute(
         modifier = modifier,
         onShowSnackbar = onShowSnackbar,
         uiState = uiState,
+        onGoalToggled = {},
     )
 }
 
@@ -49,6 +50,7 @@ private fun DashboardScreen(
     onShowSnackbar: suspend (String, String?) -> Boolean,
     uiState: DashboardUiState,
     modifier: Modifier = Modifier,
+    onGoalToggled: (Goal) -> Unit,
 ) {
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberStandardBottomSheetState(
@@ -62,10 +64,9 @@ private fun DashboardScreen(
         scaffoldState = bottomSheetScaffoldState,
         sheetContent = {
             GoalBottomSheetContent(
-                goals = GoalPreviewParameterProvider.fakeGoals(20),
-                // TODO 임시 goal 데이터
-                onGoalDone = {},
-                onGoalClicked = {},
+                goals = emptyList(),
+                onGoalToggled = onGoalToggled,
+                onGoalClicked = { },
             )
         },
         // TODO 임시 peekHeight 값
@@ -91,6 +92,7 @@ private fun DashboardScreen(
                         modifier = Modifier.size(24.dp),
                     )
                 }
+
                 is DashboardUiState.Success -> {
                     DashboardBody(
                         uiState = uiState,

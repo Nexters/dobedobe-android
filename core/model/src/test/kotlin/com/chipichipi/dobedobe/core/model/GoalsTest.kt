@@ -27,7 +27,7 @@ class GoalsTest {
             ),
         )
         // when
-        val actualIds = goals.getGoals().map { it.id }
+        val actualIds = goals.sorted().map { it.id }
         // then
         val expectIds: List<Long> = listOf(1, 2)
         actualIds shouldBe expectIds
@@ -43,7 +43,7 @@ class GoalsTest {
             ),
         )
         // when
-        val actualIds = goals.getGoals().map { it.id }
+        val actualIds = goals.sorted().map { it.id }
         // then
         val expectIds: List<Long> = listOf(1, 2)
         actualIds shouldBe expectIds
@@ -67,7 +67,7 @@ class GoalsTest {
             ),
         )
         // when
-        val actualIds = goals.getGoals().map { it.id }
+        val actualIds = goals.sorted().map { it.id }
 
         // then
         val expectIds: List<Long> = listOf(1, 3, 4, 2)
