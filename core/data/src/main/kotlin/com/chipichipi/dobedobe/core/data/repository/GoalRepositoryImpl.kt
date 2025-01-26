@@ -28,15 +28,15 @@ class GoalRepositoryImpl(
 
     override suspend fun removeGoal(id: Long): Result<Unit> {
         return runCatching {
-            val goals: Goals = goals.firstOrNull() ?: error("Goals empty")
-            goals.find(id)
+            val goals: Goals = goals.firstOrNull() ?: error("if Goals empty, cannot remove goal")
+            goals.checkGoalExists(id)
             goalDao.deleteGoal(id)
         }
     }
 
     override suspend fun togglePin(id: Long): Result<Unit> {
         return runCatching {
-            val goals: Goals = goals.firstOrNull() ?: error("Goals empty")
+            val goals: Goals = goals.firstOrNull() ?: error("if Goals empty, cannot toggle pin")
             val toggledGoal: Goal = goals.togglePin(id).find(id)
             goalDao.updateGoal(toggledGoal.toEntity())
         }
@@ -44,7 +44,8 @@ class GoalRepositoryImpl(
 
     override suspend fun toggleCompletion(id: Long): Result<Unit> {
         return runCatching {
-            val goals: Goals = goals.firstOrNull() ?: error("Goals empty")
+            val goals: Goals =
+                goals.firstOrNull() ?: error("if Goals empty, cannot toggle completion")
             val toggledGoal: Goal = goals.toggleCompletion(id).find(id)
             goalDao.updateGoal(toggledGoal.toEntity())
         }
