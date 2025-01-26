@@ -55,9 +55,9 @@ internal class DashboardViewModel(
             initialValue = DashboardUiState.Loading,
         )
 
-    fun setGoalNotificationChecked(checked: Boolean) {
+    fun setGoalNotificationEnabled(enabled: Boolean) {
         viewModelScope.launch {
-            userRepository.setGoalNotificationChecked(checked)
+            userRepository.setGoalNotificationEnabled(enabled)
         }
     }
 

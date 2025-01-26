@@ -16,9 +16,9 @@ internal class UserRepositoryImpl(
         }
     }
 
-    override suspend fun setGoalNotificationChecked(checked: Boolean): Result<Unit> {
+    override suspend fun setGoalNotificationEnabled(enabled: Boolean): Result<Unit> {
         return runCatching {
-            userPreferencesDataSource.setGoalNotificationChecked(checked)
+            userPreferencesDataSource.setGoalNotificationEnabled(enabled)
         }
     }
 

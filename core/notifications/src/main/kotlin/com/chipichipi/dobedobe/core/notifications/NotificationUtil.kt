@@ -8,11 +8,11 @@ import androidx.core.app.NotificationManagerCompat
 object NotificationUtil {
     fun handleNotificationToggle(
         context: Context,
-        checked: Boolean,
+        enabled: Boolean,
         onNotificationToggled: (Boolean) -> Unit,
     ) {
-        if (checked) {
-            if (checkSystemNotificationEnabled(context)) {
+        if (enabled) {
+            if (areNotificationsEnabled(context)) {
                 onNotificationToggled(true)
             } else {
                 openSystemNotificationSetting(context)
@@ -22,7 +22,7 @@ object NotificationUtil {
         }
     }
 
-    fun checkSystemNotificationEnabled(context: Context) =
+    fun areNotificationsEnabled(context: Context) =
         NotificationManagerCompat
             .from(context)
             .areNotificationsEnabled()
