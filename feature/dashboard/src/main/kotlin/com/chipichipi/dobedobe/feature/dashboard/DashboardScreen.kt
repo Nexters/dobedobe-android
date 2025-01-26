@@ -159,7 +159,7 @@ private fun DashboardBody(
         }
     }
 
-    GoalNotificationPermissionEffect(
+    GoalNotificationPermission(
         isSystemNotificationDialogDisabled = uiState.isSystemNotificationDialogDisabled,
         setGoalNotificationChecked = setGoalNotificationChecked,
         disableSystemNotificationDialog = disableSystemNotificationDialog,
@@ -168,7 +168,7 @@ private fun DashboardBody(
 
 @Composable
 @OptIn(ExperimentalPermissionsApi::class)
-private fun GoalNotificationPermissionEffect(
+private fun GoalNotificationPermission(
     isSystemNotificationDialogDisabled: Boolean,
     setGoalNotificationChecked: (Boolean) -> Unit,
     disableSystemNotificationDialog: () -> Unit,
