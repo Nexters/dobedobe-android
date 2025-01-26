@@ -21,7 +21,7 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeSwitch
 import com.chipichipi.dobedobe.core.notifications.NotificationUtil
-import com.chipichipi.dobedobe.core.notifications.NotificationUtil.checkSystemNotificationEnabled
+import com.chipichipi.dobedobe.core.notifications.NotificationUtil.areNotificationsEnabled
 import com.chipichipi.dobedobe.feature.setting.component.SettingRow
 import com.chipichipi.dobedobe.feature.setting.component.SettingTopAppBar
 import com.chipichipi.dobedobe.feature.setting.util.openPlayStore
@@ -34,19 +34,19 @@ internal fun SettingRoute(
     modifier: Modifier = Modifier,
     viewModel: SettingViewModel = koinViewModel(),
 ) {
-    val isGoalNotificationChecked by viewModel.isGoalNotificationChecked.collectAsStateWithLifecycle()
+    val isGoalNotificationEnabled by viewModel.isGoalNotificationEnabled.collectAsStateWithLifecycle()
 
     SettingScreen(
         modifier = modifier,
-        isGoalNotificationChecked = isGoalNotificationChecked,
+        isGoalNotificationEnabled = isGoalNotificationEnabled,
         navigateToBack = navigateToBack,
-        onNotificationToggled = viewModel::setGoalNotificationChecked,
+        onNotificationToggled = viewModel::setGoalNotificationEnabled,
     )
 }
 
 @Composable
 private fun SettingScreen(
-    isGoalNotificationChecked: Boolean,
+    isGoalNotificationEnabled: Boolean,
     navigateToBack: () -> Unit,
     onNotificationToggled: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -60,7 +60,7 @@ private fun SettingScreen(
         },
     ) { innerPadding ->
         SettingBody(
-            isGoalNotificationChecked = isGoalNotificationChecked,
+            isGoalNotificationEnabled = isGoalNotificationEnabled,
             onNotificationToggled = onNotificationToggled,
             modifier = Modifier
                 .fillMaxSize()
@@ -75,7 +75,7 @@ private fun SettingScreen(
 
 @Composable
 private fun SettingBody(
-    isGoalNotificationChecked: Boolean,
+    isGoalNotificationEnabled: Boolean,
     onNotificationToggled: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -90,11 +90,11 @@ private fun SettingBody(
         ) {
             DobeDobeSwitch(
                 modifier = Modifier.padding(end = 8.dp),
-                checked = isGoalNotificationChecked,
+                checked = isGoalNotificationEnabled,
                 onCheckedChange = { checked ->
                     NotificationUtil.handleNotificationToggle(
                         context = context,
-                        checked = checked,
+                        enabled = checked,
                         onNotificationToggled = onNotificationToggled,
                     )
                 },
@@ -127,11 +127,11 @@ private fun GoalNotificationEffect(
     val context = LocalContext.current
 
     var systemNotificationEnabled by remember {
-        mutableStateOf(checkSystemNotificationEnabled(context))
+        mutableStateOf(areNotificationsEnabled(context))
     }
 
     LifecycleResumeEffect(Unit) {
-        val updatedSystemNotificationEnabled = checkSystemNotificationEnabled(context)
+        val updatedSystemNotificationEnabled = areNotificationsEnabled(context)
 
         if (systemNotificationEnabled != updatedSystemNotificationEnabled) {
             systemNotificationEnabled = updatedSystemNotificationEnabled
