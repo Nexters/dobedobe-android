@@ -30,7 +30,23 @@ import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 internal fun SharedTransitionScope.ExpandedPhotoFrame(
-    rotation: Map<Int, Animatable<Float, AnimationVector1D>>,
+    photoState: DashboardPhotoState?,
+    rotation: Animatable<Float, AnimationVector1D>?,
+    onToggleExpansion: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    ExpandedPhotoFrame(
+        rotation = rotation?.value ?: 0f,
+        state = photoState,
+        onToggleExpansion = onToggleExpansion,
+        modifier = modifier,
+    )
+}
+
+@OptIn(ExperimentalSharedTransitionApi::class)
+@Composable
+private fun SharedTransitionScope.ExpandedPhotoFrame(
+    rotation: Float,
     state: DashboardPhotoState?,
     onToggleExpansion: (Int) -> Unit,
     modifier: Modifier = Modifier,
@@ -67,9 +83,7 @@ internal fun SharedTransitionScope.ExpandedPhotoFrame(
                                 rememberSharedContentState(key = "${targetState.config.id}"),
                                 animatedVisibilityScope = this@AnimatedContent,
                             )
-                            .rotate(
-                                rotation[targetState.config.id]?.value ?: 0f,
-                            )
+                            .rotate(rotation)
                             .clip(RoundedCornerShape(10.dp)),
                         contentScale = ContentScale.FillBounds,
                         model = targetState.url,

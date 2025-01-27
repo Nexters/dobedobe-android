@@ -11,10 +11,8 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -25,34 +23,30 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoConfig
-import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 internal fun SharedTransitionScope.CollapsedPhotoFrame(
-    photo: DashboardPhotoState,
+    config: DashboardPhotoConfig,
+    url: String,
     isExpanded: Boolean,
-    rotationMap: Map<Int, Animatable<Float, AnimationVector1D>>,
+    rotation: Animatable<Float, AnimationVector1D>?,
     onToggleExpansion: (Int) -> Unit,
     onEmptyFrameClick: () -> Unit,
-    innerPadding: PaddingValues,
+    modifier: Modifier = Modifier,
 ) {
     CollapsedPhotoFrame(
-        rotation = rotationMap[photo.config.id]?.value ?: 0f,
+        rotation = rotation?.value ?: 0f,
         isExpanded = isExpanded,
-        config = photo.config,
-        url = photo.url,
+        config = config,
+        url = url,
         onToggleExpansion = {
-            onToggleExpansion(photo.config.id)
+            onToggleExpansion(config.id)
         },
         onEmptyFrameClick = onEmptyFrameClick,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(innerPadding)
-            .zIndex(0f),
+        modifier = modifier,
     )
 }
 

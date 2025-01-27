@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,7 +35,7 @@ import com.chipichipi.dobedobe.feature.dashboard.component.CollapsedPhotoFrame
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardCharacter
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardTopAppBar
 import com.chipichipi.dobedobe.feature.dashboard.component.ExpandedPhotoFrame
-import com.chipichipi.dobedobe.feature.dashboard.preview.GoalPreviewParameterProvider
+import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.isGranted
@@ -53,7 +54,7 @@ internal fun DashboardRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     DashboardScreen(
-        modifier = modifier,
+        modifier = modifier.fillMaxSize(),
         onShowSnackbar = onShowSnackbar,
         uiState = uiState,
         setGoalNotificationEnabled = viewModel::setGoalNotificationEnabled,
@@ -74,13 +75,13 @@ private fun DashboardScreen(
     modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
         when (uiState) {
             is DashboardUiState.Error,
             is DashboardUiState.Loading,
-                -> {
+            -> {
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
                 )
@@ -117,52 +118,20 @@ private fun DashboardBody(
                 initialValue = SheetValue.PartiallyExpanded,
             ),
         )
-        val photoFramesState = rememberDashboardPhotoFramesState()
-
-        val rotationMap = remember {
-            uiState.photoState.associate { it.config.id to Animatable(it.config.rotationZ) }
-        }
+        val photoFramesState = rememberDashboardPhotoFramesState(
+            photoState = uiState.photoState,
+        )
 
         val onToggleExpansion: (Int) -> Unit = { id ->
-            val rotation = rotationMap[id]
-
-            if (rotation != null && !rotation.isRunning) {
-                photoFramesState.toggleExpansion(id)
-            }
-        }
-
-        LaunchedEffect(photoFramesState.currentPhoto) {
-            photoFramesState.currentPhoto?.let { photo ->
-                val targetValue = if (photoFramesState.isExpanded(photo)) {
-                    0f
-                } else {
-                    uiState.photoState[photo - 1].config.rotationZ
+            photoFramesState.rotationMap[id]?.let { rotation ->
+                if (!rotation.isRunning) {
+                    photoFramesState.toggleExpansion(id)
                 }
-
-                rotationMap[photo]?.animateTo(
-                    targetValue = targetValue,
-                    animationSpec = tween(durationMillis = ANIMATION_DURATION),
-                )
-            }
-        }
-
-        LaunchedEffect(photoFramesState.previousPhoto) {
-            photoFramesState.previousPhoto?.let { photo ->
-                val targetValue = if (!photoFramesState.isExpanded(photo)) {
-                    uiState.photoState[photo - 1].config.rotationZ
-                } else {
-                    0f
-                }
-
-                rotationMap[photo]?.animateTo(
-                    targetValue = targetValue,
-                    animationSpec = tween(durationMillis = ANIMATION_DURATION),
-                )
             }
         }
 
         DobeDobeBottomSheetScaffold(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize(),
             scaffoldState = bottomSheetScaffoldState,
             sheetContent = {
                 GoalBottomSheetContent(
@@ -170,6 +139,7 @@ private fun DashboardBody(
                     onGoalToggled = onGoalToggled,
                     // TODO : navigateToGoalDetail 연결 필요
                     onGoalClicked = { },
+                )
             },
             sheetPeekHeight = 380.dp,
             topBar = {
@@ -181,38 +151,51 @@ private fun DashboardBody(
             },
         ) { innerPadding ->
             // Dim 처리로 인해 innerPadding은 Box에 적용 안하고 우선 component별로 각각 적용하도록 처리
-            DashboardCharacter(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .padding(top = 110.dp)
-                    .zIndex(0.5f),
-            )
-
-            uiState.photoState.forEach { photo ->
-                // TODO : EmptyFrameClick 처리
-                CollapsedPhotoFrame(
-                    photo = photo,
-                    isExpanded = photoFramesState.isExpanded(photo.config.id),
-                    rotationMap = rotationMap,
-                    onToggleExpansion = photoFramesState::toggleExpansion,
-                    onEmptyFrameClick = { },
-                    innerPadding = innerPadding,
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                DashboardCharacter(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                        .padding(top = 110.dp)
+                        .zIndex(0.5f),
                 )
+
+                uiState.photoState.forEach { photo ->
+                    // TODO : EmptyFrameClick 처리
+                    CollapsedPhotoFrame(
+                        config = photo.config,
+                        url = photo.url,
+                        isExpanded = photoFramesState.isExpanded(photo.config.id),
+                        rotation = photoFramesState.rotationMap[photo.config.id],
+                        onToggleExpansion = onToggleExpansion,
+                        onEmptyFrameClick = { },
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding)
+                            .zIndex(0f),
+                    )
+                }
             }
         }
 
         ExpandedPhotoFrame(
-            rotation = rotationMap,
-            state = if (photoFramesState.currentPhoto == null) {
-                null
-            } else {
-                uiState.photoState[photoFramesState.currentPhoto!! - 1]
+            photoState = photoFramesState.currentPhotoId?.let { id ->
+                uiState.photoState[id - 1]
             },
+            rotation = photoFramesState.rotationMap[photoFramesState.currentPhotoId],
             onToggleExpansion = onToggleExpansion,
             modifier = Modifier
                 .fillMaxSize()
                 .zIndex(1f),
+        )
+
+        DashboardPhotoRotationEffect(
+            photoStates = uiState.photoState,
+            rotationMap = photoFramesState.rotationMap,
+            photoFramesState = photoFramesState,
         )
     }
 
@@ -275,5 +258,38 @@ private fun GoalNotificationPermission(
                 Text("확인")
             }
         }
+    }
+}
+
+@Composable
+private fun DashboardPhotoRotationEffect(
+    photoStates: List<DashboardPhotoState>,
+    rotationMap: Map<Int, Animatable<Float, AnimationVector1D>>,
+    photoFramesState: DashboardPhotoFramesState,
+) {
+    suspend fun animatePhotoRotation(photoId: Int?, isExpanded: Boolean) {
+        photoId?.let { id ->
+            val targetValue =
+                if (isExpanded) 0f else photoStates[id - 1].config.rotationZ
+
+            rotationMap[id]?.animateTo(
+                targetValue = targetValue,
+                animationSpec = tween(durationMillis = ANIMATION_DURATION),
+            )
+        }
+    }
+
+    LaunchedEffect(photoFramesState.currentPhotoId) {
+        animatePhotoRotation(
+            photoId = photoFramesState.currentPhotoId,
+            isExpanded = photoFramesState.isExpanded(photoFramesState.currentPhotoId),
+        )
+    }
+
+    LaunchedEffect(photoFramesState.previousPhotoId) {
+        animatePhotoRotation(
+            photoId = photoFramesState.previousPhotoId,
+            isExpanded = photoFramesState.isExpanded(photoFramesState.previousPhotoId),
+        )
     }
 }
