@@ -30,10 +30,10 @@ import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBottomSheetScaffold
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeDialog
+import com.chipichipi.dobedobe.core.model.Goal
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardCharacter
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardPhotoFrameBox
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardTopAppBar
-import com.chipichipi.dobedobe.feature.dashboard.preview.GoalPreviewParameterProvider
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.isGranted
@@ -56,6 +56,7 @@ internal fun DashboardRoute(
         setGoalNotificationEnabled = viewModel::setGoalNotificationEnabled,
         disableSystemNotificationDialog = viewModel::disableSystemNotificationDialog,
         navigateToSetting = navigateToSetting,
+        onGoalToggled = viewModel::toggleGoalCompletion,
     )
 }
 
@@ -68,6 +69,7 @@ private fun DashboardScreen(
     disableSystemNotificationDialog: () -> Unit,
     navigateToSetting: () -> Unit,
     modifier: Modifier = Modifier,
+    onGoalToggled: (Goal) -> Unit,
 ) {
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberStandardBottomSheetState(
@@ -80,11 +82,12 @@ private fun DashboardScreen(
         modifier = modifier.fillMaxSize(),
         scaffoldState = bottomSheetScaffoldState,
         sheetContent = {
+            val goals = (uiState as? DashboardUiState.Success)?.goals.orEmpty()
             GoalBottomSheetContent(
-                goals = GoalPreviewParameterProvider.fakeGoals(20),
-                // TODO 임시 goal 데이터
-                onGoalDone = {},
-                onGoalClicked = {},
+                goals = goals,
+                onGoalToggled = onGoalToggled,
+                // TODO : navigateToGoalDetail 연결 필요
+                onGoalClicked = { },
             )
         },
         // TODO 임시 peekHeight 값
@@ -110,6 +113,7 @@ private fun DashboardScreen(
                         modifier = Modifier.size(24.dp),
                     )
                 }
+
                 is DashboardUiState.Success -> {
                     DashboardBody(
                         uiState = uiState,
@@ -190,10 +194,12 @@ private fun GoalNotificationPermission(
             status is PermissionStatus.Denied && !status.shouldShowRationale -> {
                 showGoalNotificationDialog = true
             }
+
             status is PermissionStatus.Denied && status.shouldShowRationale -> {
                 setGoalNotificationEnabled(false)
                 disableSystemNotificationDialog()
             }
+
             status.isGranted -> {
                 setGoalNotificationEnabled(true)
                 disableSystemNotificationDialog()

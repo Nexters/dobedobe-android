@@ -39,7 +39,7 @@ import kotlinx.datetime.Instant
 @Composable
 internal fun GoalBottomSheetContent(
     goals: List<Goal>,
-    onGoalDone: (Goal) -> Unit,
+    onGoalToggled: (Goal) -> Unit,
     onGoalClicked: (Goal) -> Unit,
 ) {
     Column {
@@ -47,7 +47,7 @@ internal fun GoalBottomSheetContent(
         Spacer(modifier = Modifier.height(15.dp))
         GoalBottomSheetBody(
             goals = goals,
-            onGoalDone = onGoalDone,
+            onGoalToggled = onGoalToggled,
             onGoalClicked = onGoalClicked,
         )
     }
@@ -88,13 +88,13 @@ private fun GoalBottomSheetHeader() {
 @Composable
 private fun GoalBottomSheetBody(
     goals: List<Goal>,
-    onGoalDone: (Goal) -> Unit,
+    onGoalToggled: (Goal) -> Unit,
     onGoalClicked: (Goal) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier
-            .fillMaxWidth()
-            .requiredHeightIn(min = 200.dp),
+            .requiredHeightIn(min = 200.dp)
+            .fillMaxWidth(),
         // TODO: 최소 높이 조절 필요
         verticalArrangement = Arrangement.spacedBy(18.dp),
         contentPadding = PaddingValues(horizontal = 24.dp),
@@ -102,8 +102,8 @@ private fun GoalBottomSheetBody(
         items(goals) { goal ->
             GoalRow(
                 goal = goal,
-                onGoalDone = { onGoalDone(goal) },
-                onGoalClicked = { onGoalClicked(goal) },
+                onToggleCompleted = { onGoalToggled(goal) },
+                onClick = { onGoalClicked(goal) },
             )
         }
     }
@@ -129,7 +129,7 @@ private fun GoalBottomSheetContentPreview(
     }
     GoalBottomSheetContent(
         goals = goals,
-        onGoalDone = onGoalDone,
+        onGoalToggled = onGoalDone,
         onGoalClicked = {},
     )
 }

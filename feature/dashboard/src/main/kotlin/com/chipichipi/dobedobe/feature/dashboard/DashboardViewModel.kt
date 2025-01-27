@@ -1,9 +1,12 @@
 package com.chipichipi.dobedobe.feature.dashboard
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.chipichipi.dobedobe.core.data.repository.GoalRepository
 import com.chipichipi.dobedobe.core.data.repository.UserRepository
 import com.chipichipi.dobedobe.core.model.DashboardPhoto
+import com.chipichipi.dobedobe.core.model.Goal
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoConfig
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,6 +29,7 @@ private val fakeDashboardPhotoState =
 
 internal class DashboardViewModel(
     private val userRepository: UserRepository,
+    private val goalRepository: GoalRepository,
 ) : ViewModel() {
     private val isSystemNotificationDialogDisabledFlow = userRepository.userData
         .map { it.isSystemNotificationDialogDisabled }
@@ -34,7 +38,8 @@ internal class DashboardViewModel(
     val uiState: StateFlow<DashboardUiState> = combine(
         fakeDashboardPhotoState,
         isSystemNotificationDialogDisabledFlow,
-    ) { photoState, isSystemNotificationDialogDisabled ->
+        goalRepository.getSortedGoals(),
+    ) { photoState, isSystemNotificationDialogDisabled, goals ->
         val dashboardPhotoStates = DashboardPhotoConfig.entries.map { config ->
             val photo = photoState.find { it.id == config.id }
 
@@ -47,6 +52,7 @@ internal class DashboardViewModel(
         DashboardUiState.Success(
             dashboardPhotoStates,
             isSystemNotificationDialogDisabled,
+            goals,
         )
     }
         .stateIn(
@@ -64,6 +70,16 @@ internal class DashboardViewModel(
     fun disableSystemNotificationDialog() {
         viewModelScope.launch {
             userRepository.disableSystemNotificationDialog()
+        }
+    }
+
+    fun toggleGoalCompletion(goal: Goal) {
+        viewModelScope.launch {
+            goalRepository.toggleCompletion(goal.id)
+                .onFailure {
+                    // TODO : Error 처리
+                    Log.e("DashboardViewModel", "Fail to toggle Goal", it)
+                }
         }
     }
 }
