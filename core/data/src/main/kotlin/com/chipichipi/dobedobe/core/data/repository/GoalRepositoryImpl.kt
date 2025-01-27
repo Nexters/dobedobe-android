@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 
-class GoalRepositoryImpl(
+internal class GoalRepositoryImpl(
     private val goalDao: GoalDao,
 ) : GoalRepository {
     private val goals: Flow<Goals> = goalDao.getGoals()
