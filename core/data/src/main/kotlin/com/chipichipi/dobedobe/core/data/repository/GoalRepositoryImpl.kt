@@ -2,6 +2,8 @@ package com.chipichipi.dobedobe.core.data.repository
 
 import com.chipichipi.dobedobe.core.database.dao.GoalDao
 import com.chipichipi.dobedobe.core.database.entity.GoalEntity
+import com.chipichipi.dobedobe.core.database.entity.toEntity
+import com.chipichipi.dobedobe.core.database.entity.toModel
 import com.chipichipi.dobedobe.core.model.Goal
 import com.chipichipi.dobedobe.core.model.Goals
 import kotlinx.coroutines.flow.Flow
@@ -58,26 +60,4 @@ internal class GoalRepositoryImpl(
             goalDao.updateGoal(goal.toEntity())
         }
     }
-}
-
-private fun Goal.toEntity(): GoalEntity {
-    return GoalEntity(
-        id = id,
-        title = title,
-        isPinned = isPinned,
-        isCompleted = isCompleted,
-        createdAt = createdAt,
-        completedAt = completedAt,
-    )
-}
-
-private fun GoalEntity.toModel(): Goal {
-    return Goal(
-        id = id,
-        title = title,
-        isPinned = isPinned,
-        isCompleted = isCompleted,
-        createdAt = createdAt,
-        completedAt = completedAt,
-    )
 }
