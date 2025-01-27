@@ -3,9 +3,9 @@ package com.chipichipi.dobedobe.feature.dashboard
 import android.os.Build
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.foundation.background
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -30,14 +30,18 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBottomSheetScaffold
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeDialog
 import com.chipichipi.dobedobe.core.model.Goal
+import com.chipichipi.dobedobe.feature.dashboard.component.CollapsedPhotoFrame
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardCharacter
-import com.chipichipi.dobedobe.feature.dashboard.component.DashboardPhotoFrameBox
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardTopAppBar
+import com.chipichipi.dobedobe.feature.dashboard.component.ExpandedPhotoFrame
+import com.chipichipi.dobedobe.feature.dashboard.preview.GoalPreviewParameterProvider
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import org.koin.androidx.compose.koinViewModel
+
+private const val ANIMATION_DURATION = 500
 
 @Composable
 internal fun DashboardRoute(
@@ -106,7 +110,7 @@ private fun DashboardBody(
     modifier: Modifier = Modifier,
 ) {
     SharedTransitionLayout(
-        modifier = modifier
+        modifier = modifier,
     ) {
         val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
             bottomSheetState = rememberStandardBottomSheetState(
@@ -114,6 +118,48 @@ private fun DashboardBody(
             ),
         )
         val photoFramesState = rememberDashboardPhotoFramesState()
+
+        val rotationMap = remember {
+            uiState.photoState.associate { it.config.id to Animatable(it.config.rotationZ) }
+        }
+
+        val onToggleExpansion: (Int) -> Unit = { id ->
+            val rotation = rotationMap[id]
+
+            if (rotation != null && !rotation.isRunning) {
+                photoFramesState.toggleExpansion(id)
+            }
+        }
+
+        LaunchedEffect(photoFramesState.currentPhoto) {
+            photoFramesState.currentPhoto?.let { photo ->
+                val targetValue = if (photoFramesState.isExpanded(photo)) {
+                    0f
+                } else {
+                    uiState.photoState[photo - 1].config.rotationZ
+                }
+
+                rotationMap[photo]?.animateTo(
+                    targetValue = targetValue,
+                    animationSpec = tween(durationMillis = ANIMATION_DURATION),
+                )
+            }
+        }
+
+        LaunchedEffect(photoFramesState.previousPhoto) {
+            photoFramesState.previousPhoto?.let { photo ->
+                val targetValue = if (!photoFramesState.isExpanded(photo)) {
+                    uiState.photoState[photo - 1].config.rotationZ
+                } else {
+                    0f
+                }
+
+                rotationMap[photo]?.animateTo(
+                    targetValue = targetValue,
+                    animationSpec = tween(durationMillis = ANIMATION_DURATION),
+                )
+            }
+        }
 
         DobeDobeBottomSheetScaffold(
             modifier = Modifier.fillMaxSize(),
@@ -145,15 +191,29 @@ private fun DashboardBody(
 
             uiState.photoState.forEach { photo ->
                 // TODO : EmptyFrameClick 처리
-                DashboardPhotoFrameBox(
+                CollapsedPhotoFrame(
                     photo = photo,
                     isExpanded = photoFramesState.isExpanded(photo.config.id),
-                    toggleExpansion = photoFramesState::toggleExpansion,
+                    rotationMap = rotationMap,
+                    onToggleExpansion = photoFramesState::toggleExpansion,
                     onEmptyFrameClick = { },
                     innerPadding = innerPadding,
                 )
             }
         }
+
+        ExpandedPhotoFrame(
+            rotation = rotationMap,
+            state = if (photoFramesState.currentPhoto == null) {
+                null
+            } else {
+                uiState.photoState[photoFramesState.currentPhoto!! - 1]
+            },
+            onToggleExpansion = onToggleExpansion,
+            modifier = Modifier
+                .fillMaxSize()
+                .zIndex(1f),
+        )
     }
 
     GoalNotificationPermission(

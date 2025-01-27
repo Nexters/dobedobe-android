@@ -14,14 +14,24 @@ internal fun rememberDashboardPhotoFramesState(): DashboardPhotoFramesState {
 
 @Stable
 class DashboardPhotoFramesState {
-    private var photoId: Int? by mutableStateOf(null)
+    private var currentId: Int? by mutableStateOf(null)
+    private var previousId: Int? by mutableStateOf(null)
 
     val isExpanded: Boolean
-        get() = photoId != null
+        get() = currentId != null
 
-    fun isExpanded(id: Int): Boolean = photoId == id
+    val currentPhoto: Int?
+        get() = currentId
+
+    val previousPhoto: Int?
+        get() = previousId
+
+    fun isExpanded(id: Int?): Boolean {
+        return currentId == id
+    }
 
     fun toggleExpansion(id: Int) {
-        photoId = if (photoId == id) null else id
+        previousId = currentId
+        currentId = if (currentId == id) null else id
     }
 }
