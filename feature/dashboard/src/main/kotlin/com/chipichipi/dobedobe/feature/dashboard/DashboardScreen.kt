@@ -108,7 +108,7 @@ private fun DashboardScreen(
             when (uiState) {
                 is DashboardUiState.Error,
                 is DashboardUiState.Loading,
-                -> {
+                    -> {
                     CircularProgressIndicator(
                         modifier = Modifier.size(24.dp),
                     )
@@ -150,7 +150,7 @@ private fun DashboardBody(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(top = 100.dp)
+                .padding(top = 110.dp)
                 .zIndex(0.5f),
         )
 
