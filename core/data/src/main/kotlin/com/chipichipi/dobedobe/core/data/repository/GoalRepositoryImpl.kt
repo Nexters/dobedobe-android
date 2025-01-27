@@ -19,7 +19,7 @@ internal class GoalRepositoryImpl(
 
     override fun getSortedGoals(): Flow<List<Goal>> = goals.map(Goals::sorted)
 
-    override fun getGoal(id: Long): Flow<Goal> = goals.map { it.find(id) }
+    override fun getGoal(id: Long): Flow<Goal> = goalDao.getGoal(id).map(GoalEntity::toModel)
 
     override suspend fun addGoal(title: String): Result<Unit> {
         return runCatching {
