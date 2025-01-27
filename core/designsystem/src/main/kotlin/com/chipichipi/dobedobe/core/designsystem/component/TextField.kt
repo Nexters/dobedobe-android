@@ -1,13 +1,17 @@
 package com.chipichipi.dobedobe.core.designsystem.component
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,9 +29,12 @@ import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 @Composable
 fun DobeDobeTextField(
     state: TextFieldState,
+    modifier: Modifier = Modifier,
+    hint: String = "",
+    supportMessage: String = "",
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Done,
-    modifier: Modifier = Modifier,
+    errorMessage: String? = null,
     enabled: Boolean = true,
     readOnly: Boolean = false,
 ) {
@@ -36,21 +43,34 @@ fun DobeDobeTextField(
         enabled = enabled,
         readOnly = readOnly,
         textStyle = TextStyle(
-            fontSize = 24.sp,
+            fontSize = 28.sp,
+            lineHeight = 42.sp,
             fontWeight = FontWeight.SemiBold,
         ),
         decorator = { innerTextField ->
             Column(
                 modifier =
-                    Modifier
-                        .fillMaxWidth(),
+                Modifier
+                    .fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(2.dp),
             ) {
-                innerTextField()
-                HorizontalDivider(
-                    modifier = Modifier.fillMaxWidth(),
-                    thickness = 2.dp,
-                    color = Color(0xFFD9D9D9),
+                Box {
+                    if (state.text.isEmpty()) {
+                        Text(
+                            text = hint,
+                            color = Color(0xFFE5E7EB),
+                            // TODO : Color Scheme 적용 필요
+                            fontSize = 28.sp,
+                            lineHeight = 42.sp,
+                            fontWeight = FontWeight.SemiBold,
+                        )
+                    }
+                    innerTextField()
+                }
+                Spacer(Modifier.height(8.dp))
+                SupportMessage(
+                    supportMessage = supportMessage,
+                    errorMessage = errorMessage,
                 )
             }
         },
@@ -62,14 +82,68 @@ fun DobeDobeTextField(
     )
 }
 
+@Composable
+private fun SupportMessage(
+    supportMessage: String,
+    errorMessage: String? = null,
+) {
+    // TODO : colorScheme 적용 필요
+    if (errorMessage == null) {
+        Text(
+            text = supportMessage,
+            fontSize = 14.sp,
+            lineHeight = 21.sp,
+            color = Color(0xFF7A828C),
+        )
+    } else {
+        Text(
+            text = errorMessage,
+            fontSize = 14.sp,
+            lineHeight = 21.sp,
+            color = Color(0xFFFF354D),
+        )
+    }
+}
+
 @ThemePreviews
 @Composable
 private fun DobeDobeTextFieldPreview() {
     DobeDobeTheme {
-        val textState = rememberTextFieldState(initialText = "Preview")
-
+        val textState = rememberTextFieldState(initialText = "")
         DobeDobeTextField(
             state = textState,
+            supportMessage = "목표가 간결할수록 집중력이 높아져요.",
         )
+    }
+}
+
+@ThemePreviews
+@Composable
+private fun DobeDobeTextFieldHintPreview() {
+    DobeDobeTheme {
+        Surface {
+            val textState = rememberTextFieldState(initialText = "")
+            DobeDobeTextField(
+                state = textState,
+                hint = "안녕하세요 Hint입니다",
+                supportMessage = "목표가 간결할수록 집중력이 높아져요.",
+            )
+        }
+    }
+}
+
+@ThemePreviews
+@Composable
+private fun DobeDobeTextFieldErrorPreview() {
+    DobeDobeTheme {
+        Surface {
+            val textState = rememberTextFieldState("네 저는 Error 입니다")
+
+            DobeDobeTextField(
+                state = textState,
+                supportMessage = "목표가 간결할수록 집중력이 높아져요.",
+                errorMessage = "에러 메시지",
+            )
+        }
     }
 }
