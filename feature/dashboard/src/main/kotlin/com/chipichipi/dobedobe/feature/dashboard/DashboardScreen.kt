@@ -24,7 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -60,7 +59,6 @@ internal fun DashboardRoute(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DashboardScreen(
     onShowSnackbar: suspend (String, String?) -> Boolean,
@@ -68,100 +66,93 @@ private fun DashboardScreen(
     setGoalNotificationEnabled: (Boolean) -> Unit,
     disableSystemNotificationDialog: () -> Unit,
     navigateToSetting: () -> Unit,
-    modifier: Modifier = Modifier,
     onGoalToggled: (Goal) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = rememberStandardBottomSheetState(
-            initialValue = SheetValue.PartiallyExpanded,
-        ),
-    )
-    val photoFramesState = rememberDashboardPhotoFramesState()
-
-    DobeDobeBottomSheetScaffold(
-        modifier = modifier.fillMaxSize(),
-        scaffoldState = bottomSheetScaffoldState,
-        sheetContent = {
-            val goals = (uiState as? DashboardUiState.Success)?.goals.orEmpty()
-            GoalBottomSheetContent(
-                goals = goals,
-                onGoalToggled = onGoalToggled,
-                // TODO : navigateToGoalDetail 연결 필요
-                onGoalClicked = { },
-            )
-        },
-        sheetPeekHeight = 380.dp,
-        topBar = {
-            // TODO: 기능 추가 필요
-            DashboardTopAppBar(
-                onEditClick = {},
-                navigateToSetting = navigateToSetting,
-            )
-        },
-    ) { innerPadding ->
-        // Dim 처리로 인해 innerPadding은 Box에 적용 안하고 우선 component별로 각각 적용하도록 처리
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center,
-        ) {
-            when (uiState) {
-                is DashboardUiState.Error,
-                is DashboardUiState.Loading,
-                    -> {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(24.dp),
-                    )
-                }
-
-                is DashboardUiState.Success -> {
-                    DashboardBody(
-                        uiState = uiState,
-                        photoFramesState = photoFramesState,
-                        innerPadding = innerPadding,
-                        setGoalNotificationEnabled = setGoalNotificationEnabled,
-                        disableSystemNotificationDialog = disableSystemNotificationDialog,
-                        modifier = Modifier.fillMaxSize(),
-                    )
-                }
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        when (uiState) {
+            is DashboardUiState.Error,
+            is DashboardUiState.Loading,
+                -> {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(24.dp),
+                )
+            }
+            is DashboardUiState.Success -> {
+                DashboardBody(
+                    modifier = modifier,
+                    uiState = uiState,
+                    setGoalNotificationEnabled = setGoalNotificationEnabled,
+                    disableSystemNotificationDialog = disableSystemNotificationDialog,
+                    navigateToSetting = navigateToSetting,
+                    onGoalToggled = onGoalToggled,
+                )
             }
         }
     }
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun DashboardBody(
     uiState: DashboardUiState.Success,
-    photoFramesState: DashboardPhotoFramesState,
-    innerPadding: PaddingValues,
     setGoalNotificationEnabled: (Boolean) -> Unit,
     disableSystemNotificationDialog: () -> Unit,
+    navigateToSetting: () -> Unit,
+    onGoalToggled: (Goal) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     SharedTransitionLayout(
         modifier = modifier
-            // TODO : 색상 변경 필요
-            .background(
-                color = Color(0xFFFDFDFD),
-            ),
     ) {
-        DashboardCharacter(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(top = 110.dp)
-                .zIndex(0.5f),
+        val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
+            bottomSheetState = rememberStandardBottomSheetState(
+                initialValue = SheetValue.PartiallyExpanded,
+            ),
         )
+        val photoFramesState = rememberDashboardPhotoFramesState()
 
-        uiState.photoState.forEach { photo ->
-            // TODO : EmptyFrameClick 처리
-            DashboardPhotoFrameBox(
-                photo = photo,
-                isExpanded = photoFramesState.isExpanded(photo.config.id),
-                toggleExpansion = photoFramesState::toggleExpansion,
-                onEmptyFrameClick = { },
-                innerPadding = innerPadding,
+        DobeDobeBottomSheetScaffold(
+            modifier = Modifier.fillMaxSize(),
+            scaffoldState = bottomSheetScaffoldState,
+            sheetContent = {
+                GoalBottomSheetContent(
+                    goals = uiState.goals,
+                    onGoalToggled = onGoalToggled,
+                    // TODO : navigateToGoalDetail 연결 필요
+                    onGoalClicked = { },
+            },
+            sheetPeekHeight = 380.dp,
+            topBar = {
+                // TODO: 기능 추가 필요
+                DashboardTopAppBar(
+                    onEditClick = {},
+                    navigateToSetting = navigateToSetting,
+                )
+            },
+        ) { innerPadding ->
+            // Dim 처리로 인해 innerPadding은 Box에 적용 안하고 우선 component별로 각각 적용하도록 처리
+            DashboardCharacter(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .padding(top = 110.dp)
+                    .zIndex(0.5f),
             )
+
+            uiState.photoState.forEach { photo ->
+                // TODO : EmptyFrameClick 처리
+                DashboardPhotoFrameBox(
+                    photo = photo,
+                    isExpanded = photoFramesState.isExpanded(photo.config.id),
+                    toggleExpansion = photoFramesState::toggleExpansion,
+                    onEmptyFrameClick = { },
+                    innerPadding = innerPadding,
+                )
+            }
         }
     }
 
