@@ -54,11 +54,12 @@ internal class DashboardViewModel(
             isSystemNotificationDialogDisabled,
             goals,
         )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = DashboardUiState.Loading,
-    )
+    }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = DashboardUiState.Loading,
+        )
 
     fun setGoalNotificationEnabled(enabled: Boolean) {
         viewModelScope.launch {
