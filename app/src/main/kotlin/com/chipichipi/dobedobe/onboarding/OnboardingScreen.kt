@@ -15,10 +15,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBackground
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeTextButton
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeTextField
+import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -43,27 +46,22 @@ private fun OnboardingScreen(
     ) {
         val textState = rememberTextFieldState()
 
-        // TODO : Writing 수정 필요
+        // TODO : colorScheme 적용 필요
         Text(
             text = "어떤 목표를 이루고 싶나요?",
             fontWeight = FontWeight.Bold,
-            fontSize = 24.sp,
+            fontSize = 22.sp,
+            lineHeight = 33.sp,
+            color = Color(0xFF000000),
         )
 
-        Spacer(modifier = Modifier.height(32.dp))
-
-        // TODO : Writing 수정 필요
-        Text(
-            text = "목표 이름",
-            fontWeight = FontWeight.Bold,
-            fontSize = 14.sp,
-            color = Color.Black.copy(0.6f),
-        )
-
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(48.dp))
 
         DobeDobeTextField(
             state = textState,
+            hint = "ex) 1일 1책 읽기",
+            supportMessage = "목표가 간결할수록 집중력이 높아져요.",
+            // TODO : Writing 수정 필요
         )
 
         Spacer(modifier = Modifier.weight(1f))
@@ -75,9 +73,12 @@ private fun OnboardingScreen(
                 .heightIn(54.dp),
             onClick = completeOnboarding,
         ) {
-            // TODO : Writing 수정 필요
             Text(
-                "목표 저장하기",
+                text = "완료",
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 17.sp,
+                lineHeight = 26.sp,
+                color = Color(0xFFFFFFFF),
             )
         }
     }
@@ -88,6 +89,18 @@ private fun Modifier.onboardingModifier() =
         Modifier
             .fillMaxSize()
             .padding(horizontal = 24.dp)
-            .padding(top = 120.dp, bottom = 42.dp)
+            .padding(top = 72.dp, bottom = 32.dp)
             .imePadding(),
     )
+
+@Preview
+@Composable
+private fun OnboardingScreenPreview() {
+    DobeDobeTheme {
+        DobeDobeBackground {
+            OnboardingScreen(
+                completeOnboarding = {},
+            )
+        }
+    }
+}
