@@ -90,8 +90,7 @@ private fun DashboardScreen(
                 onGoalClicked = { },
             )
         },
-        // TODO 임시 peekHeight 값
-        sheetPeekHeight = 200.dp,
+        sheetPeekHeight = 380.dp,
         topBar = {
             // TODO: 기능 추가 필요
             DashboardTopAppBar(
