@@ -42,7 +42,6 @@ class AddGoalViewModel(
                 goalRepository.addGoal(goalTitle.value).onSuccess {
                     _navigateToBackEvent.send(Unit)
                 }
-                return@launch
             }
         }
     }
