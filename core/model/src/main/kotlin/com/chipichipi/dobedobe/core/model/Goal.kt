@@ -47,5 +47,14 @@ data class Goal(
                 completedAt = null,
             )
         }
+
+        fun validateTitle(title: String): GoalTitleValidResult {
+            return when {
+                title.isEmpty() -> GoalTitleValidResult.Empty
+                title.isBlank() -> GoalTitleValidResult.Blank
+                title.length > MAX_TITLE_LENGTH -> GoalTitleValidResult.TooLong
+                else -> GoalTitleValidResult.Valid
+            }
+        }
     }
 }
