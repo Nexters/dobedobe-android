@@ -13,4 +13,5 @@ dependencies {
 
     implementation(libs.accompanist.permission)
     implementation(libs.compose.cloudy)
+    implementation(libs.apng)
 }

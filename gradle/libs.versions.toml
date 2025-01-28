@@ -36,6 +36,7 @@ protobufPlugin = "0.9.4"
 permission = "0.37.0"
 
 # third-party
+apng = "3.0.1"
 coil = "3.0.4"
 cloudy = "0.2.4"
 moduleGraph = "2.7.1"
@@ -102,6 +103,7 @@ protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-
 protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
 
 # third-party
+apng = { module = "com.github.penfeizhou.android.animation:apng", version.ref = "apng"}
 coil-kt = { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil" }
 coil-kt-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 coil-kt-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
