@@ -67,7 +67,8 @@ internal fun EditModePhotoFrame(
                 EmptyPhotoFrame(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color(0xFFE5E7EB)),
+                        .background(Color(0xFFE5E7EB))
+                        .clickable(onClick = onClick),
                 )
             }
         }
