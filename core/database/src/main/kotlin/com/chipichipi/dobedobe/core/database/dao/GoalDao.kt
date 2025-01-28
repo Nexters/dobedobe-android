@@ -22,8 +22,8 @@ interface GoalDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertGoals(goals: List<GoalEntity>)
 
-    @Query("DELETE FROM Goal WHERE id = :goalId")
-    suspend fun deleteGoal(goalId: Long)
+    @Query("DELETE FROM Goal WHERE id = :id")
+    suspend fun deleteGoal(id: Long)
 
     @Update
     suspend fun updateGoal(goal: GoalEntity)

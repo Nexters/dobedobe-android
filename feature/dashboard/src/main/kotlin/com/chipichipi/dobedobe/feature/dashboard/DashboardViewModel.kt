@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.chipichipi.dobedobe.core.data.repository.GoalRepository
 import com.chipichipi.dobedobe.core.data.repository.UserRepository
 import com.chipichipi.dobedobe.core.model.DashboardPhoto
-import com.chipichipi.dobedobe.core.model.Goal
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardMode
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoConfig
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
@@ -79,9 +78,9 @@ internal class DashboardViewModel(
         }
     }
 
-    fun toggleGoalCompletion(goal: Goal) {
+    fun toggleGoalCompletion(id: Long) {
         viewModelScope.launch {
-            goalRepository.toggleCompletion(goal.id)
+            goalRepository.toggleCompletion(id)
                 .onFailure {
                     // TODO : Error 처리
                     Log.e("DashboardViewModel", "Fail to toggle Goal", it)
