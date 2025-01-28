@@ -61,6 +61,7 @@ internal fun DashboardRoute(
         disableSystemNotificationDialog = viewModel::disableSystemNotificationDialog,
         navigateToSetting = navigateToSetting,
         onGoalToggled = viewModel::toggleGoalCompletion,
+        toggleMode = viewModel::toggleMode,
     )
 }
 
@@ -72,6 +73,7 @@ private fun DashboardScreen(
     disableSystemNotificationDialog: () -> Unit,
     navigateToSetting: () -> Unit,
     onGoalToggled: (Goal) -> Unit,
+    toggleMode: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -94,6 +96,7 @@ private fun DashboardScreen(
                     disableSystemNotificationDialog = disableSystemNotificationDialog,
                     navigateToSetting = navigateToSetting,
                     onGoalToggled = onGoalToggled,
+                    toggleMode = toggleMode,
                 )
             }
         }
@@ -108,6 +111,7 @@ private fun DashboardBody(
     disableSystemNotificationDialog: () -> Unit,
     navigateToSetting: () -> Unit,
     onGoalToggled: (Goal) -> Unit,
+    toggleMode: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     SharedTransitionLayout(
@@ -143,9 +147,8 @@ private fun DashboardBody(
             },
             sheetPeekHeight = 380.dp,
             topBar = {
-                // TODO: 기능 추가 필요
                 DashboardTopAppBar(
-                    onEditClick = {},
+                    onEditClick = toggleMode,
                     navigateToSetting = navigateToSetting,
                 )
             },
@@ -192,6 +195,9 @@ private fun DashboardBody(
                 .zIndex(1f),
         )
 
+        if (uiState.mode.isEditMode) {
+        }
+
         DashboardPhotoRotationEffect(
             photoStates = uiState.photoState,
             rotationMap = photoFramesState.rotationMap,
@@ -204,6 +210,12 @@ private fun DashboardBody(
         setGoalNotificationEnabled = setGoalNotificationEnabled,
         disableSystemNotificationDialog = disableSystemNotificationDialog,
     )
+}
+
+@Composable
+private fun DashboardEditModeBody(
+    modifier: Modifier = Modifier,
+) {
 }
 
 @Composable
