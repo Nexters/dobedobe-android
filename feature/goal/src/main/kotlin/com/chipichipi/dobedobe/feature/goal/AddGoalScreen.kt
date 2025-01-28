@@ -36,6 +36,7 @@ fun AddGoalRoute(
         focusManager.clearFocus()
         navigateToBack()
     }
+
     LaunchedEffect(Unit) {
         viewModel.navigateToBackEvent
             .onEach { onBack() }
@@ -50,9 +51,7 @@ fun AddGoalRoute(
                 detectTapGestures {
                     focusManager.clearFocus()
                 }
-            }
-            .padding(horizontal = 24.dp)
-            .padding(top = 24.dp, bottom = 32.dp),
+            },
         errorMessage = goalValidResult.errorMessage(),
         onShowSnackbar = onShowSnackbar,
         navigateToBack = onBack,
@@ -71,6 +70,7 @@ private fun AddGoalScreen(
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
+        modifier = modifier,
         topBar = {
             GoalTopAppBar(
                 navigateToBack = navigateToBack,
@@ -79,7 +79,10 @@ private fun AddGoalScreen(
         },
     ) { innerPadding ->
         GoalEditor(
-            modifier = modifier.padding(innerPadding),
+            modifier = Modifier
+                .padding(innerPadding)
+                .padding(horizontal = 24.dp)
+                .padding(top = 24.dp),
             title = "",
             errorMessage = errorMessage,
             onChangeTitle = onChangeGoalName,
@@ -94,9 +97,7 @@ private fun AddGoalScreenPreview() {
         DobeDobeBackground {
             AddGoalScreen(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 24.dp)
-                    .padding(bottom = 32.dp),
+                    .fillMaxSize(),
                 errorMessage = null,
                 onShowSnackbar = { _, _ -> false },
                 navigateToBack = {},
