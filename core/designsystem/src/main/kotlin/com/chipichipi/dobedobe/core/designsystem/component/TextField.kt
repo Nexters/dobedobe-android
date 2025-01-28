@@ -3,9 +3,7 @@ package com.chipichipi.dobedobe.core.designsystem.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
@@ -59,7 +57,7 @@ fun DobeDobeTextField(
                 modifier =
                     Modifier
                         .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(2.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Box {
                     if (state.text.isEmpty()) {
@@ -73,7 +71,7 @@ fun DobeDobeTextField(
                     }
                     innerTextField()
                 }
-                Spacer(Modifier.height(8.dp))
+
                 SupportMessage(
                     supportMessage = supportMessage,
                     errorMessage = errorMessage,
