@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -42,7 +43,7 @@ internal fun GoalToggleChip(
 ) {
     Column(
         modifier = modifier
-            .height(80.dp)
+            .defaultMinSize(80.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(Color(0xFFF3F4F6))
             .clickable { onCheckedChange(!isChecked) }
