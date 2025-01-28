@@ -1,6 +1,12 @@
 package com.chipichipi.dobedobe.feature.dashboard
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
@@ -33,6 +39,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -56,6 +63,7 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.skydoves.cloudy.cloudy
 import org.koin.androidx.compose.koinViewModel
+import java.io.File
 
 private const val ANIMATION_DURATION = 500
 
@@ -81,6 +89,7 @@ internal fun DashboardRoute(
         navigateToSetting = navigateToSetting,
         onGoalToggled = viewModel::toggleGoalCompletion,
         onToggleMode = viewModel::toggleMode,
+        onSavePhotos = viewModel::savePhotoUri
         onChangeBubble = viewModel::changeBubble,
     )
 }
@@ -96,6 +105,7 @@ private fun DashboardScreen(
     navigateToSetting: () -> Unit,
     onGoalToggled: (Long) -> Unit,
     onToggleMode: () -> Unit,
+    onSavePhotos: (List<DashboardPhotoState>) -> Unit,
     onChangeBubble: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -124,6 +134,7 @@ private fun DashboardScreen(
                     onGoalToggled = onGoalToggled,
                     onChangeBubble = onChangeBubble,
                     onToggleMode = onToggleMode,
+                    onSavePhotos = onSavePhotos
                 )
             }
         }
@@ -142,6 +153,7 @@ private fun DashboardBody(
     onGoalToggled: (Long) -> Unit,
     onChangeBubble: () -> Unit,
     onToggleMode: () -> Unit,
+    onSavePhotos: (List<DashboardPhotoState>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     SharedTransitionLayout(
@@ -222,6 +234,7 @@ private fun DashboardBody(
             DashboardEditMode(
                 photoState = uiState.photoState,
                 onToggleMode = onToggleMode,
+                onSavePhotos = onSavePhotos
             )
         }
 
@@ -296,8 +309,12 @@ private fun SharedTransitionScope.DashboardViewMode(
 private fun DashboardEditMode(
     photoState: List<DashboardPhotoState>,
     onToggleMode: () -> Unit,
+    onSavePhotos: (List<DashboardPhotoState>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var temporaryPhotoState by remember { mutableStateOf(photoState) }
+    val context = LocalContext.current
+
     // TODO : 색상 변경 필요
     Column(
         modifier = modifier
@@ -306,19 +323,51 @@ private fun DashboardEditMode(
     ) {
         DashboardEditModeTopAppBar(
             onToggleMode = onToggleMode,
+            onSavePhotos = {
+                onSavePhotos(temporaryPhotoState)
+                onToggleMode()
+            },
+        )
+
+        var selectedPhotoId by remember { mutableStateOf<Int?>(null) }
+
+        val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.PickVisualMedia(),
+            onResult = { uri ->
+                if (selectedPhotoId != null && uri != null) {
+                    context.contentResolver.takePersistableUriPermission(
+                        uri,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    )
+
+                    temporaryPhotoState = temporaryPhotoState.map { tempPhoto ->
+                        if (tempPhoto.config.id == selectedPhotoId) {
+                            tempPhoto.copy(uri = uri)
+                        } else {
+                            tempPhoto
+                        }
+                    }
+                }
+                selectedPhotoId = null
+            }
         )
 
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center,
         ) {
-            photoState.forEach { photo ->
+            temporaryPhotoState.forEach { photo ->
                 // TODO : EmptyFrameClick 처리
                 EditModePhotoFrame(
                     config = photo.config,
                     uri = photo.uri,
                     rotation = photo.config.rotationZ,
-                    onClick = {},
+                    onClick = {
+                        selectedPhotoId = photo.config.id // 클릭한 photo의 id 저장
+                        singlePhotoPickerLauncher.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
+                    },
                 )
             }
 
@@ -432,4 +481,21 @@ private fun DashboardPhotoRotationEffect(
             isExpanded = photoFramesState.isExpanded(photoFramesState.previousPhotoId),
         )
     }
+}
+
+fun saveFileFromUri(context: Context, uri: Uri, fileName: String): File? {
+    val contentResolver = context.contentResolver
+    val destinationFile = File(context.filesDir, fileName)
+
+    try {
+        contentResolver.openInputStream(uri)?.use { inputStream ->
+            destinationFile.outputStream().use { outputStream ->
+                inputStream.copyTo(outputStream)
+            }
+        }
+        return destinationFile
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+    return null
 }

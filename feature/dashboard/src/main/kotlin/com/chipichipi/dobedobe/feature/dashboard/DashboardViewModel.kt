@@ -1,8 +1,11 @@
 package com.chipichipi.dobedobe.feature.dashboard
 
+import android.net.Uri
 import android.util.Log
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.chipichipi.dobedobe.core.data.repository.DashboardRepository
 import com.chipichipi.dobedobe.core.data.repository.GoalRepository
 import com.chipichipi.dobedobe.core.data.repository.UserRepository
 import com.chipichipi.dobedobe.core.model.DashboardPhoto
@@ -19,18 +22,10 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-// TODO : 제거 필요
-private val fakeDashboardPhotoState =
-    MutableStateFlow(
-        listOf(
-            DashboardPhoto(1, "https://picsum.photos/id/237/200/300"),
-            DashboardPhoto(2, "https://picsum.photos/id/233/200/300"),
-        ),
-    )
-
 internal class DashboardViewModel(
     private val userRepository: UserRepository,
     private val goalRepository: GoalRepository,
+    private val dashboardRepository: DashboardRepository
 ) : ViewModel() {
     private val isSystemNotificationDialogDisabledFlow = userRepository.userData
         .map { it.isSystemNotificationDialogDisabled }
@@ -41,7 +36,7 @@ internal class DashboardViewModel(
     private val bubbleTitle: MutableStateFlow<String> = MutableStateFlow("")
 
     val uiState: StateFlow<DashboardUiState> = combine(
-        fakeDashboardPhotoState,
+        dashboardRepository.getPhotos(),
         isSystemNotificationDialogDisabledFlow,
         goalRepository.getSortedGoals(),
         mode,
@@ -52,7 +47,7 @@ internal class DashboardViewModel(
 
             DashboardPhotoState(
                 config = config,
-                uri = photo?.uri.orEmpty(),
+                uri = photo?.uri?.toUri() ?: Uri.EMPTY,
             )
         }
 
@@ -104,6 +99,19 @@ internal class DashboardViewModel(
                     DashboardMode.EDIT -> DashboardMode.VIEW
                 }
             }
+        }
+    }
+
+    fun savePhotoUri(photos: List<DashboardPhotoState>) {
+        viewModelScope.launch {
+            val adjustedPhotos = photos.map {
+                DashboardPhoto(
+                    id = it.config.id,
+                    uri = it.uri.toString()
+                )
+            }
+
+            dashboardRepository.savePhotos(adjustedPhotos)
         }
     }
 
