@@ -12,4 +12,5 @@ dependencies {
     implementation(projects.feature.goal)
 
     implementation(libs.accompanist.permission)
+    implementation(libs.compose.cloudy)
 }

@@ -1,5 +1,6 @@
 package com.chipichipi.dobedobe.core.designsystem.component
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.BottomSheetDefaults
@@ -26,14 +27,17 @@ fun DobeDobeBottomSheetScaffold(
     snackbarHost: @Composable (SnackbarHostState) -> Unit = { SnackbarHost(it) },
     content: @Composable (PaddingValues) -> Unit,
 ) {
-    BottomSheetScaffold(
-        sheetContent = sheetContent,
+    Box(
         modifier = modifier,
-        scaffoldState = scaffoldState,
-        sheetPeekHeight = sheetPeekHeight,
-        sheetDragHandle = sheetDragHandle,
-        topBar = topBar,
-        snackbarHost = snackbarHost,
-        content = content,
-    )
+    ) {
+        BottomSheetScaffold(
+            sheetContent = sheetContent,
+            scaffoldState = scaffoldState,
+            sheetPeekHeight = sheetPeekHeight,
+            sheetDragHandle = sheetDragHandle,
+            topBar = topBar,
+            snackbarHost = snackbarHost,
+            content = content,
+        )
+    }
 }

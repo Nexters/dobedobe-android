@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.chipichipi.dobedobe.core.data.repository.GoalRepository
 import com.chipichipi.dobedobe.core.data.repository.UserRepository
 import com.chipichipi.dobedobe.core.model.DashboardPhoto
+import com.chipichipi.dobedobe.feature.dashboard.model.DashboardMode
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoConfig
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 // TODO : 제거 필요
@@ -34,11 +36,14 @@ internal class DashboardViewModel(
         .map { it.isSystemNotificationDialogDisabled }
         .distinctUntilChanged()
 
+    private val mode: MutableStateFlow<DashboardMode> = MutableStateFlow(DashboardMode.VIEW)
+
     val uiState: StateFlow<DashboardUiState> = combine(
         fakeDashboardPhotoState,
         isSystemNotificationDialogDisabledFlow,
         goalRepository.getSortedGoals(),
-    ) { photoState, isSystemNotificationDialogDisabled, goals ->
+        mode,
+    ) { photoState, isSystemNotificationDialogDisabled, goals, mode ->
         val dashboardPhotoStates = DashboardPhotoConfig.entries.map { config ->
             val photo = photoState.find { it.id == config.id }
 
@@ -49,9 +54,10 @@ internal class DashboardViewModel(
         }
 
         DashboardUiState.Success(
-            dashboardPhotoStates,
-            isSystemNotificationDialogDisabled,
-            goals,
+            photoState = dashboardPhotoStates,
+            isSystemNotificationDialogDisabled = isSystemNotificationDialogDisabled,
+            goals = goals,
+            mode = mode,
         )
     }
         .stateIn(
@@ -79,6 +85,17 @@ internal class DashboardViewModel(
                     // TODO : Error 처리
                     Log.e("DashboardViewModel", "Fail to toggle Goal", it)
                 }
+        }
+    }
+
+    fun toggleMode() {
+        viewModelScope.launch {
+            mode.update { currentMode ->
+                when (currentMode) {
+                    DashboardMode.VIEW -> DashboardMode.EDIT
+                    DashboardMode.EDIT -> DashboardMode.VIEW
+                }
+            }
         }
     }
 }
