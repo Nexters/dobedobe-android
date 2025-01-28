@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_dashboard">Home</string>
+    <string name="feature_dashboard_edit_mode_top_bar_confirm">Save</string>
+    <string name="feature_dashboard_edit_mode_top_bar_cancel">Cancel</string>
+    <string name="feature_dashboard_edit_mode_description">Select the picture you want to change</string>
 </resources>
