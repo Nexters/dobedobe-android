@@ -247,29 +247,6 @@ private fun SharedTransitionScope.DashboardViewMode(
         modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
-        if (isViewMode) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Spacer(Modifier.height(13.dp))
-                DashBoardBubble(
-                    modifier = Modifier
-                        .background(Color.White)
-                        .clickable {
-                            // TODO: 해당 Goal Detail 로 이동
-                        },
-                ) {
-                    // TODO : 랜덤 TODO 목표 받아와서 넣기
-                    Text("아이고 힘들다 힘들어 한살이라도 어리고 싶다", fontSize = 15.sp)
-                }
-                DashboardCharacter(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .zIndex(0.5f),
-                )
-            }
-        }
-
         photoState.forEach { photo ->
             CollapsedPhotoFrame(
                 config = photo.config,
@@ -282,6 +259,30 @@ private fun SharedTransitionScope.DashboardViewMode(
                     .fillMaxSize()
                     .zIndex(0f),
             )
+        }
+
+        if (isViewMode) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Spacer(Modifier.height(13.dp))
+                DashBoardBubble(
+                    modifier = Modifier
+                        .background(Color.White)
+                        .clickable {
+                            // TODO: 해당 Goal Detail 로 이동
+                        },
+                    contentAlignment = Alignment.TopCenter,
+                ) {
+                    // TODO : 랜덤 TODO 목표 받아와서 넣기
+                    Text("꿈은 이루어진다 ⭐️", fontSize = 15.sp)
+                }
+                DashboardCharacter(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .zIndex(0.5f),
+                )
+            }
         }
     }
 }
