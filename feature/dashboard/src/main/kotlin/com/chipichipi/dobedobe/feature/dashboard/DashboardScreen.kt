@@ -375,7 +375,6 @@ private fun DashboardEditMode(
             contentAlignment = Alignment.Center,
         ) {
             photoDraftsState.forEach { photo ->
-                // TODO : EmptyFrameClick 처리
                 EditModePhotoFrame(
                     config = photo.config,
                     uri = photo.uri,
