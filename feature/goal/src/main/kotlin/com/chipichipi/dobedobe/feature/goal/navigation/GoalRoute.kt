@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed interface GoalRoute {
     @Serializable
-    data class Detail(val goalId: Long) : GoalRoute
+    data class Detail(val id: Long) : GoalRoute
 
     @Serializable
     data object Add : GoalRoute

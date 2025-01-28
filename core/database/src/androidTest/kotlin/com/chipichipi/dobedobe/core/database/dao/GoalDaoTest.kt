@@ -51,7 +51,7 @@ class GoalDaoTest {
 
             // when
             goalDao.insertGoal(goal)
-            goalDao.deleteGoal(goalId = 1L)
+            goalDao.deleteGoal(id = 1L)
             // then
             val retrievedGoals: List<GoalEntity> = goalDao.getGoals().first()
             retrievedGoals.shouldHaveSize(0)

@@ -10,37 +10,37 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.chipichipi.dobedobe.feature.goal.AddProductRoute
+import com.chipichipi.dobedobe.feature.goal.AddGoalRoute
 
-fun NavController.navigateToGoalAdd(
+fun NavController.navigateToAddGoal(
     navOptions: NavOptions? = null,
 ) = navigate(GoalRoute.Add, navOptions)
 
 fun NavController.navigateToGoalDetail(
-    goalId: Long,
+    id: Long,
     navOptions: NavOptions? = null,
-) = navigate(GoalRoute.Detail(goalId), navOptions)
+) = navigate(GoalRoute.Detail(id), navOptions)
 
 fun NavGraphBuilder.goalGraph(
     onShowSnackbar: suspend (String, String?) -> Boolean,
     navigateToBack: () -> Unit,
 ) {
     composable<GoalRoute.Add> {
-        AddProductRoute(
+        AddGoalRoute(
             onShowSnackbar = onShowSnackbar,
             navigateToBack = navigateToBack,
         )
     }
 
     composable<GoalRoute.Detail> { backStackEntry ->
-        val goalId = backStackEntry.toRoute<GoalRoute.Detail>().goalId
+        val id = backStackEntry.toRoute<GoalRoute.Detail>().id
 
         // TODO: 임시 확인용, Goal Detail Screen 구현
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center,
         ) {
-            Text(text = "Goal Detail: $goalId")
+            Text(text = "Goal Detail: $id")
         }
     }
 }

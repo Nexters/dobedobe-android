@@ -46,7 +46,7 @@ private const val ANIMATION_DURATION = 500
 @Composable
 internal fun DashboardRoute(
     onShowSnackbar: suspend (String, String?) -> Boolean,
-    navigateToGoalAdd: () -> Unit,
+    navigateToAddGoal: () -> Unit,
     navigateToGoalDetail: (Long) -> Unit,
     navigateToSetting: () -> Unit,
     modifier: Modifier = Modifier,
@@ -60,7 +60,7 @@ internal fun DashboardRoute(
         uiState = uiState,
         setGoalNotificationEnabled = viewModel::setGoalNotificationEnabled,
         disableSystemNotificationDialog = viewModel::disableSystemNotificationDialog,
-        navigateToGoalAdd = navigateToGoalAdd,
+        navigateToAddGoal = navigateToAddGoal,
         navigateToGoalDetail = navigateToGoalDetail,
         navigateToSetting = navigateToSetting,
         onGoalToggled = viewModel::toggleGoalCompletion,
@@ -73,7 +73,7 @@ private fun DashboardScreen(
     uiState: DashboardUiState,
     setGoalNotificationEnabled: (Boolean) -> Unit,
     disableSystemNotificationDialog: () -> Unit,
-    navigateToGoalAdd: () -> Unit,
+    navigateToAddGoal: () -> Unit,
     navigateToGoalDetail: (Long) -> Unit,
     navigateToSetting: () -> Unit,
     onGoalToggled: (Long) -> Unit,
@@ -98,7 +98,7 @@ private fun DashboardScreen(
                     uiState = uiState,
                     setGoalNotificationEnabled = setGoalNotificationEnabled,
                     disableSystemNotificationDialog = disableSystemNotificationDialog,
-                    navigateToGoalAdd = navigateToGoalAdd,
+                    navigateToAddGoal = navigateToAddGoal,
                     navigateToGoalDetail = navigateToGoalDetail,
                     navigateToSetting = navigateToSetting,
                     onGoalToggled = onGoalToggled,
@@ -114,7 +114,7 @@ private fun DashboardBody(
     uiState: DashboardUiState.Success,
     setGoalNotificationEnabled: (Boolean) -> Unit,
     disableSystemNotificationDialog: () -> Unit,
-    navigateToGoalAdd: () -> Unit,
+    navigateToAddGoal: () -> Unit,
     navigateToGoalDetail: (Long) -> Unit,
     navigateToSetting: () -> Unit,
     onGoalToggled: (Long) -> Unit,
@@ -147,7 +147,7 @@ private fun DashboardBody(
                 GoalBottomSheetContent(
                     goals = uiState.goals,
                     onGoalToggled = onGoalToggled,
-                    onGoalAddClicked = navigateToGoalAdd,
+                    onAddGoalClicked = navigateToAddGoal,
                     onGoalClicked = navigateToGoalDetail,
                 )
             },

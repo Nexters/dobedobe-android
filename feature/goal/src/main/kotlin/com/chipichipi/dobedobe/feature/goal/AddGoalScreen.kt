@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun AddProductRoute(
+fun AddGoalRoute(
     onShowSnackbar: suspend (String, String?) -> Boolean,
     navigateToBack: () -> Unit,
     viewModel: AddGoalViewModel = koinViewModel(),

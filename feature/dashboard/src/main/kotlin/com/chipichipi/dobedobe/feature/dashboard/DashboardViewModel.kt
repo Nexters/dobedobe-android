@@ -72,9 +72,9 @@ internal class DashboardViewModel(
         }
     }
 
-    fun toggleGoalCompletion(goalId: Long) {
+    fun toggleGoalCompletion(id: Long) {
         viewModelScope.launch {
-            goalRepository.toggleCompletion(goalId)
+            goalRepository.toggleCompletion(id)
                 .onFailure {
                     // TODO : Error 처리
                     Log.e("DashboardViewModel", "Fail to toggle Goal", it)
