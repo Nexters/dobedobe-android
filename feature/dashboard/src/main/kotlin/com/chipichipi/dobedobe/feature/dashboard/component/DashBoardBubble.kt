@@ -35,6 +35,7 @@ private val DefaultContentHorizontalPadding = 20.dp
 fun DashBoardBubble(
     modifier: Modifier = Modifier,
     tailPositionX: Float = 0.3f,
+    contentAlignment: Alignment,
     content: @Composable BoxScope.() -> Unit,
 ) {
     val density = LocalDensity.current
@@ -48,6 +49,7 @@ fun DashBoardBubble(
                 horizontal = DefaultContentHorizontalPadding,
                 vertical = DefaultContentVerticalPadding,
             ),
+        contentAlignment = contentAlignment,
         content = content,
     )
 }
@@ -194,6 +196,7 @@ fun PreviewBubbleWithTail() {
                 .background(Color.White)
                 .clickable { },
             tailPositionX = 0.5f,
+            contentAlignment = Alignment.Center,
         ) {
             Text("Bubble with Tail")
         }
