@@ -52,7 +52,7 @@ internal class DashboardViewModel(
 
             DashboardPhotoState(
                 config = config,
-                url = photo?.url.orEmpty(),
+                uri = photo?.uri.orEmpty(),
             )
         }
 

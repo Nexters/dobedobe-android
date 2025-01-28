@@ -258,7 +258,7 @@ private fun SharedTransitionScope.DashboardViewMode(
         photoState.forEach { photo ->
             CollapsedPhotoFrame(
                 config = photo.config,
-                url = photo.url,
+                uri = photo.uri,
                 isExpanded = photoFramesState.isExpanded(photo.config.id),
                 rotation = photoFramesState.rotationMap[photo.config.id],
                 onToggleExpansion = onToggleExpansion,
@@ -316,7 +316,7 @@ private fun DashboardEditMode(
                 // TODO : EmptyFrameClick 처리
                 EditModePhotoFrame(
                     config = photo.config,
-                    url = photo.url,
+                    uri = photo.uri,
                     rotation = photo.config.rotationZ,
                     onClick = {},
                 )
