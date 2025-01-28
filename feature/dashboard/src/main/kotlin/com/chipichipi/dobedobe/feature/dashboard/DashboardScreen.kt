@@ -3,16 +3,21 @@ package com.chipichipi.dobedobe.feature.dashboard
 import android.os.Build
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
@@ -25,7 +30,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBottomSheetScaffold
@@ -33,13 +42,16 @@ import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeDialog
 import com.chipichipi.dobedobe.core.model.Goal
 import com.chipichipi.dobedobe.feature.dashboard.component.CollapsedPhotoFrame
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardCharacter
+import com.chipichipi.dobedobe.feature.dashboard.component.DashboardEditModeTopAppBar
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardTopAppBar
+import com.chipichipi.dobedobe.feature.dashboard.component.EditModePhotoFrame
 import com.chipichipi.dobedobe.feature.dashboard.component.ExpandedPhotoFrame
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import com.skydoves.cloudy.cloudy
 import org.koin.androidx.compose.koinViewModel
 
 private const val ANIMATION_DURATION = 500
@@ -61,6 +73,7 @@ internal fun DashboardRoute(
         disableSystemNotificationDialog = viewModel::disableSystemNotificationDialog,
         navigateToSetting = navigateToSetting,
         onGoalToggled = viewModel::toggleGoalCompletion,
+        onToggleMode = viewModel::toggleMode,
     )
 }
 
@@ -72,6 +85,7 @@ private fun DashboardScreen(
     disableSystemNotificationDialog: () -> Unit,
     navigateToSetting: () -> Unit,
     onGoalToggled: (Goal) -> Unit,
+    onToggleMode: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -94,6 +108,7 @@ private fun DashboardScreen(
                     disableSystemNotificationDialog = disableSystemNotificationDialog,
                     navigateToSetting = navigateToSetting,
                     onGoalToggled = onGoalToggled,
+                    onToggleMode = onToggleMode,
                 )
             }
         }
@@ -108,6 +123,7 @@ private fun DashboardBody(
     disableSystemNotificationDialog: () -> Unit,
     navigateToSetting: () -> Unit,
     onGoalToggled: (Goal) -> Unit,
+    onToggleMode: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     SharedTransitionLayout(
@@ -121,7 +137,6 @@ private fun DashboardBody(
         val photoFramesState = rememberDashboardPhotoFramesState(
             photoState = uiState.photoState,
         )
-
         val onToggleExpansion: (Int) -> Unit = { id ->
             photoFramesState.rotationMap[id]?.let { rotation ->
                 if (!rotation.isRunning) {
@@ -129,9 +144,18 @@ private fun DashboardBody(
                 }
             }
         }
+        val isEditMode = uiState.mode.isEditMode
 
         DobeDobeBottomSheetScaffold(
-            modifier = modifier.fillMaxSize(),
+            modifier = modifier
+                .fillMaxSize()
+                .then(
+                    if (isEditMode) {
+                        Modifier.cloudy(35)
+                    } else {
+                        Modifier
+                    },
+                ),
             scaffoldState = bottomSheetScaffoldState,
             sheetContent = {
                 GoalBottomSheetContent(
@@ -143,42 +167,22 @@ private fun DashboardBody(
             },
             sheetPeekHeight = 380.dp,
             topBar = {
-                // TODO: 기능 추가 필요
                 DashboardTopAppBar(
-                    onEditClick = {},
+                    onEditClick = onToggleMode,
                     navigateToSetting = navigateToSetting,
                 )
             },
         ) { innerPadding ->
-            // Dim 처리로 인해 innerPadding은 Box에 적용 안하고 우선 component별로 각각 적용하도록 처리
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                DashboardCharacter(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding)
-                        .padding(top = 110.dp)
-                        .zIndex(0.5f),
-                )
-
-                uiState.photoState.forEach { photo ->
-                    // TODO : EmptyFrameClick 처리
-                    CollapsedPhotoFrame(
-                        config = photo.config,
-                        url = photo.url,
-                        isExpanded = photoFramesState.isExpanded(photo.config.id),
-                        rotation = photoFramesState.rotationMap[photo.config.id],
-                        onToggleExpansion = onToggleExpansion,
-                        onEmptyFrameClick = { },
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(innerPadding)
-                            .zIndex(0f),
-                    )
-                }
-            }
+            DashboardViewMode(
+                isViewMode = uiState.mode.isViewMode,
+                photoState = uiState.photoState,
+                photoFramesState = photoFramesState,
+                onToggleExpansion = onToggleExpansion,
+                onToggleMode = onToggleMode,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+            )
         }
 
         ExpandedPhotoFrame(
@@ -186,11 +190,20 @@ private fun DashboardBody(
                 uiState.photoState[id - 1]
             },
             rotation = photoFramesState.rotationMap[photoFramesState.currentPhotoId],
-            onToggleExpansion = onToggleExpansion,
+            onToggleExpansion = { id ->
+                if (!isEditMode) onToggleExpansion(id)
+            },
             modifier = Modifier
                 .fillMaxSize()
                 .zIndex(1f),
         )
+
+        if (isEditMode) {
+            DashboardEditMode(
+                photoState = uiState.photoState,
+                onToggleMode = onToggleMode,
+            )
+        }
 
         DashboardPhotoRotationEffect(
             photoStates = uiState.photoState,
@@ -204,6 +217,99 @@ private fun DashboardBody(
         setGoalNotificationEnabled = setGoalNotificationEnabled,
         disableSystemNotificationDialog = disableSystemNotificationDialog,
     )
+}
+
+@OptIn(ExperimentalSharedTransitionApi::class)
+@Composable
+private fun SharedTransitionScope.DashboardViewMode(
+    isViewMode: Boolean,
+    photoState: List<DashboardPhotoState>,
+    photoFramesState: DashboardPhotoFramesState,
+    onToggleExpansion: (Int) -> Unit,
+    onToggleMode: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center,
+    ) {
+        if (isViewMode) {
+            DashboardCharacter(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 110.dp)
+                    .zIndex(0.5f),
+            )
+        }
+
+        photoState.forEach { photo ->
+            CollapsedPhotoFrame(
+                config = photo.config,
+                url = photo.url,
+                isExpanded = photoFramesState.isExpanded(photo.config.id),
+                rotation = photoFramesState.rotationMap[photo.config.id],
+                onToggleExpansion = onToggleExpansion,
+                onEmptyFrameClick = onToggleMode,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .zIndex(0f),
+            )
+        }
+    }
+}
+
+@Composable
+private fun DashboardEditMode(
+    photoState: List<DashboardPhotoState>,
+    onToggleMode: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    // TODO : 색상 변경 필요
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Color.Black.copy(0.7f)),
+    ) {
+        DashboardEditModeTopAppBar(
+            onToggleMode = onToggleMode,
+        )
+
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center,
+        ) {
+            photoState.forEach { photo ->
+                // TODO : EmptyFrameClick 처리
+                EditModePhotoFrame(
+                    config = photo.config,
+                    url = photo.url,
+                    rotation = photo.config.rotationZ,
+                    onClick = {},
+                )
+            }
+
+            Column(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 230.dp),
+                verticalArrangement = Arrangement.spacedBy(15.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                // TODO : 색상 변경 필요
+                Icon(
+                    painter = painterResource(R.drawable.ic_dashboard_edit_mode),
+                    tint = Color.White,
+                    contentDescription = "edit mode icon",
+                )
+
+                Text(
+                    text = stringResource(R.string.feature_dashboard_edit_mode_description),
+                    fontSize = 16.sp,
+                    color = Color.White,
+                )
+            }
+        }
+    }
 }
 
 @Composable

@@ -84,7 +84,7 @@ private fun SharedTransitionScope.ExpandedPhotoFrame(
                                 animatedVisibilityScope = this@AnimatedContent,
                             )
                             .rotate(rotation)
-                            .clip(RoundedCornerShape(10.dp)),
+                            .clip(RoundedCornerShape(16.dp)),
                         contentScale = ContentScale.FillBounds,
                         model = targetState.url,
                         contentDescription = "expanded photo",

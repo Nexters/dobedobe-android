@@ -91,13 +91,14 @@ private fun SharedTransitionScope.CollapsedPhotoFrame(
                                     animatedVisibilityScope = this@AnimatedContent,
                                 )
                                 .rotate(rotation)
-                                .clip(RoundedCornerShape(10.dp))
+                                .clip(RoundedCornerShape(24.dp))
                                 .clickable(onClick = onToggleExpansion),
                             contentScale = ContentScale.FillBounds,
                             model = url,
                             contentDescription = null,
                         )
                     } else {
+                        // TODO : 색상 변경 필요
                         EmptyPhotoFrame(
                             modifier = Modifier
                                 .offset(
@@ -106,8 +107,8 @@ private fun SharedTransitionScope.CollapsedPhotoFrame(
                                 )
                                 .size(config.size.dp)
                                 .rotate(rotation)
-                                .clip(RoundedCornerShape(10.dp))
-                                .background(Color(0xFF616161))
+                                .clip(RoundedCornerShape(24.dp))
+                                .background(Color(0xFFE5E7EB))
                                 .clickable(onClick = onEmptyFrameClick),
                         )
                     }
