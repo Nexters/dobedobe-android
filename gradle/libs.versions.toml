@@ -104,6 +104,7 @@ protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref 
 # third-party
 coil-kt = { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil" }
 coil-kt-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
+coil-kt-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
 compose-cloudy = { module = "com.github.skydoves:cloudy", version.ref = "cloudy" }
 koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
 koin-android = { group = "io.insert-koin", name = "koin-android" }
