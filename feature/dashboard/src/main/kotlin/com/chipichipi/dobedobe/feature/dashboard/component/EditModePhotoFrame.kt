@@ -28,6 +28,7 @@ internal fun EditModePhotoFrame(
     uri: Uri,
     rotation: Float,
     onClick: () -> Unit,
+    onDelete: () -> Unit,
 ) {
     val offsetX = config.offsetX.dp + if (config.offsetX < 0) (-4).dp else 4.dp
     val offsetY = config.offsetY.dp - 4.dp
@@ -58,7 +59,7 @@ internal fun EditModePhotoFrame(
                 AsyncImage(
                     modifier = Modifier
                         .fillMaxSize()
-                        .clickable(onClick = onClick),
+                        .clickable(onClick = onDelete),
                     contentScale = ContentScale.FillBounds,
                     model = uri,
                     contentDescription = null,
@@ -84,6 +85,8 @@ private fun EditModePhotoFramePreview() {
             config = DashboardPhotoConfig.TOP,
             uri = Uri.EMPTY,
             rotation = 40f,
-        ) { }
+            onClick = {},
+            onDelete = {},
+        )
     }
 }

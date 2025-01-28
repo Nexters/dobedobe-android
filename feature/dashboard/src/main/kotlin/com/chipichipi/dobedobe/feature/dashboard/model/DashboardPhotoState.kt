@@ -7,4 +7,5 @@ import androidx.compose.runtime.Stable
 data class DashboardPhotoState(
     val config: DashboardPhotoConfig,
     val uri: Uri,
+    val hasUriChanged: Boolean = false,
 )

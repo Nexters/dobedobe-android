@@ -2,7 +2,6 @@ package com.chipichipi.dobedobe.feature.dashboard
 
 import android.net.Uri
 import android.util.Log
-import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chipichipi.dobedobe.core.data.repository.DashboardRepository
@@ -21,6 +20,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.io.File
 
 internal class DashboardViewModel(
     private val userRepository: UserRepository,
@@ -44,10 +44,11 @@ internal class DashboardViewModel(
     ) { photoState, isSystemNotificationDialogDisabled, goals, mode, bubbleTitle ->
         val dashboardPhotoStates = DashboardPhotoConfig.entries.map { config ->
             val photo = photoState.find { it.id == config.id }
+            val uri = photo?.uri?.let { Uri.fromFile(File(it)) } ?: Uri.EMPTY
 
             DashboardPhotoState(
                 config = config,
-                uri = photo?.uri?.toUri() ?: Uri.EMPTY,
+                uri = uri,
             )
         }
 
@@ -102,16 +103,15 @@ internal class DashboardViewModel(
         }
     }
 
-    fun savePhotoUri(photos: List<DashboardPhotoState>) {
+    fun upsertPhotos(photos: List<DashboardPhoto>) {
         viewModelScope.launch {
-            val adjustedPhotos = photos.map {
-                DashboardPhoto(
-                    id = it.config.id,
-                    uri = it.uri.toString(),
-                )
-            }
+            dashboardRepository.upsertPhotos(photos)
+        }
+    }
 
-            dashboardRepository.savePhotos(adjustedPhotos)
+    fun deletePhotos(ids: List<Int>) {
+        viewModelScope.launch {
+            dashboardRepository.deletePhotosByIds(ids)
         }
     }
 
