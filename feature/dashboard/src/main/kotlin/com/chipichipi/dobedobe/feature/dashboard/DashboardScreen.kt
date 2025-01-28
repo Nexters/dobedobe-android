@@ -3,6 +3,7 @@ package com.chipichipi.dobedobe.feature.dashboard
 import android.os.Build
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.tween
@@ -83,7 +84,7 @@ private fun DashboardScreen(
         when (uiState) {
             is DashboardUiState.Error,
             is DashboardUiState.Loading,
-            -> {
+                -> {
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
                 )
@@ -153,35 +154,14 @@ private fun DashboardBody(
                 )
             },
         ) { innerPadding ->
-            // Dim 처리로 인해 innerPadding은 Box에 적용 안하고 우선 component별로 각각 적용하도록 처리
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                DashboardCharacter(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding)
-                        .padding(top = 110.dp)
-                        .zIndex(0.5f),
-                )
-
-                uiState.photoState.forEach { photo ->
-                    // TODO : EmptyFrameClick 처리
-                    CollapsedPhotoFrame(
-                        config = photo.config,
-                        url = photo.url,
-                        isExpanded = photoFramesState.isExpanded(photo.config.id),
-                        rotation = photoFramesState.rotationMap[photo.config.id],
-                        onToggleExpansion = onToggleExpansion,
-                        onEmptyFrameClick = { },
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(innerPadding)
-                            .zIndex(0f),
-                    )
-                }
-            }
+            DashboardViewMode(
+                photoState = uiState.photoState,
+                photoFramesState = photoFramesState,
+                onToggleExpansion = onToggleExpansion,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+            )
         }
 
         ExpandedPhotoFrame(
@@ -196,6 +176,7 @@ private fun DashboardBody(
         )
 
         if (uiState.mode.isEditMode) {
+
         }
 
         DashboardPhotoRotationEffect(
@@ -212,10 +193,47 @@ private fun DashboardBody(
     )
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-private fun DashboardEditModeBody(
+private fun SharedTransitionScope.DashboardViewMode(
+    photoState: List<DashboardPhotoState>,
+    photoFramesState: DashboardPhotoFramesState,
+    onToggleExpansion: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center,
+    ) {
+        DashboardCharacter(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 110.dp)
+                .zIndex(0.5f),
+        )
+
+        photoState.forEach { photo ->
+            // TODO : EmptyFrameClick 처리
+            CollapsedPhotoFrame(
+                config = photo.config,
+                url = photo.url,
+                isExpanded = photoFramesState.isExpanded(photo.config.id),
+                rotation = photoFramesState.rotationMap[photo.config.id],
+                onToggleExpansion = onToggleExpansion,
+                onEmptyFrameClick = { },
+                modifier = Modifier
+                    .fillMaxSize()
+                    .zIndex(0f),
+            )
+        }
+    }
+}
+
+@Composable
+private fun DashboardEditMode(
+    modifier: Modifier = Modifier,
+) {
+
 }
 
 @Composable
