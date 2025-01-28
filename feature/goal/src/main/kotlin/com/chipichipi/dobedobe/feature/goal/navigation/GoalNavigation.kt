@@ -11,9 +11,9 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 
-fun NavController.navigateToGoalCreate(
+fun NavController.navigateToGoalAdd(
     navOptions: NavOptions? = null,
-) = navigate(GoalRoute.Create, navOptions)
+) = navigate(GoalRoute.Add, navOptions)
 
 fun NavController.navigateToGoalDetail(
     goalId: Long,
@@ -24,7 +24,7 @@ fun NavGraphBuilder.goalGraph(
     onShowSnackbar: suspend (String, String?) -> Boolean,
     navigateToBack: () -> Unit,
 ) {
-    composable<GoalRoute.Create> {
+    composable<GoalRoute.Add> {
         // TODO: 임시 확인용, Goal Create Screen 구현
         Box(
             modifier = Modifier.fillMaxSize(),

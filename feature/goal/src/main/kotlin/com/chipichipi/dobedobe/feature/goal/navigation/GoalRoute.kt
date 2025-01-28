@@ -8,5 +8,5 @@ sealed interface GoalRoute {
     data class Detail(val goalId: Long) : GoalRoute
 
     @Serializable
-    data object Create : GoalRoute
+    data object Add : GoalRoute
 }

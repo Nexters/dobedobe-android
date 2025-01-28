@@ -41,10 +41,10 @@ internal fun GoalBottomSheetContent(
     goals: List<Goal>,
     onGoalToggled: (Long) -> Unit,
     onGoalClicked: (Long) -> Unit,
-    onGoalPlusClicked: () -> Unit,
+    onGoalAddClicked: () -> Unit,
 ) {
     Column {
-        GoalBottomSheetHeader(onGoalPlusClicked)
+        GoalBottomSheetHeader(onGoalAddClicked)
         Spacer(modifier = Modifier.height(15.dp))
         GoalBottomSheetBody(
             goals = goals,
@@ -56,7 +56,7 @@ internal fun GoalBottomSheetContent(
 
 @Composable
 private fun GoalBottomSheetHeader(
-    onGoalPlusClicked: () -> Unit,
+    onGoalAddClicked: () -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -78,7 +78,7 @@ private fun GoalBottomSheetHeader(
                 containerColor = Color(0xFF00B35D),
                 contentColor = Color.White,
             ),
-            onClick = onGoalPlusClicked,
+            onClick = onGoalAddClicked,
         ) {
             //TODO : icon 변경 필요
             Icon(
@@ -137,6 +137,6 @@ private fun GoalBottomSheetContentPreview(
         goals = goals,
         onGoalToggled = onGoalDone,
         onGoalClicked = {},
-        onGoalPlusClicked = {},
+        onGoalAddClicked = {},
     )
 }
