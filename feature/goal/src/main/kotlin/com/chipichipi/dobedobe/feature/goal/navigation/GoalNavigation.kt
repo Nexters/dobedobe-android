@@ -10,6 +10,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.chipichipi.dobedobe.feature.goal.AddProductRoute
 
 fun NavController.navigateToGoalAdd(
     navOptions: NavOptions? = null,
@@ -25,13 +26,10 @@ fun NavGraphBuilder.goalGraph(
     navigateToBack: () -> Unit,
 ) {
     composable<GoalRoute.Add> {
-        // TODO: 임시 확인용, Goal Create Screen 구현
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center,
-        ) {
-            Text(text = "Goal Create")
-        }
+        AddProductRoute(
+            onShowSnackbar = onShowSnackbar,
+            navigateToBack = navigateToBack,
+        )
     }
 
     composable<GoalRoute.Detail> { backStackEntry ->
