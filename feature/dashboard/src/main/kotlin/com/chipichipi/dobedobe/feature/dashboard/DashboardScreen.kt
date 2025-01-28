@@ -137,7 +137,6 @@ private fun DashboardBody(
         val photoFramesState = rememberDashboardPhotoFramesState(
             photoState = uiState.photoState,
         )
-
         val onToggleExpansion: (Int) -> Unit = { id ->
             photoFramesState.rotationMap[id]?.let { rotation ->
                 if (!rotation.isRunning) {
@@ -145,12 +144,13 @@ private fun DashboardBody(
                 }
             }
         }
+        val isEditMode = uiState.mode.isEditMode
 
         DobeDobeBottomSheetScaffold(
             modifier = modifier
                 .fillMaxSize()
                 .then(
-                    if (uiState.mode.isEditMode) {
+                    if (isEditMode) {
                         Modifier.cloudy(35)
                     } else {
                         Modifier
@@ -190,13 +190,15 @@ private fun DashboardBody(
                 uiState.photoState[id - 1]
             },
             rotation = photoFramesState.rotationMap[photoFramesState.currentPhotoId],
-            onToggleExpansion = onToggleExpansion,
+            onToggleExpansion = { id ->
+                if (!isEditMode) onToggleExpansion(id)
+            },
             modifier = Modifier
                 .fillMaxSize()
                 .zIndex(1f),
         )
 
-        if (uiState.mode.isEditMode) {
+        if (isEditMode) {
             DashboardEditMode(
                 photoState = uiState.photoState,
                 onToggleMode = onToggleMode,
