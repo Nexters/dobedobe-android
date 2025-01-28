@@ -76,6 +76,7 @@ private fun GoalBottomSheetHeader(
             modifier = Modifier
                 .size(width = 72.dp, height = 32.dp),
             colors = IconButtonDefaults.iconButtonColors().copy(
+                // TODO: colorScheme 적용 필요
                 containerColor = Color(0xFF00B35D),
                 contentColor = Color.White,
             ),
