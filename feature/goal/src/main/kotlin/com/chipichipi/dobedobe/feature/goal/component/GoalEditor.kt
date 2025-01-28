@@ -25,22 +25,18 @@ fun GoalEditor(
     title: String,
     onChangeTitle: (String) -> Unit,
     modifier: Modifier = Modifier,
+    errorMessage: String? = null,
     toggleContent: @Composable (() -> Unit)? = null,
 ) {
     val goalTitleState = rememberTextFieldState(title)
     LaunchedEffect(goalTitleState.text) {
         onChangeTitle(goalTitleState.text.toString())
     }
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 24.dp)
-            .padding(bottom = 32.dp),
-    ) {
+    Column(modifier = modifier) {
         // TODO : Writing, textStyle 수정 필요
         Text(
             text = "어떤 목표를 이루고 싶나요?",
-            modifier = modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             fontWeight = FontWeight.Bold,
             fontSize = 22.sp,
             lineHeight = 33.sp,
@@ -52,6 +48,7 @@ fun GoalEditor(
             state = goalTitleState,
             hint = "목표 이름",
             supportMessage = "목표가 간결할수록 집중력이 높아져요.",
+            errorMessage = errorMessage,
         )
         Spacer(Modifier.height(47.dp))
 
@@ -66,9 +63,11 @@ private fun GoalDetailPreview() {
     DobeDobeTheme {
         DobeDobeBackground {
             GoalEditor(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 24.dp, vertical = 32.dp),
                 title = "스쿼트 50개",
                 onChangeTitle = {},
-                modifier = Modifier.padding(top = 24.dp),
             )
         }
     }
