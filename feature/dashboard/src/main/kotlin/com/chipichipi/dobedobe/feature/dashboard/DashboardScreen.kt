@@ -119,7 +119,7 @@ private fun DashboardScreen(
         when (uiState) {
             is DashboardUiState.Error,
             is DashboardUiState.Loading,
-            -> {
+                -> {
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
                 )
@@ -323,6 +323,66 @@ private fun DashboardEditMode(
     val coroutineScope = rememberCoroutineScope()
     var photoDraftsState by remember { mutableStateOf(photoState) }
     var selectedPhotoId by remember { mutableStateOf<Int?>(null) }
+    var selectedPhotoForDeletion by remember { mutableStateOf<Int?>(null) }
+
+    val onChangePhoto: (Uri) -> Unit = { uri ->
+        photoDraftsState = photoDraftsState.map { draft ->
+            if (draft.config.id == selectedPhotoId) {
+                draft.copy(
+                    uri = uri,
+                    hasUriChanged = true,
+                )
+            } else {
+                draft
+            }
+        }
+    }
+
+    val photoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri ->
+            if (selectedPhotoId != null && uri != null) {
+                onChangePhoto(uri)
+            }
+
+            selectedPhotoId = null
+        },
+    )
+
+    val onDeletePhoto: (Int) -> Unit = { id ->
+        photoDraftsState = photoDraftsState.map { draft ->
+            if (draft.config.id == id) {
+                draft.copy(
+                    uri = Uri.EMPTY,
+                    hasUriChanged = true,
+                )
+            } else {
+                draft
+            }
+        }
+    }
+
+    val onPickPhoto: (Int) -> Unit = { id ->
+        selectedPhotoId = id
+
+        photoPickerLauncher.launch(
+            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
+        )
+    }
+
+    selectedPhotoForDeletion?.let { id ->
+        PhotoDeletionDialog(
+            onDismissRequest = {
+                selectedPhotoForDeletion = null
+            },
+            onPickPhoto = {
+                onPickPhoto(id)
+            },
+            onDeletePhoto = {
+                onDeletePhoto(id)
+            }
+        )
+    }
 
     // TODO : 색상 변경 필요
     Column(
@@ -351,25 +411,6 @@ private fun DashboardEditMode(
             },
         )
 
-        val photoPickerLauncher = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.PickVisualMedia(),
-            onResult = { uri ->
-                if (selectedPhotoId != null && uri != null) {
-                    photoDraftsState = photoDraftsState.map { draft ->
-                        if (draft.config.id == selectedPhotoId) {
-                            draft.copy(
-                                uri = uri,
-                                hasUriChanged = true,
-                            )
-                        } else {
-                            draft
-                        }
-                    }
-                }
-                selectedPhotoId = null
-            },
-        )
-
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center,
@@ -379,24 +420,11 @@ private fun DashboardEditMode(
                     config = photo.config,
                     uri = photo.uri,
                     rotation = photo.config.rotationZ,
-                    onClick = {
-                        selectedPhotoId = photo.config.id
-
-                        photoPickerLauncher.launch(
-                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
-                        )
+                    onPickPhoto = {
+                        onPickPhoto(photo.config.id)
                     },
-                    onDelete = {
-                        photoDraftsState = photoDraftsState.map { draft ->
-                            if (draft.config.id == photo.config.id) {
-                                draft.copy(
-                                    uri = Uri.EMPTY,
-                                    hasUriChanged = true,
-                                )
-                            } else {
-                                draft
-                            }
-                        }
+                    onDeletePhoto = {
+                        selectedPhotoForDeletion = photo.config.id
                     },
                 )
             }
@@ -421,6 +449,40 @@ private fun DashboardEditMode(
                     color = Color.White,
                 )
             }
+        }
+    }
+}
+
+@Composable
+private fun PhotoDeletionDialog(
+    onDismissRequest: () -> Unit,
+    onPickPhoto: () -> Unit,
+    onDeletePhoto: () -> Unit
+) {
+    DobeDobeDialog(
+        onDismissRequest = onDismissRequest,
+        title = "이미지 변경"
+    ) {
+        Button(
+            onClick = {
+                onPickPhoto()
+                onDismissRequest()
+            }
+        ) {
+            Text(
+                text = "앨범에서 이미지 찾기"
+            )
+        }
+
+        Button(
+            onClick = {
+                onDeletePhoto()
+                onDismissRequest()
+            }
+        ) {
+            Text(
+                text = "이미지 삭제"
+            )
         }
     }
 }
