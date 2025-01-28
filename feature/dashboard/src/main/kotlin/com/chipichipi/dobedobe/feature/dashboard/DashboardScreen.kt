@@ -1,18 +1,11 @@
 package com.chipichipi.dobedobe.feature.dashboard
 
-import android.net.Uri
 import android.os.Build
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -23,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
@@ -33,7 +25,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,27 +34,25 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBottomSheetScaffold
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeDialog
 import com.chipichipi.dobedobe.core.model.DashboardPhoto
+import com.chipichipi.dobedobe.feature.dashboard.component.DashboardEditMode
 import com.chipichipi.dobedobe.feature.dashboard.component.CollapsedPhotoFrame
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardBubble
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardCharacter
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardEditModeTopAppBar
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardTopAppBar
-import com.chipichipi.dobedobe.feature.dashboard.component.EditModePhotoFrame
+import com.chipichipi.dobedobe.feature.dashboard.component.DashboardViewMode
 import com.chipichipi.dobedobe.feature.dashboard.component.ExpandedPhotoFrame
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
-import com.chipichipi.dobedobe.feature.dashboard.util.updateModifiedPhotosToFile
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.skydoves.cloudy.cloudy
-import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 private const val ANIMATION_DURATION = 500
@@ -256,235 +245,6 @@ private fun DashboardBody(
         setGoalNotificationEnabled = setGoalNotificationEnabled,
         disableSystemNotificationDialog = disableSystemNotificationDialog,
     )
-}
-
-@OptIn(ExperimentalSharedTransitionApi::class)
-@Composable
-private fun SharedTransitionScope.DashboardViewMode(
-    isViewMode: Boolean,
-    photoState: List<DashboardPhotoState>,
-    bubbleTitle: String,
-    photoFramesState: DashboardPhotoFramesState,
-    onChangeBubble: () -> Unit,
-    onToggleExpansion: (Int) -> Unit,
-    onToggleMode: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center,
-    ) {
-        photoState.forEach { photo ->
-            CollapsedPhotoFrame(
-                config = photo.config,
-                uri = photo.uri,
-                isExpanded = photoFramesState.isExpanded(photo.config.id),
-                rotation = photoFramesState.rotationMap[photo.config.id],
-                onToggleExpansion = onToggleExpansion,
-                onEmptyFrameClick = onToggleMode,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .zIndex(0f),
-            )
-        }
-
-        if (isViewMode) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Spacer(Modifier.height(13.dp))
-                DashboardBubble(
-                    title = bubbleTitle,
-                    // TODO : font 적용
-                    textStyle = TextStyle(fontSize = 15.sp),
-                    // TODO: ColorScheme 적용
-                    modifier = Modifier.background(Color.White),
-                    onClick = onChangeBubble,
-                )
-                DashboardCharacter(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .zIndex(0.5f),
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun DashboardEditMode(
-    photoState: List<DashboardPhotoState>,
-    onToggleMode: () -> Unit,
-    onUpsertPhotos: (List<DashboardPhoto>) -> Unit,
-    onDeletePhotos: (List<Int>) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
-    var photoDraftsState by remember { mutableStateOf(photoState) }
-    var selectedPhotoId by remember { mutableStateOf<Int?>(null) }
-    var selectedPhotoForDeletion by remember { mutableStateOf<Int?>(null) }
-
-    val onChangePhoto: (Uri) -> Unit = { uri ->
-        photoDraftsState = photoDraftsState.map { draft ->
-            if (draft.config.id == selectedPhotoId) {
-                draft.copy(
-                    uri = uri,
-                    hasUriChanged = true,
-                )
-            } else {
-                draft
-            }
-        }
-    }
-
-    val photoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { uri ->
-            if (selectedPhotoId != null && uri != null) {
-                onChangePhoto(uri)
-            }
-
-            selectedPhotoId = null
-        },
-    )
-
-    val onDeletePhoto: (Int) -> Unit = { id ->
-        photoDraftsState = photoDraftsState.map { draft ->
-            if (draft.config.id == id) {
-                draft.copy(
-                    uri = Uri.EMPTY,
-                    hasUriChanged = true,
-                )
-            } else {
-                draft
-            }
-        }
-    }
-
-    val onPickPhoto: (Int) -> Unit = { id ->
-        selectedPhotoId = id
-
-        photoPickerLauncher.launch(
-            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
-        )
-    }
-
-    selectedPhotoForDeletion?.let { id ->
-        PhotoDeletionDialog(
-            onDismissRequest = {
-                selectedPhotoForDeletion = null
-            },
-            onPickPhoto = {
-                onPickPhoto(id)
-            },
-            onDeletePhoto = {
-                onDeletePhoto(id)
-            }
-        )
-    }
-
-    // TODO : 색상 변경 필요
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(Color.Black.copy(0.7f)),
-    ) {
-        DashboardEditModeTopAppBar(
-            onToggleMode = onToggleMode,
-            onSavePhotos = {
-                coroutineScope.launch {
-                    val modifiedPhotos = photoDraftsState.filter { it.hasUriChanged }
-                    val updatedPhotos = updateModifiedPhotosToFile(context, modifiedPhotos)
-                    val (photosToDelete, photosToUpsert) = updatedPhotos.partition { it.uri == null }
-
-                    if (photosToUpsert.isNotEmpty()) {
-                        onUpsertPhotos(photosToUpsert)
-                    }
-
-                    if (photosToDelete.isNotEmpty()) {
-                        onDeletePhotos(photosToDelete.map { it.id })
-                    }
-
-                    onToggleMode()
-                }
-            },
-        )
-
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center,
-        ) {
-            photoDraftsState.forEach { photo ->
-                EditModePhotoFrame(
-                    config = photo.config,
-                    uri = photo.uri,
-                    rotation = photo.config.rotationZ,
-                    onPickPhoto = {
-                        onPickPhoto(photo.config.id)
-                    },
-                    onDeletePhoto = {
-                        selectedPhotoForDeletion = photo.config.id
-                    },
-                )
-            }
-
-            Column(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 230.dp),
-                verticalArrangement = Arrangement.spacedBy(15.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                // TODO : 색상 변경 필요
-                Icon(
-                    painter = painterResource(R.drawable.ic_dashboard_edit_mode),
-                    tint = Color.White,
-                    contentDescription = "edit mode icon",
-                )
-
-                Text(
-                    text = stringResource(R.string.feature_dashboard_edit_mode_description),
-                    fontSize = 16.sp,
-                    color = Color.White,
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun PhotoDeletionDialog(
-    onDismissRequest: () -> Unit,
-    onPickPhoto: () -> Unit,
-    onDeletePhoto: () -> Unit
-) {
-    DobeDobeDialog(
-        onDismissRequest = onDismissRequest,
-        title = "이미지 변경"
-    ) {
-        Button(
-            onClick = {
-                onPickPhoto()
-                onDismissRequest()
-            }
-        ) {
-            Text(
-                text = "앨범에서 이미지 찾기"
-            )
-        }
-
-        Button(
-            onClick = {
-                onDeletePhoto()
-                onDismissRequest()
-            }
-        ) {
-            Text(
-                text = "이미지 삭제"
-            )
-        }
-    }
 }
 
 @Composable
