@@ -37,6 +37,7 @@ permission = "0.37.0"
 
 # third-party
 coil = "2.7.0"
+cloudy = "0.2.4"
 moduleGraph = "2.7.1"
 koin = "4.0.1"
 ktlint = "12.1.0"
@@ -103,6 +104,7 @@ protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref 
 # third-party
 coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+compose-cloudy = { module = "com.github.skydoves:cloudy", version.ref = "cloudy" }
 koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
 koin-android = { group = "io.insert-koin", name = "koin-android" }
 koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
