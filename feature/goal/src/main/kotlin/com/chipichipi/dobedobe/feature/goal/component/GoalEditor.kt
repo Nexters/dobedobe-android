@@ -29,9 +29,11 @@ fun GoalEditor(
     toggleContent: @Composable (() -> Unit)? = null,
 ) {
     val goalTitleState = rememberTextFieldState(title)
+
     LaunchedEffect(goalTitleState.text) {
         onChangeTitle(goalTitleState.text.toString())
     }
+
     Column(modifier = modifier) {
         // TODO : Writing, textStyle 수정 필요
         Text(
@@ -50,10 +52,10 @@ fun GoalEditor(
             supportMessage = "목표가 간결할수록 집중력이 높아져요.",
             errorMessage = errorMessage,
         )
-        Spacer(Modifier.height(47.dp))
-
-        Spacer(Modifier.weight(1f))
-        toggleContent?.invoke()
+        if (toggleContent != null) {
+            Spacer(Modifier.height(47.dp))
+            toggleContent()
+        }
     }
 }
 
