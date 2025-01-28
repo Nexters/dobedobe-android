@@ -81,7 +81,7 @@ private fun EditModePhotoFramePreview() {
         EditModePhotoFrame(
             config = DashboardPhotoConfig.TOP,
             url = "",
-            rotation = 40f
+            rotation = 40f,
         ) { }
     }
 }
