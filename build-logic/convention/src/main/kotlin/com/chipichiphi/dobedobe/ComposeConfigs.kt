@@ -31,6 +31,7 @@ internal fun Project.configureAndroidCompose(
             "implementation"(platform(bom))
             "implementation"(libs.findBundle("compose").get())
             "implementation"(libs.findLibrary("coil.kt.compose").get())
+            "implementation"(libs.findLibrary("coil.kt.network").get())
             "testImplementation"(platform(bom))
             "testImplementation"(libs.findLibrary("robolectric").get())
             "testImplementation"(libs.findLibrary("androidx.compose.ui.test.junit4").get())

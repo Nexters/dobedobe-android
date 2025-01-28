@@ -16,7 +16,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import coil3.compose.AsyncImage
 import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoConfig
