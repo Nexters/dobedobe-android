@@ -80,7 +80,7 @@ private fun GoalBottomSheetHeader(
             ),
             onClick = onGoalAddClicked,
         ) {
-            //TODO : icon 변경 필요
+            // TODO : icon 변경 필요
             Icon(
                 imageVector = Icons.Default.Add,
                 modifier = Modifier.size(14.dp),

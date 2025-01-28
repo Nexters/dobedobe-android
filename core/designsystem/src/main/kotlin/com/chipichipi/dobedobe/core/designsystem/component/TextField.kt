@@ -57,8 +57,8 @@ fun DobeDobeTextField(
         decorator = { innerTextField ->
             Column(
                 modifier =
-                Modifier
-                    .fillMaxWidth(),
+                    Modifier
+                        .fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(2.dp),
             ) {
                 Box {
