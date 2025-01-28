@@ -11,11 +11,10 @@ import com.github.penfeizhou.animation.apng.APNGDrawable
 import com.github.penfeizhou.animation.apng.decode.APNGParser
 import com.github.penfeizhou.animation.io.ByteBufferReader
 import com.github.penfeizhou.animation.io.StreamReader
-import java.nio.ByteBuffer
 import okio.BufferedSource
+import java.nio.ByteBuffer
 
 internal class AnimatedPngDecoder(private val source: ImageSource) : Decoder {
-
     override suspend fun decode(): DecodeResult {
         val buffer = source.source().squashToDirectByteBuffer()
         return DecodeResult(
@@ -34,7 +33,6 @@ internal class AnimatedPngDecoder(private val source: ImageSource) : Decoder {
     }
 
     class Factory : Decoder.Factory {
-
         override fun create(
             result: SourceFetchResult,
             options: Options,
