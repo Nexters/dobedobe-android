@@ -1,13 +1,15 @@
 package com.chipichipi.dobedobe.feature.goal
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -28,11 +30,15 @@ fun AddProductRoute(
     viewModel: AddGoalViewModel = koinViewModel(),
 ) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
+    val focusManager = LocalFocusManager.current
     val goalValidResult by viewModel.goalValidResult.collectAsStateWithLifecycle()
-
+    val onBack = {
+        focusManager.clearFocus()
+        navigateToBack()
+    }
     LaunchedEffect(Unit) {
         viewModel.navigateToBackEvent
-            .onEach { navigateToBack() }
+            .onEach { onBack() }
             .flowWithLifecycle(lifecycle)
             .launchIn(this)
     }
@@ -40,17 +46,21 @@ fun AddProductRoute(
     AddGoalScreen(
         modifier = Modifier
             .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTapGestures {
+                    focusManager.clearFocus()
+                }
+            }
             .padding(horizontal = 24.dp)
             .padding(top = 24.dp, bottom = 32.dp),
         errorMessage = goalValidResult.errorMessage(),
         onShowSnackbar = onShowSnackbar,
-        navigateToBack = navigateToBack,
+        navigateToBack = onBack,
         onChangeGoalName = viewModel::changeGoalTitle,
         onAddGoal = viewModel::addGoal,
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AddGoalScreen(
     errorMessage: String?,
