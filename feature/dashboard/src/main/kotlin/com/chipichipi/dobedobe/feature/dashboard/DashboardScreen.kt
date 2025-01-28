@@ -73,7 +73,7 @@ internal fun DashboardRoute(
         disableSystemNotificationDialog = viewModel::disableSystemNotificationDialog,
         navigateToSetting = navigateToSetting,
         onGoalToggled = viewModel::toggleGoalCompletion,
-        toggleMode = viewModel::toggleMode,
+        onToggleMode = viewModel::toggleMode,
     )
 }
 
@@ -85,7 +85,7 @@ private fun DashboardScreen(
     disableSystemNotificationDialog: () -> Unit,
     navigateToSetting: () -> Unit,
     onGoalToggled: (Goal) -> Unit,
-    toggleMode: () -> Unit,
+    onToggleMode: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -108,7 +108,7 @@ private fun DashboardScreen(
                     disableSystemNotificationDialog = disableSystemNotificationDialog,
                     navigateToSetting = navigateToSetting,
                     onGoalToggled = onGoalToggled,
-                    toggleMode = toggleMode,
+                    onToggleMode = onToggleMode,
                 )
             }
         }
@@ -123,7 +123,7 @@ private fun DashboardBody(
     disableSystemNotificationDialog: () -> Unit,
     navigateToSetting: () -> Unit,
     onGoalToggled: (Goal) -> Unit,
-    toggleMode: () -> Unit,
+    onToggleMode: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     SharedTransitionLayout(
@@ -168,7 +168,7 @@ private fun DashboardBody(
             sheetPeekHeight = 380.dp,
             topBar = {
                 DashboardTopAppBar(
-                    onEditClick = toggleMode,
+                    onEditClick = onToggleMode,
                     navigateToSetting = navigateToSetting,
                 )
             },
@@ -178,6 +178,7 @@ private fun DashboardBody(
                 photoState = uiState.photoState,
                 photoFramesState = photoFramesState,
                 onToggleExpansion = onToggleExpansion,
+                onToggleMode = onToggleMode,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding),
@@ -198,7 +199,7 @@ private fun DashboardBody(
         if (uiState.mode.isEditMode) {
             DashboardEditMode(
                 photoState = uiState.photoState,
-                toggleMode = toggleMode,
+                onToggleMode = onToggleMode,
             )
         }
 
@@ -223,6 +224,7 @@ private fun SharedTransitionScope.DashboardViewMode(
     photoState: List<DashboardPhotoState>,
     photoFramesState: DashboardPhotoFramesState,
     onToggleExpansion: (Int) -> Unit,
+    onToggleMode: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -239,14 +241,13 @@ private fun SharedTransitionScope.DashboardViewMode(
         }
 
         photoState.forEach { photo ->
-            // TODO : EmptyFrameClick 처리
             CollapsedPhotoFrame(
                 config = photo.config,
                 url = photo.url,
                 isExpanded = photoFramesState.isExpanded(photo.config.id),
                 rotation = photoFramesState.rotationMap[photo.config.id],
                 onToggleExpansion = onToggleExpansion,
-                onEmptyFrameClick = { },
+                onEmptyFrameClick = onToggleMode,
                 modifier = Modifier
                     .fillMaxSize()
                     .zIndex(0f),
@@ -258,7 +259,7 @@ private fun SharedTransitionScope.DashboardViewMode(
 @Composable
 private fun DashboardEditMode(
     photoState: List<DashboardPhotoState>,
-    toggleMode: () -> Unit,
+    onToggleMode: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     // TODO : 색상 변경 필요
@@ -268,7 +269,7 @@ private fun DashboardEditMode(
             .background(Color.Black.copy(0.7f)),
     ) {
         DashboardEditModeTopAppBar(
-            toggleMode = toggleMode,
+            onToggleMode = onToggleMode,
         )
 
         Box(

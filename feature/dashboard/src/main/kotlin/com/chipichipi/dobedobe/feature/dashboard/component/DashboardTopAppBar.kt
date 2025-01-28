@@ -69,7 +69,7 @@ internal fun DashboardTopAppBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun DashboardEditModeTopAppBar(
-    toggleMode: () -> Unit,
+    onToggleMode: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     DobeDobeTopAppBar(
@@ -82,12 +82,12 @@ internal fun DashboardEditModeTopAppBar(
             ) {
                 // TODO : 색상 변경 필요
                 TextButton(
-                    onClick = toggleMode,
+                    onClick = onToggleMode,
                     contentPadding = PaddingValues(horizontal = 24.dp),
                 ) {
                     Text(
                         modifier = Modifier
-                            .clickable(onClick = toggleMode),
+                            .clickable(onClick = onToggleMode),
                         text = stringResource(R.string.feature_dashboard_edit_mode_top_bar_cancel),
                         color = Color.White,
                     )
@@ -127,7 +127,7 @@ private fun DashboardTopAppBarPreview() {
 private fun DashboardEditModeTopAppBarPreview() {
     DobeDobeTheme {
         DashboardEditModeTopAppBar(
-            toggleMode = {},
+            onToggleMode = {},
         )
     }
 }
