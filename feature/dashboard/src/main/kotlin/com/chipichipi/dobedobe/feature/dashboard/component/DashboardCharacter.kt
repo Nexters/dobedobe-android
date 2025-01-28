@@ -56,7 +56,7 @@ internal fun DashboardCharacter(
             imageLoader = imageLoader,
             placeholder = painterResource(R.drawable.bird_placeholder),
             modifier = Modifier
-                .size(160.dp, 200.dp)
+                .size(180.dp, 225.dp)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null,
