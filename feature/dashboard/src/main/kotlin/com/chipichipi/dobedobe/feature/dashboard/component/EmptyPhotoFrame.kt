@@ -24,7 +24,7 @@ internal fun EmptyPhotoFrame(
             modifier = Modifier.size(24.dp),
             imageVector = Icons.Rounded.Add,
             contentDescription = "add",
-            tint = Color.White,
+            tint = Color.Black,
         )
     }
 }
