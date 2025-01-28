@@ -6,6 +6,8 @@ import androidx.navigation.compose.NavHost
 import com.chipichipi.dobedobe.feature.dashboard.navigation.DashboardRoute
 import com.chipichipi.dobedobe.feature.dashboard.navigation.dashboardScreen
 import com.chipichipi.dobedobe.feature.goal.navigation.goalGraph
+import com.chipichipi.dobedobe.feature.goal.navigation.navigateToGoalCreate
+import com.chipichipi.dobedobe.feature.goal.navigation.navigateToGoalDetail
 import com.chipichipi.dobedobe.feature.setting.navigation.navigateToSetting
 import com.chipichipi.dobedobe.feature.setting.navigation.settingScreen
 import com.chipichipi.dobedobe.ui.DobeDobeAppState
@@ -25,6 +27,8 @@ internal fun DobeDobeNavHost(
     ) {
         dashboardScreen(
             onShowSnackbar = onShowSnackbar,
+            navigateToGoalCreate = navController::navigateToGoalCreate,
+            navigateToGoalDetail = navController::navigateToGoalDetail,
             navigateToSetting = navController::navigateToSetting,
         )
 

@@ -30,7 +30,6 @@ import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBottomSheetScaffold
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeDialog
-import com.chipichipi.dobedobe.core.model.Goal
 import com.chipichipi.dobedobe.feature.dashboard.component.CollapsedPhotoFrame
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardCharacter
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardTopAppBar
@@ -47,6 +46,8 @@ private const val ANIMATION_DURATION = 500
 @Composable
 internal fun DashboardRoute(
     onShowSnackbar: suspend (String, String?) -> Boolean,
+    navigateToGoalCreate: () -> Unit,
+    navigateToGoalDetail: (Long) -> Unit,
     navigateToSetting: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DashboardViewModel = koinViewModel(),
@@ -59,6 +60,8 @@ internal fun DashboardRoute(
         uiState = uiState,
         setGoalNotificationEnabled = viewModel::setGoalNotificationEnabled,
         disableSystemNotificationDialog = viewModel::disableSystemNotificationDialog,
+        navigateToGoalCreate = navigateToGoalCreate,
+        navigateToGoalDetail = navigateToGoalDetail,
         navigateToSetting = navigateToSetting,
         onGoalToggled = viewModel::toggleGoalCompletion,
     )
@@ -70,8 +73,10 @@ private fun DashboardScreen(
     uiState: DashboardUiState,
     setGoalNotificationEnabled: (Boolean) -> Unit,
     disableSystemNotificationDialog: () -> Unit,
+    navigateToGoalCreate: () -> Unit,
+    navigateToGoalDetail: (Long) -> Unit,
     navigateToSetting: () -> Unit,
-    onGoalToggled: (Goal) -> Unit,
+    onGoalToggled: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -81,17 +86,20 @@ private fun DashboardScreen(
         when (uiState) {
             is DashboardUiState.Error,
             is DashboardUiState.Loading,
-            -> {
+                -> {
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
                 )
             }
+
             is DashboardUiState.Success -> {
                 DashboardBody(
                     modifier = modifier,
                     uiState = uiState,
                     setGoalNotificationEnabled = setGoalNotificationEnabled,
                     disableSystemNotificationDialog = disableSystemNotificationDialog,
+                    navigateToGoalCreate = navigateToGoalCreate,
+                    navigateToGoalDetail = navigateToGoalDetail,
                     navigateToSetting = navigateToSetting,
                     onGoalToggled = onGoalToggled,
                 )
@@ -106,8 +114,10 @@ private fun DashboardBody(
     uiState: DashboardUiState.Success,
     setGoalNotificationEnabled: (Boolean) -> Unit,
     disableSystemNotificationDialog: () -> Unit,
+    navigateToGoalCreate: () -> Unit,
+    navigateToGoalDetail: (Long) -> Unit,
     navigateToSetting: () -> Unit,
-    onGoalToggled: (Goal) -> Unit,
+    onGoalToggled: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     SharedTransitionLayout(
@@ -137,8 +147,8 @@ private fun DashboardBody(
                 GoalBottomSheetContent(
                     goals = uiState.goals,
                     onGoalToggled = onGoalToggled,
-                    // TODO : navigateToGoalDetail 연결 필요
-                    onGoalClicked = { },
+                    onGoalPlusClicked = navigateToGoalCreate,
+                    onGoalClicked = navigateToGoalDetail,
                 )
             },
             sheetPeekHeight = 380.dp,

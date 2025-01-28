@@ -39,11 +39,12 @@ import kotlinx.datetime.Instant
 @Composable
 internal fun GoalBottomSheetContent(
     goals: List<Goal>,
-    onGoalToggled: (Goal) -> Unit,
-    onGoalClicked: (Goal) -> Unit,
+    onGoalToggled: (Long) -> Unit,
+    onGoalClicked: (Long) -> Unit,
+    onGoalPlusClicked: () -> Unit,
 ) {
     Column {
-        GoalBottomSheetHeader()
+        GoalBottomSheetHeader(onGoalPlusClicked)
         Spacer(modifier = Modifier.height(15.dp))
         GoalBottomSheetBody(
             goals = goals,
@@ -54,8 +55,9 @@ internal fun GoalBottomSheetContent(
 }
 
 @Composable
-private fun GoalBottomSheetHeader() {
-    // TODO: 검색 기능 추가, parameter 는 그때 추가
+private fun GoalBottomSheetHeader(
+    onGoalPlusClicked: () -> Unit,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -73,7 +75,7 @@ private fun GoalBottomSheetHeader() {
             modifier = Modifier
                 .size(42.dp)
                 .offset { IntOffset(x = 12.dp.roundToPx(), y = 0) },
-            onClick = {},
+            onClick = onGoalPlusClicked,
         ) {
             Icon(
                 imageVector = Icons.Default.Search,
@@ -88,8 +90,8 @@ private fun GoalBottomSheetHeader() {
 @Composable
 private fun GoalBottomSheetBody(
     goals: List<Goal>,
-    onGoalToggled: (Goal) -> Unit,
-    onGoalClicked: (Goal) -> Unit,
+    onGoalToggled: (Long) -> Unit,
+    onGoalClicked: (Long) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier
@@ -102,8 +104,8 @@ private fun GoalBottomSheetBody(
         items(goals) { goal ->
             GoalRow(
                 goal = goal,
-                onToggleCompleted = { onGoalToggled(goal) },
-                onClick = { onGoalClicked(goal) },
+                onToggleCompleted = { onGoalToggled(goal.id) },
+                onClick = { onGoalClicked(goal.id) },
             )
         }
     }
@@ -115,9 +117,9 @@ private fun GoalBottomSheetContentPreview(
     @PreviewParameter(GoalPreviewParameterProvider::class) pGoals: List<Goal>,
 ) {
     var goals by remember { mutableStateOf(pGoals) }
-    val onGoalDone: (Goal) -> Unit = {
+    val onGoalDone: (Long) -> Unit = {
         goals = goals.map { goal ->
-            if (goal.id == it.id) {
+            if (goal.id == it) {
                 return@map if (goal.isCompleted) {
                     goal.copy(isCompleted = false)
                 } else {
@@ -131,5 +133,6 @@ private fun GoalBottomSheetContentPreview(
         goals = goals,
         onGoalToggled = onGoalDone,
         onGoalClicked = {},
+        onGoalPlusClicked = {},
     )
 }
