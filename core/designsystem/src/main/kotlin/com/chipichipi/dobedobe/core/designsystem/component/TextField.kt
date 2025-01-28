@@ -19,9 +19,19 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
+
+private val DefaultDobeDobeTextStyle: TextStyle = TextStyle(
+    fontSize = 28.sp,
+    lineHeight = 42.sp,
+    lineHeightStyle = LineHeightStyle(
+        alignment = LineHeightStyle.Alignment.Proportional,
+        trim = LineHeightStyle.Trim.None,
+    ),
+)
 
 /**
  * TODO : TextField 컴포넌트 단순 Wrapper 임시 처리, 각 상태 디자인 정의 필요
@@ -37,16 +47,13 @@ fun DobeDobeTextField(
     errorMessage: String? = null,
     enabled: Boolean = true,
     readOnly: Boolean = false,
+    textStyle: TextStyle = DefaultDobeDobeTextStyle,
 ) {
     BasicTextField(
         state = state,
         enabled = enabled,
         readOnly = readOnly,
-        textStyle = TextStyle(
-            fontSize = 28.sp,
-            lineHeight = 42.sp,
-            fontWeight = FontWeight.SemiBold,
-        ),
+        textStyle = textStyle,
         decorator = { innerTextField ->
             Column(
                 modifier =
@@ -58,10 +65,9 @@ fun DobeDobeTextField(
                     if (state.text.isEmpty()) {
                         Text(
                             text = hint,
-                            color = Color(0xFFE5E7EB),
                             // TODO : Color Scheme 적용 필요
-                            fontSize = 28.sp,
-                            lineHeight = 42.sp,
+                            color = Color(0xFFE5E7EB),
+                            style = textStyle,
                             fontWeight = FontWeight.SemiBold,
                         )
                     }
