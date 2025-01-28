@@ -26,6 +26,31 @@ import androidx.compose.ui.unit.dp
 
 private val DefaultBubbleWidth = 135.dp
 private val DefaultBubbleHeight = 75.dp
+private val DefaultBubbleTailHeight = 20.dp
+private val DefaultBubbleTailWidth = 34.dp
+private val DefaultContentVerticalPadding = 16.dp
+private val DefaultContentHorizontalPadding = 20.dp
+
+@Composable
+fun DashBoardBubble(
+    modifier: Modifier = Modifier,
+    tailPositionX: Float = 0.3f,
+    content: @Composable BoxScope.() -> Unit,
+) {
+    val density = LocalDensity.current
+    Box(
+        modifier = Modifier
+            .defaultMinSize(DefaultBubbleWidth, DefaultBubbleHeight)
+            .shadow(3.dp, bubbleShape(density, tailPositionX))
+            .clip(bubbleShape(density, tailPositionX))
+            .then(modifier)
+            .padding(
+                horizontal = DefaultContentHorizontalPadding,
+                vertical = DefaultContentVerticalPadding,
+            ),
+        content = content,
+    )
+}
 
 private fun bubbleShape(
     density: Density,
@@ -150,4 +175,27 @@ private fun Path.drawBottomEdge(cornerRadius: Float) {
         sweepAngleDegrees = 90f,
         forceMoveTo = false,
     )
+}
+
+
+@Preview
+@Composable
+fun PreviewBubbleWithTail() {
+    Box(
+        modifier = Modifier
+            .size(200.dp, 200.dp)
+            .background(Color.LightGray)
+            .padding(16.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        DashBoardBubble(
+            Modifier
+                .fillMaxWidth()
+                .background(Color.White)
+                .clickable { },
+            tailPositionX = 0.5f,
+        ) {
+            Text("Bubble with Tail")
+        }
+    }
 }
