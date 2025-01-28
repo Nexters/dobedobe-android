@@ -8,10 +8,13 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
@@ -40,6 +43,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBottomSheetScaffold
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeDialog
 import com.chipichipi.dobedobe.feature.dashboard.component.CollapsedPhotoFrame
+import com.chipichipi.dobedobe.feature.dashboard.component.DashBoardBubble
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardCharacter
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardEditModeTopAppBar
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardTopAppBar
@@ -100,7 +104,7 @@ private fun DashboardScreen(
         when (uiState) {
             is DashboardUiState.Error,
             is DashboardUiState.Loading,
-            -> {
+                -> {
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
                 )
@@ -244,12 +248,26 @@ private fun SharedTransitionScope.DashboardViewMode(
         contentAlignment = Alignment.Center,
     ) {
         if (isViewMode) {
-            DashboardCharacter(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 110.dp)
-                    .zIndex(0.5f),
-            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Spacer(Modifier.height(13.dp))
+                DashBoardBubble(
+                    modifier = Modifier
+                        .background(Color.White)
+                        .clickable {
+                            // TODO: 해당 Goal Detail 로 이동
+                        },
+                ) {
+                    // TODO : 랜덤 TODO 목표 받아와서 넣기
+                    Text("아이고 힘들다 힘들어 한살이라도 어리고 싶다", fontSize = 15.sp)
+                }
+                DashboardCharacter(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .zIndex(0.5f),
+                )
+            }
         }
 
         photoState.forEach { photo ->
