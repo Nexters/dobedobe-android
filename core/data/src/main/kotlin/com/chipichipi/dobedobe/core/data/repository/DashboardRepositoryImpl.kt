@@ -18,7 +18,7 @@ internal class DashboardRepositoryImpl(
             }
     }
 
-    override suspend fun savePhotos(photos: List<DashboardPhoto>): Result<Unit> {
+    override suspend fun upsertPhotos(photos: List<DashboardPhoto>): Result<Unit> {
         val entities = photos.map { it.toEntity() }
 
         return runCatching {
@@ -26,9 +26,9 @@ internal class DashboardRepositoryImpl(
         }
     }
 
-    override suspend fun deletePhotoById(id: Int): Result<Unit> {
+    override suspend fun deletePhotosByIds(ids: List<Int>): Result<Unit> {
         return runCatching {
-            dashboardPhotoDao.deletePhotoById(id)
+            dashboardPhotoDao.deletePhotosByIds(ids)
         }
     }
 }

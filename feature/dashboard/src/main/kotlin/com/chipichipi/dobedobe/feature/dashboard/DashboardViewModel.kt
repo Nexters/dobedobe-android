@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 internal class DashboardViewModel(
     private val userRepository: UserRepository,
     private val goalRepository: GoalRepository,
-    private val dashboardRepository: DashboardRepository
+    private val dashboardRepository: DashboardRepository,
 ) : ViewModel() {
     private val isSystemNotificationDialogDisabledFlow = userRepository.userData
         .map { it.isSystemNotificationDialogDisabled }
@@ -107,7 +107,7 @@ internal class DashboardViewModel(
             val adjustedPhotos = photos.map {
                 DashboardPhoto(
                     id = it.config.id,
-                    uri = it.uri.toString()
+                    uri = it.uri.toString(),
                 )
             }
 

@@ -129,7 +129,7 @@ private fun DashboardEditModeTopAppBarPreview() {
     DobeDobeTheme {
         DashboardEditModeTopAppBar(
             onToggleMode = {},
-            onSavePhotos = {}
+            onSavePhotos = {},
         )
     }
 }

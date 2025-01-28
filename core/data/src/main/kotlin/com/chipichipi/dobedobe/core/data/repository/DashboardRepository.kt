@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface DashboardRepository {
     fun getPhotos(): Flow<List<DashboardPhoto>>
 
-    suspend fun savePhotos(photos: List<DashboardPhoto>): Result<Unit>
+    suspend fun upsertPhotos(photos: List<DashboardPhoto>): Result<Unit>
 
-    suspend fun deletePhotoById(id: Int): Result<Unit>
+    suspend fun deletePhotosByIds(ids: List<Int>): Result<Unit>
 }

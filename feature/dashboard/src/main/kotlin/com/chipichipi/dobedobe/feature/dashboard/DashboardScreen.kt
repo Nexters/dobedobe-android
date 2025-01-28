@@ -89,7 +89,7 @@ internal fun DashboardRoute(
         navigateToSetting = navigateToSetting,
         onGoalToggled = viewModel::toggleGoalCompletion,
         onToggleMode = viewModel::toggleMode,
-        onSavePhotos = viewModel::savePhotoUri
+        onSavePhotos = viewModel::savePhotoUri,
         onChangeBubble = viewModel::changeBubble,
     )
 }
@@ -134,7 +134,7 @@ private fun DashboardScreen(
                     onGoalToggled = onGoalToggled,
                     onChangeBubble = onChangeBubble,
                     onToggleMode = onToggleMode,
-                    onSavePhotos = onSavePhotos
+                    onSavePhotos = onSavePhotos,
                 )
             }
         }
@@ -234,7 +234,7 @@ private fun DashboardBody(
             DashboardEditMode(
                 photoState = uiState.photoState,
                 onToggleMode = onToggleMode,
-                onSavePhotos = onSavePhotos
+                onSavePhotos = onSavePhotos,
             )
         }
 
@@ -337,7 +337,7 @@ private fun DashboardEditMode(
                 if (selectedPhotoId != null && uri != null) {
                     context.contentResolver.takePersistableUriPermission(
                         uri,
-                        Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION,
                     )
 
                     temporaryPhotoState = temporaryPhotoState.map { tempPhoto ->
@@ -349,7 +349,7 @@ private fun DashboardEditMode(
                     }
                 }
                 selectedPhotoId = null
-            }
+            },
         )
 
         Box(
@@ -365,7 +365,7 @@ private fun DashboardEditMode(
                     onClick = {
                         selectedPhotoId = photo.config.id // 클릭한 photo의 id 저장
                         singlePhotoPickerLauncher.launch(
-                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
                         )
                     },
                 )

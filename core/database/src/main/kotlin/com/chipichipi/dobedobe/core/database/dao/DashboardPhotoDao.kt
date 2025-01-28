@@ -14,6 +14,6 @@ interface DashboardPhotoDao {
     @Upsert
     suspend fun upsertPhotos(photos: List<DashboardPhotoEntity>)
 
-    @Query("DELETE FROM ${DashboardPhotoEntity.TABLE_NAME} WHERE id = :id")
-    suspend fun deletePhotoById(id: Int)
+    @Query("DELETE FROM ${DashboardPhotoEntity.TABLE_NAME} WHERE id IN (:ids)")
+    suspend fun deletePhotosByIds(ids: List<Int>)
 }

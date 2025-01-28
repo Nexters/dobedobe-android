@@ -26,6 +26,6 @@ fun DashboardPhotoEntity.toModel(): DashboardPhoto {
 fun DashboardPhoto.toEntity(): DashboardPhotoEntity {
     return DashboardPhotoEntity(
         id = id,
-        uri = uri,
+        uri = uri.orEmpty(),
     )
 }
