@@ -8,7 +8,6 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -43,7 +43,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBottomSheetScaffold
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeDialog
 import com.chipichipi.dobedobe.feature.dashboard.component.CollapsedPhotoFrame
-import com.chipichipi.dobedobe.feature.dashboard.component.DashBoardBubble
+import com.chipichipi.dobedobe.feature.dashboard.component.DashboardBubble
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardCharacter
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardEditModeTopAppBar
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardTopAppBar
@@ -266,17 +266,16 @@ private fun SharedTransitionScope.DashboardViewMode(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Spacer(Modifier.height(13.dp))
-                DashBoardBubble(
-                    modifier = Modifier
-                        .background(Color.White)
-                        .clickable {
-                            // TODO: 해당 Goal Detail 로 이동
-                        },
-                    contentAlignment = Alignment.TopCenter,
-                ) {
-                    // TODO : 랜덤 TODO 목표 받아와서 넣기
-                    Text("꿈은 이루어진다 ⭐️", fontSize = 15.sp)
-                }
+                DashboardBubble(
+                    // TODO: Goal Title 연동하기
+                    title = "먹고자고놀고먹고자고놀고힘낼거야",
+                    //TODO : font 적용
+                    textStyle = TextStyle(fontSize = 15.sp),
+                    // TODO: ColorScheme 적용
+                    modifier = Modifier.background(Color.White),
+                    // TODO: Detail 화면으로 이동
+                    onClick = {},
+                )
                 DashboardCharacter(
                     modifier = Modifier
                         .fillMaxSize()
