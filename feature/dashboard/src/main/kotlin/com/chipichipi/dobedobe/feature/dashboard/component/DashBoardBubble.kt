@@ -4,10 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,9 +23,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
-private val DefaultBubbleWidth = 135.dp
-private val DefaultBubbleHeight = 75.dp
+private val DefaultBubbleMinWidth = 135.dp
+private val DefaultBubbleMaxHeight = 75.dp
+private val DefaultBubbleMaxWidth = 287.dp
 private val DefaultBubbleTailHeight = 20.dp
 private val DefaultBubbleTailWidth = 34.dp
 private val DefaultContentVerticalPadding = 16.dp
@@ -35,20 +37,26 @@ private val DefaultContentHorizontalPadding = 20.dp
 fun DashBoardBubble(
     modifier: Modifier = Modifier,
     tailPositionX: Float = 0.3f,
+    tailHeight: Dp = DefaultBubbleTailHeight,
     contentAlignment: Alignment,
     content: @Composable BoxScope.() -> Unit,
 ) {
     val density = LocalDensity.current
     Box(
         modifier = Modifier
-            .defaultMinSize(DefaultBubbleWidth, DefaultBubbleHeight)
-            .shadow(3.dp, bubbleShape(density, tailPositionX))
-            .clip(bubbleShape(density, tailPositionX))
+            .sizeIn(
+                minWidth = DefaultBubbleMinWidth,
+                minHeight = DefaultBubbleMaxHeight,
+                maxWidth = DefaultBubbleMaxWidth,
+            )
+            .shadow(3.dp, bubbleShape(density, tailPositionX, tailHeight))
+            .clip(bubbleShape(density, tailPositionX, tailHeight))
             .then(modifier)
             .padding(
                 horizontal = DefaultContentHorizontalPadding,
-                vertical = DefaultContentVerticalPadding,
-            ),
+                vertical = DefaultContentVerticalPadding
+            )
+            .padding(bottom = tailHeight),
         contentAlignment = contentAlignment,
         content = content,
     )
@@ -183,22 +191,30 @@ private fun Path.drawBottomEdge(cornerRadius: Float) {
 @Preview
 @Composable
 fun PreviewBubbleWithTail() {
-    Box(
+    Column(
         modifier = Modifier
-            .size(200.dp, 200.dp)
-            .background(Color.LightGray)
-            .padding(16.dp),
-        contentAlignment = Alignment.Center,
+            .fillMaxWidth()
+            .background(Color.LightGray),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         DashBoardBubble(
-            Modifier
-                .fillMaxWidth()
+            modifier = Modifier
                 .background(Color.White)
                 .clickable { },
             tailPositionX = 0.5f,
-            contentAlignment = Alignment.Center,
+            contentAlignment = Alignment.TopCenter,
         ) {
-            Text("Bubble with Tail")
+            Text("꿈은 이루어진다 꿈은 이루어진다 꿈은 이루어진다 꿈은 이루어진다 꿈은 이루어진다 꿈은 이루어진다 ⭐️", fontSize = 15.sp)
+        }
+
+        DashBoardBubble(
+            modifier = Modifier
+                .background(Color.White)
+                .clickable { },
+            tailPositionX = 0.5f,
+            contentAlignment = Alignment.TopCenter,
+        ) {
+            Text("꿈은 이루어진다️", fontSize = 15.sp)
         }
     }
 }
