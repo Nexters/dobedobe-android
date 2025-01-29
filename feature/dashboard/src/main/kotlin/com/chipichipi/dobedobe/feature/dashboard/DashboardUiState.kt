@@ -12,6 +12,7 @@ sealed interface DashboardUiState {
         val isSystemNotificationDialogDisabled: Boolean,
         val goals: List<Goal>,
         val mode: DashboardMode,
+        val bubbleTitle: String,
     ) : DashboardUiState
 
     data object Error : DashboardUiState
