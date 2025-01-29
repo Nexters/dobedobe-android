@@ -9,8 +9,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeDialog
@@ -196,18 +201,32 @@ private fun DashboardEditOptionsDialog(
     onPickPhoto: () -> Unit,
     onDeletePhoto: () -> Unit,
 ) {
+    // TODO : 컬러/string 변경 필요
     DobeDobeDialog(
         onDismissRequest = onDismissRequest,
         title = "이미지 변경",
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp),
     ) {
         Button(
             onClick = {
                 onPickPhoto()
                 onDismissRequest()
             },
+            shape = RoundedCornerShape(8.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF262C36),
+                contentColor = Color.White,
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(48.dp),
         ) {
             Text(
                 text = "앨범에서 이미지 찾기",
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 17.sp,
             )
         }
 
@@ -216,9 +235,19 @@ private fun DashboardEditOptionsDialog(
                 onDeletePhoto()
                 onDismissRequest()
             },
+            shape = RoundedCornerShape(8.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.White,
+                contentColor = Color.Red,
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(48.dp),
         ) {
             Text(
                 text = "이미지 삭제",
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 17.sp,
             )
         }
     }
