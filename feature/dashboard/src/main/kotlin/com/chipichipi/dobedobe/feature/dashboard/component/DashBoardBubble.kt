@@ -109,7 +109,6 @@ private data class EllipsizedTextResult(
     val suffix: String,
 )
 
-
 @Preview
 @Composable
 fun PreviewBubbleWithTail() {

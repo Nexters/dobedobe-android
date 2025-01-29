@@ -1,6 +1,5 @@
 package com.chipichipi.dobedobe.core.designsystem.component
 
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -75,16 +74,16 @@ private fun bubbleShape(
         val tailHeight = tailHeight.toPx()
 
         val bubbleWidth = size.width
-        val BubbleHeight = size.height - tailHeight
+        val bubbleHeight = size.height - tailHeight
 
         val tailCenterX = bubbleWidth * tailPositionX
         val tailStartX = tailCenterX - tailWidth / 2
         val tailEndX = tailCenterX + tailWidth / 2
 
         drawTopEdge(bubbleWidth, cornerRadius)
-        drawRightEdge(bubbleWidth, BubbleHeight, cornerRadius)
-        drawBubbleTail(BubbleHeight, tailStartX, tailEndX, tailHeight, density)
-        drawLeftEdge(BubbleHeight, cornerRadius)
+        drawRightEdge(bubbleWidth, bubbleHeight, cornerRadius)
+        drawBubbleTail(bubbleHeight, tailStartX, tailEndX, tailHeight, density)
+        drawLeftEdge(bubbleHeight, cornerRadius)
         drawBottomEdge(cornerRadius)
 
         close()
@@ -187,7 +186,6 @@ private fun Path.drawBottomEdge(cornerRadius: Float) {
         forceMoveTo = false,
     )
 }
-
 
 @Preview
 @Composable

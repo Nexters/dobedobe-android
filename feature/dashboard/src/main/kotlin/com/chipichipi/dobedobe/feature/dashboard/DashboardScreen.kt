@@ -104,7 +104,7 @@ private fun DashboardScreen(
         when (uiState) {
             is DashboardUiState.Error,
             is DashboardUiState.Loading,
-                -> {
+            -> {
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
                 )
@@ -268,8 +268,8 @@ private fun SharedTransitionScope.DashboardViewMode(
                 Spacer(Modifier.height(13.dp))
                 DashboardBubble(
                     // TODO: Goal Title 연동하기
-                    title = "먹고자고놀고먹고자고놀고힘낼거야",
-                    //TODO : font 적용
+                    title = "먹고자고",
+                    // TODO : font 적용
                     textStyle = TextStyle(fontSize = 15.sp),
                     // TODO: ColorScheme 적용
                     modifier = Modifier.background(Color.White),
