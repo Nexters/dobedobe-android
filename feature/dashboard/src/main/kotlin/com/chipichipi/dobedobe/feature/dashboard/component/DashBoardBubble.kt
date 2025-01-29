@@ -77,17 +77,25 @@ private fun TextMeasurer.ellipsizeTextWithSuffix(
     textStyle: TextStyle,
     ellipsis: String = "...",
 ): EllipsizedTextResult {
-    var end = title.length
+    val fullTextWidth = measure(text = title + suffix, style = textStyle).size.width
 
+    // 1) title 이 maxWidthPx를 초과하지 않으면 그대로 반환
+    if (fullTextWidth <= maxWidthPx) {
+        return EllipsizedTextResult(
+            title = title,
+            suffix = suffix,
+        )
+    }
+
+    // 2) maxWidthPx를 초과하는 경우, title ellipsis 처리
+    var end = title.length
     while (end > 0) {
         val truncatedTitle = buildString {
             append(title.substring(0, end))
             append(ellipsis)
         }
-        val measuredWidth = measure(
-            text = truncatedTitle + suffix,
-            style = textStyle,
-        ).size.width
+
+        val measuredWidth = measure(text = truncatedTitle + suffix, style = textStyle).size.width
 
         if (measuredWidth <= maxWidthPx) {
             return EllipsizedTextResult(
@@ -99,7 +107,7 @@ private fun TextMeasurer.ellipsizeTextWithSuffix(
     }
 
     return EllipsizedTextResult(
-        title = ellipsis,
+        title = title,
         suffix = suffix,
     )
 }
@@ -131,7 +139,7 @@ fun PreviewBubbleWithTail() {
             // TODO : 랜덤 TODO 목표 받아와서 넣기,
             textStyle = TextStyle(fontSize = 15.sp),
             onClick = {},
-            title = "놀고먹고자고놀고먹고자고힘",
+            title = "놀고먹고자고놀고먹고자",
         )
         DashboardBubble(
             modifier = Modifier.background(Color.White),
