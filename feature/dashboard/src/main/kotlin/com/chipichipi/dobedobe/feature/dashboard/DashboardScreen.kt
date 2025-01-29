@@ -151,6 +151,8 @@ private fun DashboardBody(
     onDeletePhotos: (List<Int>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val isEditMode = uiState.mode.isEditMode
+
     SharedTransitionLayout(
         modifier = modifier,
     ) {
@@ -169,7 +171,6 @@ private fun DashboardBody(
                 }
             }
         }
-        val isEditMode = uiState.mode.isEditMode
 
         DobeDobeBottomSheetScaffold(
             modifier = modifier
@@ -225,19 +226,19 @@ private fun DashboardBody(
                 .zIndex(1f),
         )
 
-        if (isEditMode) {
-            DashboardEditMode(
-                photoState = uiState.photoState,
-                onToggleMode = onToggleMode,
-                onUpsertPhotos = onUpsertPhotos,
-                onDeletePhotos = onDeletePhotos,
-            )
-        }
-
         DashboardPhotoRotationEffect(
             photoStates = uiState.photoState,
             rotationMap = photoFramesState.rotationMap,
             photoFramesState = photoFramesState,
+        )
+    }
+
+    if (isEditMode) {
+        DashboardEditMode(
+            photoState = uiState.photoState,
+            onToggleMode = onToggleMode,
+            onUpsertPhotos = onUpsertPhotos,
+            onDeletePhotos = onDeletePhotos,
         )
     }
 
