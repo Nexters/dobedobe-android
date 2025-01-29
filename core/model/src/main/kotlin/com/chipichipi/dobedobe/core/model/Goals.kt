@@ -17,6 +17,10 @@ value class Goals(private val value: List<Goal>) {
         )
     }
 
+    fun getTodoGoals(): List<Goal> {
+        return value.filter { !it.isCompleted }
+    }
+
     fun find(id: Long): Goal {
         checkGoalExists(id)
         return value.first { it.id == id }
