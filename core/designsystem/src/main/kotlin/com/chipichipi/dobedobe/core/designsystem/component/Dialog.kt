@@ -2,10 +2,8 @@ package com.chipichipi.dobedobe.core.designsystem.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
@@ -39,27 +37,34 @@ fun DobeDobeDialog(
         properties = properties,
     ) {
         Surface(
-            modifier = modifier
-                .width(253.dp),
+            modifier = modifier,
             shape = RoundedCornerShape(16.dp),
             color = Color.White,
         ) {
             Column(
-                modifier = Modifier.padding(
-                    vertical = 24.dp,
-                    horizontal = 15.dp,
-                ),
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 16.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Text(
-                    text = title,
-                    fontSize = 17.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.Black,
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Text(
+                        text = title,
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.Black,
+                        modifier = Modifier
+                            .padding(
+                                top = 24.dp,
+                                bottom = 32.dp,
+                            ),
+                    )
+                }
 
                 content()
             }

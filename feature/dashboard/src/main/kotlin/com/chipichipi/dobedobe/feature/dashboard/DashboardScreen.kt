@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -288,6 +289,7 @@ private fun GoalNotificationPermission(
             },
             // TODO : 변경 필요
             title = "목표에 대한 알림을 위해\n 권한이 필요합니다.",
+            modifier = Modifier.width(253.dp),
         ) {
             Button(
                 onClick = {
