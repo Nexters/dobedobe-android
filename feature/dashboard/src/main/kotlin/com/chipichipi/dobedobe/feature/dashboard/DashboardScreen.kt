@@ -81,6 +81,7 @@ internal fun DashboardRoute(
         navigateToSetting = navigateToSetting,
         onGoalToggled = viewModel::toggleGoalCompletion,
         onToggleMode = viewModel::toggleMode,
+        onChangeBubble = viewModel::changeBubble,
     )
 }
 
@@ -95,6 +96,7 @@ private fun DashboardScreen(
     navigateToSetting: () -> Unit,
     onGoalToggled: (Long) -> Unit,
     onToggleMode: () -> Unit,
+    onChangeBubble: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -120,6 +122,7 @@ private fun DashboardScreen(
                     navigateToGoalDetail = navigateToGoalDetail,
                     navigateToSetting = navigateToSetting,
                     onGoalToggled = onGoalToggled,
+                    onChangeBubble = onChangeBubble,
                     onToggleMode = onToggleMode,
                 )
             }
@@ -137,6 +140,7 @@ private fun DashboardBody(
     navigateToGoalDetail: (Long) -> Unit,
     navigateToSetting: () -> Unit,
     onGoalToggled: (Long) -> Unit,
+    onChangeBubble: () -> Unit,
     onToggleMode: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -190,7 +194,9 @@ private fun DashboardBody(
             DashboardViewMode(
                 isViewMode = uiState.mode.isViewMode,
                 photoState = uiState.photoState,
+                bubbleTitle = uiState.bubbleTitle,
                 photoFramesState = photoFramesState,
+                onChangeBubble = onChangeBubble,
                 onToggleExpansion = onToggleExpansion,
                 onToggleMode = onToggleMode,
                 modifier = Modifier
@@ -238,7 +244,9 @@ private fun DashboardBody(
 private fun SharedTransitionScope.DashboardViewMode(
     isViewMode: Boolean,
     photoState: List<DashboardPhotoState>,
+    bubbleTitle: String,
     photoFramesState: DashboardPhotoFramesState,
+    onChangeBubble: () -> Unit,
     onToggleExpansion: (Int) -> Unit,
     onToggleMode: () -> Unit,
     modifier: Modifier = Modifier,
@@ -267,14 +275,12 @@ private fun SharedTransitionScope.DashboardViewMode(
             ) {
                 Spacer(Modifier.height(13.dp))
                 DashboardBubble(
-                    // TODO: Goal Title 연동하기
-                    title = "먹고자고",
+                    title = bubbleTitle,
                     // TODO : font 적용
                     textStyle = TextStyle(fontSize = 15.sp),
                     // TODO: ColorScheme 적용
                     modifier = Modifier.background(Color.White),
-                    // TODO: Detail 화면으로 이동
-                    onClick = {},
+                    onClick = onChangeBubble,
                 )
                 DashboardCharacter(
                     modifier = Modifier
