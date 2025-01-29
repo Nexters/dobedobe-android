@@ -1,6 +1,7 @@
 package com.chipichipi.dobedobe.feature.dashboard.component
 
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -65,6 +66,10 @@ internal fun DashboardEditMode(
             selectedPhotoId = null
         },
     )
+
+    BackHandler {
+        onToggleMode()
+    }
 
     DashboardEditModeBody(
         modifier = modifier,
