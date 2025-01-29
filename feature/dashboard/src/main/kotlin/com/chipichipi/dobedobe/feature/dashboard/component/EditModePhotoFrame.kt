@@ -86,7 +86,7 @@ private fun EditModePhotoFramePreview() {
             uri = Uri.EMPTY,
             rotation = 40f,
             onPickPhoto = {},
-            onDeletePhoto = {}
+            onDeletePhoto = {},
         )
     }
 }

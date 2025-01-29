@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeDialog
 import com.chipichipi.dobedobe.core.model.DashboardPhoto
 import com.chipichipi.dobedobe.feature.dashboard.R
+import com.chipichipi.dobedobe.feature.dashboard.model.DashboardEditOptionsDialogState
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
 import com.chipichipi.dobedobe.feature.dashboard.util.updateModifiedPhotosToFile
 import kotlinx.coroutines.launch
@@ -42,72 +43,84 @@ internal fun DashboardEditMode(
     onDeletePhotos: (List<Int>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
     var photoDraftsState by remember { mutableStateOf(photoState) }
     var selectedPhotoId by remember { mutableStateOf<Int?>(null) }
-    var selectedPhotoForDeletion by remember { mutableStateOf<Int?>(null) }
-
-    val onChangePhoto: (Uri) -> Unit = { uri ->
-        photoDraftsState = photoDraftsState.map { draft ->
-            if (draft.config.id == selectedPhotoId) {
-                draft.copy(
-                    uri = uri,
-                    hasUriChanged = true,
-                )
-            } else {
-                draft
-            }
-        }
-    }
 
     val photoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
             if (selectedPhotoId != null && uri != null) {
-                onChangePhoto(uri)
+                photoDraftsState = updateDraftsPhoto(
+                    state = photoDraftsState,
+                    id = selectedPhotoId,
+                    uri = uri,
+                )
             }
 
             selectedPhotoId = null
         },
     )
 
-    val onDeletePhoto: (Int) -> Unit = { id ->
-        photoDraftsState = photoDraftsState.map { draft ->
-            if (draft.config.id == id) {
-                draft.copy(
-                    uri = Uri.EMPTY,
-                    hasUriChanged = true,
-                )
-            } else {
-                draft
-            }
+    DashboardEditModeBody(
+        modifier = modifier,
+        onToggleMode = onToggleMode,
+        photoDraftsState = photoDraftsState,
+        onUpsertPhotos = onUpsertPhotos,
+        onDeletePhotos = onDeletePhotos,
+        onDeleteDraftsPhoto = { id ->
+            photoDraftsState = updateDraftsPhoto(
+                state = photoDraftsState,
+                id = id,
+                uri = Uri.EMPTY,
+            )
+        },
+        onPickDraftsPhoto = { id ->
+            selectedPhotoId = id
+
+            photoPickerLauncher.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
+            )
+        },
+    )
+}
+
+@Composable
+private fun DashboardEditModeBody(
+    onToggleMode: () -> Unit,
+    photoDraftsState: List<DashboardPhotoState>,
+    onUpsertPhotos: (List<DashboardPhoto>) -> Unit,
+    onDeletePhotos: (List<Int>) -> Unit,
+    onDeleteDraftsPhoto: (Int) -> Unit,
+    onPickDraftsPhoto: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    var editOptionDialogState by remember {
+        mutableStateOf<DashboardEditOptionsDialogState>(
+            DashboardEditOptionsDialogState.NotShown,
+        )
+    }
+
+    when (editOptionDialogState) {
+        is DashboardEditOptionsDialogState.NotShown -> {}
+        is DashboardEditOptionsDialogState.Shown -> {
+            val id = (editOptionDialogState as DashboardEditOptionsDialogState.Shown).id
+
+            DashboardEditOptionsDialog(
+                onDismissRequest = {
+                    editOptionDialogState = DashboardEditOptionsDialogState.NotShown
+                },
+                onPickPhoto = {
+                    onPickDraftsPhoto(id)
+                },
+                onDeletePhoto = {
+                    onDeleteDraftsPhoto(id)
+                },
+            )
         }
     }
 
-    val onPickPhoto: (Int) -> Unit = { id ->
-        selectedPhotoId = id
-
-        photoPickerLauncher.launch(
-            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
-        )
-    }
-
-    selectedPhotoForDeletion?.let { id ->
-        PhotoDeletionDialog(
-            onDismissRequest = {
-                selectedPhotoForDeletion = null
-            },
-            onPickPhoto = {
-                onPickPhoto(id)
-            },
-            onDeletePhoto = {
-                onDeletePhoto(id)
-            }
-        )
-    }
-
-    // TODO : 색상 변경 필요
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -144,10 +157,11 @@ internal fun DashboardEditMode(
                     uri = photo.uri,
                     rotation = photo.config.rotationZ,
                     onPickPhoto = {
-                        onPickPhoto(photo.config.id)
+                        onPickDraftsPhoto(photo.config.id)
                     },
                     onDeletePhoto = {
-                        selectedPhotoForDeletion = photo.config.id
+                        editOptionDialogState =
+                            DashboardEditOptionsDialogState.Shown(photo.config.id)
                     },
                 )
             }
@@ -177,23 +191,23 @@ internal fun DashboardEditMode(
 }
 
 @Composable
-private fun PhotoDeletionDialog(
+private fun DashboardEditOptionsDialog(
     onDismissRequest: () -> Unit,
     onPickPhoto: () -> Unit,
-    onDeletePhoto: () -> Unit
+    onDeletePhoto: () -> Unit,
 ) {
     DobeDobeDialog(
         onDismissRequest = onDismissRequest,
-        title = "이미지 변경"
+        title = "이미지 변경",
     ) {
         Button(
             onClick = {
                 onPickPhoto()
                 onDismissRequest()
-            }
+            },
         ) {
             Text(
-                text = "앨범에서 이미지 찾기"
+                text = "앨범에서 이미지 찾기",
             )
         }
 
@@ -201,11 +215,28 @@ private fun PhotoDeletionDialog(
             onClick = {
                 onDeletePhoto()
                 onDismissRequest()
-            }
+            },
         ) {
             Text(
-                text = "이미지 삭제"
+                text = "이미지 삭제",
             )
+        }
+    }
+}
+
+private fun updateDraftsPhoto(
+    state: List<DashboardPhotoState>,
+    id: Int?,
+    uri: Uri,
+): List<DashboardPhotoState> {
+    return state.map { draft ->
+        if (draft.config.id == id) {
+            draft.copy(
+                uri = uri,
+                hasUriChanged = true,
+            )
+        } else {
+            draft
         }
     }
 }

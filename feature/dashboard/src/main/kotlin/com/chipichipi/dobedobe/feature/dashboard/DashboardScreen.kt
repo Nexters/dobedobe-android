@@ -108,7 +108,7 @@ private fun DashboardScreen(
         when (uiState) {
             is DashboardUiState.Error,
             is DashboardUiState.Loading,
-                -> {
+            -> {
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
                 )
