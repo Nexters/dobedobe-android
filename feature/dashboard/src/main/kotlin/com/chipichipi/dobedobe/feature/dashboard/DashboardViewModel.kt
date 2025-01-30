@@ -115,8 +115,9 @@ internal class DashboardViewModel(
         }
     }
 
-    fun deletePhotos(ids: List<Int>) {
+    fun deletePhotos(photos: List<DashboardPhoto>) {
         viewModelScope.launch {
+            val ids = photos.map { it.id }
             dashboardRepository.deletePhotosByIds(ids)
         }
     }

@@ -46,7 +46,7 @@ internal fun DashboardEditMode(
     modeState: DashboardModeState.Edit,
     onToggleMode: () -> Unit,
     onUpsertPhotos: (List<DashboardPhoto>) -> Unit,
-    onDeletePhotos: (List<Int>) -> Unit,
+    onDeletePhotos: (List<DashboardPhoto>) -> Unit,
     onUpdatePhotoDrafts: (Int?, Uri) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -95,7 +95,7 @@ private fun DashboardEditModeBody(
     onToggleMode: () -> Unit,
     photoDraftsState: List<DashboardPhotoState>,
     onUpsertPhotos: (List<DashboardPhoto>) -> Unit,
-    onDeletePhotos: (List<Int>) -> Unit,
+    onDeletePhotos: (List<DashboardPhoto>) -> Unit,
     onDeleteDraftsPhoto: (Int) -> Unit,
     onPickDraftsPhoto: (Int) -> Unit,
     selectedPhotoId: Int?,
@@ -138,7 +138,7 @@ private fun DashboardEditModeBody(
                     }
 
                     if (photosToDelete.isNotEmpty()) {
-                        onDeletePhotos(photosToDelete.map { it.id })
+                        onDeletePhotos(photosToDelete)
                     }
 
                     onToggleMode()
