@@ -35,10 +35,10 @@ private val DefaultContentHorizontalPadding = 20.dp
 
 @Composable
 fun DobeDobeBubble(
-    modifier: Modifier = Modifier,
+    contentAlignment: Alignment,
     tailPositionX: Float = 0.3f,
     tailHeight: Dp = DefaultBubbleTailHeight,
-    contentAlignment: Alignment,
+    modifier: Modifier = Modifier,
     content: @Composable BoxScope.() -> Unit,
 ) {
     val density = LocalDensity.current
