@@ -20,7 +20,7 @@ import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun GoalTopAppBar(
+internal fun AddGoalTopAppBar(
     navigateToBack: () -> Unit,
     onAddGoal: () -> Unit,
     modifier: Modifier = Modifier,
