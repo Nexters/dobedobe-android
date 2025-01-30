@@ -37,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeDialog
+import com.chipichipi.dobedobe.core.designsystem.icon.DobeDobeIcons
 import com.chipichipi.dobedobe.core.model.DashboardPhoto
 import com.chipichipi.dobedobe.feature.dashboard.R
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardModeState
@@ -180,7 +181,7 @@ private fun DashboardEditModeBody(
         ) {
             // TODO : 색상 변경 필요
             Icon(
-                painter = painterResource(R.drawable.ic_dashboard_edit_mode),
+                painter = painterResource(DobeDobeIcons.EditMode),
                 tint = Color.White,
                 contentDescription = "edit mode icon",
             )
