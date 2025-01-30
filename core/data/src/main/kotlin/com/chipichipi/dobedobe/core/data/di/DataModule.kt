@@ -1,6 +1,8 @@
 package com.chipichipi.dobedobe.core.data.di
 
 import com.chipichipi.dobedobe.core.common.coroutineScopesModule
+import com.chipichipi.dobedobe.core.data.repository.DashboardRepository
+import com.chipichipi.dobedobe.core.data.repository.DashboardRepositoryImpl
 import com.chipichipi.dobedobe.core.data.repository.GoalRepository
 import com.chipichipi.dobedobe.core.data.repository.GoalRepositoryImpl
 import com.chipichipi.dobedobe.core.data.repository.UserRepository
@@ -20,4 +22,5 @@ val dataModule =
         )
         singleOf(::UserRepositoryImpl) bind UserRepository::class
         singleOf(::GoalRepositoryImpl) bind GoalRepository::class
+        singleOf(::DashboardRepositoryImpl) bind DashboardRepository::class
     }

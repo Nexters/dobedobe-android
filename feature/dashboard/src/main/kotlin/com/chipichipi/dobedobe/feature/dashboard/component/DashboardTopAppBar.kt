@@ -70,6 +70,7 @@ internal fun DashboardTopAppBar(
 @Composable
 internal fun DashboardEditModeTopAppBar(
     onToggleMode: () -> Unit,
+    onSavePhotos: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     DobeDobeTopAppBar(
@@ -94,7 +95,7 @@ internal fun DashboardEditModeTopAppBar(
                 }
 
                 TextButton(
-                    onClick = {},
+                    onClick = onSavePhotos,
                     contentPadding = PaddingValues(horizontal = 24.dp),
                 ) {
                     Text(
@@ -128,6 +129,7 @@ private fun DashboardEditModeTopAppBarPreview() {
     DobeDobeTheme {
         DashboardEditModeTopAppBar(
             onToggleMode = {},
+            onSavePhotos = {},
         )
     }
 }

@@ -86,7 +86,7 @@ private fun SharedTransitionScope.ExpandedPhotoFrame(
                             .rotate(rotation)
                             .clip(RoundedCornerShape(16.dp)),
                         contentScale = ContentScale.FillBounds,
-                        model = targetState.url,
+                        model = targetState.uri,
                         contentDescription = "expanded photo",
                     )
                 }
