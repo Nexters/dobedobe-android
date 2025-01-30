@@ -1,11 +1,30 @@
 package com.chipichipi.dobedobe.core.designsystem.theme
 
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+@Immutable
+class DobeDobeColors(isDarkTheme: Boolean = false) {
+    val gray50 = Color(0xFFF9FAFB)
+    val gray100 = Color(0xFFF3F4F6)
+    val gray200 = Color(0xFFE5E7EB)
+    val gray300 = Color(0xFFF0F5FC)
+    val gray400 = Color(0xFF9CA3AF)
+    val gray500 = Color(0xFF7A828C)
+    val gray600 = Color(0xFF5F6875)
+    val gray700 = Color(0xFF48505C)
+    val gray800 = Color(0xFF333945)
+    val gray900 = Color(0xFF262C36)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+    val green1 = Color(0xFFD0BCFF)
+    val green2 = Color(0xFFD0BCFF)
+    val green3 = Color(0xFFD0BCFF)
+
+    val white = Color.White
+    val black = Color.Black
+
+    val red = Color(0xFFD0BCFF)
+}
+
+internal val LocalDobeDobeColors = staticCompositionLocalOf { DobeDobeColors() }
