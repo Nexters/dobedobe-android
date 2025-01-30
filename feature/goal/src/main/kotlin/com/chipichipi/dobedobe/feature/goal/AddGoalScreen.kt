@@ -84,6 +84,8 @@ private fun AddGoalScreen(
                 .padding(horizontal = 24.dp)
                 .padding(top = 24.dp),
             title = "",
+            // TODO: stringResource 적용
+            header = "어떤 목표를 이루고 싶나요?",
             errorMessage = errorMessage,
             onChangeTitle = onChangeGoalName,
         )

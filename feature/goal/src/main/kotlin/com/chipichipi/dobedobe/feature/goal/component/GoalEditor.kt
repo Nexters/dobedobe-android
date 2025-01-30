@@ -23,6 +23,7 @@ import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 @Composable
 fun GoalEditor(
     title: String,
+    header: String,
     onChangeTitle: (String) -> Unit,
     modifier: Modifier = Modifier,
     errorMessage: String? = null,
@@ -37,7 +38,7 @@ fun GoalEditor(
     Column(modifier = modifier) {
         // TODO : Writing, textStyle 수정 필요
         Text(
-            text = "어떤 목표를 이루고 싶나요?",
+            text = header,
             modifier = Modifier.fillMaxWidth(),
             fontWeight = FontWeight.Bold,
             fontSize = 22.sp,
@@ -69,6 +70,7 @@ private fun GoalDetailPreview() {
                     .fillMaxSize()
                     .padding(horizontal = 24.dp, vertical = 32.dp),
                 title = "스쿼트 50개",
+                header = "어떤 목표를 이루고 싶나요?",
                 onChangeTitle = {},
                 toggleContent = {
                     Text(text = "Toggle Content")

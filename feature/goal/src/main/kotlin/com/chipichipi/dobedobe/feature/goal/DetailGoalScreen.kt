@@ -155,9 +155,13 @@ private fun DetailGoalContent(
     onToggleCompleted: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    // TODO : string resource 로 변경
+    val header = if (goal.isCompleted) "달성한 목표" else "도전중인 목표"
+
     GoalEditor(
         modifier = modifier,
         title = goal.title,
+        header = header,
         errorMessage = errorMessage,
         onChangeTitle = onChangeGoalName,
     ) {
