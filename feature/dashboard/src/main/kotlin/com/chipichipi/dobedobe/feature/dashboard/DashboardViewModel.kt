@@ -71,16 +71,7 @@ internal class DashboardViewModel(
         )
 
     init {
-        viewModelScope.launch {
-            goalRepository.getRandomTodoGoal()
-                .onSuccess { goal ->
-                    bubbleTitle.value = goal.title
-                }
-                .onFailure {
-                    // TODO : Error 처리
-                    Log.e("DashboardViewModel", "Fail to get random todo goal", it)
-                }
-        }
+        changeBubble()
     }
 
     fun setGoalNotificationEnabled(enabled: Boolean) {
@@ -118,9 +109,11 @@ internal class DashboardViewModel(
 
     fun changeBubble() {
         viewModelScope.launch {
-            goalRepository.getRandomTodoGoal()
-                .onSuccess { goal ->
-                    bubbleTitle.value = goal.title
+            goalRepository.getTodoGoals()
+                .onSuccess { goals ->
+                    if (goals.isNotEmpty()) {
+                        bubbleTitle.value = goals.random().title
+                    }
                 }
                 .onFailure {
                     // TODO : Error 처리

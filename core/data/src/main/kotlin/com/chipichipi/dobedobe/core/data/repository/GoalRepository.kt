@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface GoalRepository {
     fun getSortedGoals(): Flow<List<Goal>>
 
-    suspend fun getRandomTodoGoal(): Result<Goal>
+    suspend fun getTodoGoals(): Result<List<Goal>>
 
     fun getGoal(id: Long): Flow<Goal>
 

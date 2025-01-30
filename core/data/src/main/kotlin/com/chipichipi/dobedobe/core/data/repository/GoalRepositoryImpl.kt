@@ -19,12 +19,11 @@ internal class GoalRepositoryImpl(
 
     override fun getSortedGoals(): Flow<List<Goal>> = goals.map(Goals::sorted)
 
-    override suspend fun getRandomTodoGoal(): Result<Goal> {
+    override suspend fun getTodoGoals(): Result<List<Goal>> {
         return runCatching {
             val goals: Goals =
                 goals.firstOrNull() ?: error("if Goals empty, cannot get random todo goal")
-            val todoGoals: List<Goal> = goals.getTodoGoals()
-            todoGoals.random()
+            goals.getTodoGoals()
         }
     }
 
