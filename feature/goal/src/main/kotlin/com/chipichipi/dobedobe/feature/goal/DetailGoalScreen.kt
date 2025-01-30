@@ -10,24 +10,36 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.CheckBox
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBackground
+import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeDialog
+import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.core.model.Goal
 import com.chipichipi.dobedobe.feature.goal.component.DetailGoalTopAppBar
@@ -88,13 +100,15 @@ private fun DetailGoalScreen(
     onRemoveGoal: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val (visibleDialog, setVisibleDialog) = rememberSaveable { mutableStateOf(false) }
+
     Scaffold(
         modifier = modifier,
         topBar = {
             if (uiState is DetailGoalUiState.Success) {
                 DetailGoalTopAppBar(
                     navigateToBack = navigateToBack,
-                    onRemoveGoal = { onRemoveGoal(uiState.goal.id) },
+                    onRemoveGoal = { setVisibleDialog(true) },
                 )
             }
         },
@@ -113,8 +127,15 @@ private fun DetailGoalScreen(
 
             is DetailGoalUiState.Success -> {
                 val goal = uiState.goal
+
                 DetailGoalContent(
                     goal = goal,
+                    visibleDialog = visibleDialog,
+                    onDismissDialog = { setVisibleDialog(false) },
+                    onConfirmDialog = {
+                        setVisibleDialog(false)
+                        onRemoveGoal(goal.id)
+                    },
                     errorMessage = uiState.goalValidResult.errorMessage(),
                     onShowSnackbar = onShowSnackbar,
                     onChangeGoalName = { title -> onChangeGoalName(goal.id, title) },
@@ -134,6 +155,9 @@ private fun DetailGoalScreen(
 private fun DetailGoalContent(
     goal: Goal,
     errorMessage: String?,
+    visibleDialog: Boolean,
+    onConfirmDialog: () -> Unit,
+    onDismissDialog: () -> Unit,
     onShowSnackbar: suspend (String, String?) -> Boolean,
     onChangeGoalName: (String) -> Unit,
     onTogglePinned: () -> Unit,
@@ -173,24 +197,110 @@ private fun DetailGoalContent(
             )
         }
     }
+
+    GoalDeleteDialog(
+        visible = visibleDialog,
+        onConfirm = onConfirmDialog,
+        onDismiss = onDismissDialog,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp),
+    )
 }
 
 @Composable
-@Preview
-private fun DetailGoalScreenPreview() {
+private fun GoalDeleteDialog(
+    visible: Boolean,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    if (!visible) return
+    DobeDobeDialog(
+        modifier = modifier,
+        onDismissRequest = onDismiss,
+        // TODO : string resource 로 변경
+        title = "목표를 삭제하시겠어요?",
+    ) {
+        Button(
+            onClick = onDismiss,
+            shape = RoundedCornerShape(12.dp),
+            colors = ButtonDefaults.buttonColors(
+                // TODO: color scheme 적용 - gray900
+                containerColor = Color(0xFF262C36),
+                // TODO: color scheme 적용 - white
+                contentColor = Color.White,
+            ),
+        ) {
+            Text(
+                // TODO: string resource 로 변경
+                text = "취소",
+                textAlign = TextAlign.Center,
+                // TODO: font 적용
+                style = TextStyle(fontSize = 17.sp, fontWeight = FontWeight.SemiBold),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 3.dp),
+            )
+        }
+        Button(
+            onClick = onConfirm,
+            shape = RoundedCornerShape(12.dp),
+            colors = ButtonDefaults.buttonColors(
+                // TODO: color scheme 적용 - white
+                containerColor = Color.White,
+                // TODO: color scheme 적용 - error
+                contentColor = Color(0xFFFF354D),
+            ),
+        ) {
+            Text(
+                // TODO: string resource 로 변경
+                text = "삭제",
+                // TODO: font 적용
+                style = TextStyle(fontSize = 17.sp, fontWeight = FontWeight.SemiBold),
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 3.dp),
+            )
+        }
+    }
+}
+
+@ThemePreviews
+@Composable
+private fun DeleteDialogPreview() {
+    DobeDobeTheme {
+        GoalDeleteDialog(
+            visible = true,
+            onConfirm = {},
+            onDismiss = {},
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
+        )
+    }
+}
+
+@ThemePreviews
+@Composable
+private fun DetailGoalContentPreview() {
     DobeDobeTheme {
         DobeDobeBackground {
             DetailGoalContent(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 24.dp)
-                    .padding(top = 24.dp, bottom = 32.dp),
+                goal = Goal.todo("test"),
+                visibleDialog = false,
+                onConfirmDialog = {},
+                onDismissDialog = {},
                 errorMessage = null,
                 onShowSnackbar = { _, _ -> false },
                 onChangeGoalName = {},
                 onTogglePinned = {},
                 onToggleCompleted = {},
-                goal = Goal.todo("test"),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 24.dp)
+                    .padding(top = 24.dp, bottom = 32.dp),
             )
         }
     }
