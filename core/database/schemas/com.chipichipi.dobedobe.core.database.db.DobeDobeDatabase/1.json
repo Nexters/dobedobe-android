@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "3867c974e3b06ef0f2298579bd05c675",
+    "identityHash": "b3cf1493fb25aea72fba2939ebe8fb60",
     "entities": [
       {
         "tableName": "Goal",
@@ -56,7 +56,7 @@
       },
       {
         "tableName": "dashboard_photo",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `uri` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `path` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -65,8 +65,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "uri",
-            "columnName": "uri",
+            "fieldPath": "path",
+            "columnName": "path",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -84,7 +84,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3867c974e3b06ef0f2298579bd05c675')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b3cf1493fb25aea72fba2939ebe8fb60')"
     ]
   }
 }

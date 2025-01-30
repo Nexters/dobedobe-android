@@ -20,9 +20,9 @@ import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun AddGoalTopAppBar(
+internal fun DetailGoalTopAppBar(
     navigateToBack: () -> Unit,
-    onAddGoal: () -> Unit,
+    onRemoveGoal: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     DobeDobeTopAppBar(
@@ -37,14 +37,15 @@ internal fun AddGoalTopAppBar(
         },
         actions = {
             TextButton(
-                onClick = onAddGoal,
+                onClick = onRemoveGoal,
                 colors = ButtonDefaults.textButtonColors().copy(
                     // TODO : 컬러 변경 필요
-                    contentColor = Color(0xFF03A9F4),
+                    contentColor = Color(0xFFFF354D),
                 ),
             ) {
                 Text(
-                    "저장",
+                    // TODO: string Resource 로 변경 필요
+                    text = "삭제",
                     // TODO: font 변경 필요
                     style = TextStyle(
                         fontSize = 16.sp,
@@ -61,9 +62,9 @@ internal fun AddGoalTopAppBar(
 @Composable
 private fun GoalTopAppBarPreview() {
     DobeDobeTheme {
-        AddGoalTopAppBar(
+        DetailGoalTopAppBar(
             navigateToBack = {},
-            onAddGoal = {},
+            onRemoveGoal = {},
         )
     }
 }

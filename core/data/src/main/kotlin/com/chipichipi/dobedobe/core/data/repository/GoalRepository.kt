@@ -8,11 +8,13 @@ interface GoalRepository {
 
     suspend fun getTodoGoals(): Result<List<Goal>>
 
-    fun getGoal(id: Long): Flow<Goal>
+    fun getGoal(id: Long): Flow<Goal?>
 
     suspend fun addGoal(title: String): Result<Unit>
 
     suspend fun removeGoal(id: Long): Result<Unit>
+
+    suspend fun changeGoalTitle(id: Long, title: String): Result<Unit>
 
     suspend fun togglePin(id: Long): Result<Unit>
 

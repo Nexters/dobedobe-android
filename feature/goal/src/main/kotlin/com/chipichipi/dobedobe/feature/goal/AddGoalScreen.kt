@@ -17,8 +17,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBackground
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
+import com.chipichipi.dobedobe.feature.goal.component.AddGoalTopAppBar
 import com.chipichipi.dobedobe.feature.goal.component.GoalEditor
-import com.chipichipi.dobedobe.feature.goal.component.GoalTopAppBar
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.compose.koinViewModel
@@ -72,7 +72,7 @@ private fun AddGoalScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            GoalTopAppBar(
+            AddGoalTopAppBar(
                 navigateToBack = navigateToBack,
                 onAddGoal = onAddGoal,
             )
@@ -84,6 +84,8 @@ private fun AddGoalScreen(
                 .padding(horizontal = 24.dp)
                 .padding(top = 24.dp),
             title = "",
+            // TODO: stringResource 적용
+            header = "어떤 목표를 이루고 싶나요?",
             errorMessage = errorMessage,
             onChangeTitle = onChangeGoalName,
         )

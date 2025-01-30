@@ -27,7 +27,8 @@ internal class GoalRepositoryImpl(
         }
     }
 
-    override fun getGoal(id: Long): Flow<Goal> = goalDao.getGoal(id).map(GoalEntity::toModel)
+    override fun getGoal(id: Long): Flow<Goal?> =
+        goalDao.getGoal(id).map { it?.let(GoalEntity::toModel) }
 
     override suspend fun addGoal(title: String): Result<Unit> {
         return runCatching {
@@ -41,6 +42,16 @@ internal class GoalRepositoryImpl(
             val goals: Goals = goals.firstOrNull() ?: error("if Goals empty, cannot remove goal")
             goals.checkGoalExists(id)
             goalDao.deleteGoal(id)
+        }
+    }
+
+    override suspend fun changeGoalTitle(id: Long, title: String): Result<Unit> {
+        return runCatching {
+            val goals: Goals =
+                goals.firstOrNull() ?: error("if Goals empty, cannot change goal title")
+            goals.checkGoalExists(id)
+            val changedGoal: Goal = goals.find(id).copy(title = title)
+            goalDao.updateGoal(changedGoal.toEntity())
         }
     }
 
