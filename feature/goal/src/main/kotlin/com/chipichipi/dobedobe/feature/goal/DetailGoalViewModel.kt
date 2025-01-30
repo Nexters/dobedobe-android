@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class DetailGoalViewModel(
+internal class DetailGoalViewModel(
     savedStateHandle: SavedStateHandle,
     private val goalRepository: GoalRepository,
 ) : ViewModel() {

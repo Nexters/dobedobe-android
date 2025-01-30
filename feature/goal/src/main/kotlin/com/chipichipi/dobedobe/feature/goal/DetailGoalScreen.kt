@@ -41,7 +41,7 @@ import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun DetailGoalRoute(
+internal fun DetailGoalRoute(
     onShowSnackbar: suspend (String, String?) -> Boolean,
     navigateToBack: () -> Unit,
     modifier: Modifier = Modifier,
