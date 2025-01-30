@@ -27,7 +27,8 @@ internal class GoalRepositoryImpl(
         }
     }
 
-    override fun getGoal(id: Long): Flow<Goal> = goalDao.getGoal(id).map(GoalEntity::toModel)
+    override fun getGoal(id: Long): Flow<Goal?> =
+        goalDao.getGoal(id).map { it?.let(GoalEntity::toModel) }
 
     override suspend fun addGoal(title: String): Result<Unit> {
         return runCatching {

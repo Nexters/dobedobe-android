@@ -11,7 +11,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -22,7 +22,7 @@ class DetailGoalViewModel(
 ) : ViewModel() {
     val uiState: StateFlow<DetailGoalUiState> = savedStateHandle.toRoute<GoalRoute.Detail>()
         .let { route -> goalRepository.getGoal(route.id) }
-        .map(DetailGoalUiState::Success)
+        .mapNotNull { it?.let(DetailGoalUiState::Success) }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000L),

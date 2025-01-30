@@ -14,7 +14,7 @@ interface GoalDao {
     fun getGoals(): Flow<List<GoalEntity>>
 
     @Query("SELECT * FROM Goal WHERE id = :id")
-    fun getGoal(id: Long): Flow<GoalEntity>
+    fun getGoal(id: Long): Flow<GoalEntity?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertGoal(goals: GoalEntity)
