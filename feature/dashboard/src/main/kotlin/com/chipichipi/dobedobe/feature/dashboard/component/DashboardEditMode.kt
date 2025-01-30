@@ -9,8 +9,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -147,7 +149,9 @@ private fun DashboardEditModeBody(
         )
 
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(342.dp),
             contentAlignment = Alignment.Center,
         ) {
             photoDraftsState.forEach { photo ->
@@ -164,27 +168,27 @@ private fun DashboardEditModeBody(
                     },
                 )
             }
+        }
 
-            Column(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 230.dp),
-                verticalArrangement = Arrangement.spacedBy(15.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                // TODO : 색상 변경 필요
-                Icon(
-                    painter = painterResource(R.drawable.ic_dashboard_edit_mode),
-                    tint = Color.White,
-                    contentDescription = "edit mode icon",
-                )
+        Spacer(modifier = Modifier.height(25.dp))
 
-                Text(
-                    text = stringResource(R.string.feature_dashboard_edit_mode_description),
-                    fontSize = 16.sp,
-                    color = Color.White,
-                )
-            }
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(19.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            // TODO : 색상 변경 필요
+            Icon(
+                painter = painterResource(R.drawable.ic_dashboard_edit_mode),
+                tint = Color.White,
+                contentDescription = "edit mode icon",
+            )
+
+            Text(
+                text = stringResource(R.string.feature_dashboard_edit_mode_description),
+                fontSize = 16.sp,
+                color = Color.White,
+            )
         }
     }
 }
