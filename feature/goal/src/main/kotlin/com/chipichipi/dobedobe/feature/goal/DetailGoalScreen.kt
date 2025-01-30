@@ -160,7 +160,7 @@ private fun DetailGoalContent(
         if (goal.isCompleted) {
             stringResource(R.string.feature_detail_goal_complete_editor_header)
         } else stringResource(
-            R.string.feature_detail_goal_todo_editor_header
+            R.string.feature_detail_goal_uncompleted_editor_header
         )
 
     GoalEditor(

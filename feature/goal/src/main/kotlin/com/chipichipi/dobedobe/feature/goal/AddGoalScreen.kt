@@ -10,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -84,8 +85,7 @@ private fun AddGoalScreen(
                 .padding(horizontal = 24.dp)
                 .padding(top = 24.dp),
             title = "",
-            // TODO: stringResource 적용
-            header = "어떤 목표를 이루고 싶나요?",
+            header = stringResource(id = R.string.feature_detail_goal_todo_editor_header),
             errorMessage = errorMessage,
             onChangeTitle = onChangeGoalName,
         )

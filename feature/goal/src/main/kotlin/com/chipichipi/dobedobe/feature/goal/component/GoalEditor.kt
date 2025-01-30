@@ -11,14 +11,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBackground
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeTextField
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
+import com.chipichipi.dobedobe.feature.goal.R
 
 @Composable
 fun GoalEditor(
@@ -36,21 +35,18 @@ fun GoalEditor(
     }
 
     Column(modifier = modifier) {
-        // TODO : Writing, textStyle 수정 필요
         Text(
             text = header,
             modifier = Modifier.fillMaxWidth(),
-            fontWeight = FontWeight.Bold,
-            fontSize = 22.sp,
-            lineHeight = 33.sp,
-            color = Color(0xFF262C36),
+            style = DobeDobeTheme.typography.heading1,
+            color = DobeDobeTheme.colors.gray900,
         )
         Spacer(Modifier.height(48.dp))
 
         DobeDobeTextField(
             state = goalTitleState,
-            hint = "목표 이름",
-            supportMessage = "목표가 간결할수록 집중력이 높아져요.",
+            hint = stringResource(R.string.feature_detail_goal_editor_hint),
+            supportMessage = stringResource(R.string.feature_detail_goal_editor_support_message),
             errorMessage = errorMessage,
         )
         if (toggleContent != null) {
