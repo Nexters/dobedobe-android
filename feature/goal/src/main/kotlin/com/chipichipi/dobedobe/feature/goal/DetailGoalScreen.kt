@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -155,8 +156,12 @@ private fun DetailGoalContent(
     onToggleCompleted: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    // TODO : string resource 로 변경
-    val header = if (goal.isCompleted) "달성한 목표" else "도전중인 목표"
+    val header =
+        if (goal.isCompleted) {
+            stringResource(R.string.feature_detail_goal_complete_editor_header)
+        } else stringResource(
+            R.string.feature_detail_goal_todo_editor_header
+        )
 
     GoalEditor(
         modifier = modifier,
@@ -170,8 +175,7 @@ private fun DetailGoalContent(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             GoalToggleChip(
-                // TODO: string resource 로 변경
-                text = "목표 달성",
+                text = stringResource(R.string.feature_detail_goal_complete_chip),
                 isChecked = goal.isCompleted,
                 onCheckedChange = { onToggleCompleted() },
                 // TODO: design system 에서 icon 가져오기
@@ -180,8 +184,7 @@ private fun DetailGoalContent(
             )
             Spacer(modifier = Modifier.width(16.dp))
             GoalToggleChip(
-                // TODO: string resource 로 변경
-                text = "즐겨찾기",
+                text = stringResource(R.string.feature_detail_goal_pinned_chip),
                 isChecked = goal.isPinned,
                 onCheckedChange = {
                     onTogglePinned()
@@ -211,11 +214,10 @@ private fun GoalDeleteDialog(
     modifier: Modifier = Modifier,
 ) {
     if (!visible) return
-    // TODO : string resource 로 변경
     DobeDobeDialog(
-        title = "목표를 삭제하시겠어요?",
-        primaryText = "취소",
-        secondaryText = "삭제",
+        title = stringResource(R.string.feature_detail_goal_delete_dialog_title),
+        primaryText = stringResource(R.string.feature_detail_goal_delete_dialog_primary),
+        secondaryText = stringResource(R.string.feature_detail_goal_delete_dialog_secondary),
         onClickPrimary = onDismiss,
         onClickSecondary = onConfirm,
         onDismissRequest = onDismiss,

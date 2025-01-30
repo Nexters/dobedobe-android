@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_goal">목표</string>
+    <string name="feature_detail_goal_top_bar_remove">삭제</string>
+    <string name="feature_detail_goal_complete_editor_header">달성한 목표</string>
+    <string name="feature_detail_goal_todo_editor_header">도전중인 목표</string>
+    <string name="feature_detail_goal_complete_chip">목표 달성</string>
+    <string name="feature_detail_goal_pinned_chip">즐겨찾기</string>
+
+    <string name="feature_detail_goal_delete_dialog_title">목표를 삭제하시겠어요?</string>
+    <string name="feature_detail_goal_delete_dialog_primary">취소</string>
+    <string name="feature_detail_goal_delete_dialog_secondary">삭제</string>
 </resources>
