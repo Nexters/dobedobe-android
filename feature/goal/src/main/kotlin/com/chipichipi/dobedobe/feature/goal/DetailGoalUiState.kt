@@ -11,4 +11,7 @@ sealed interface DetailGoalUiState {
     }
 
     data object Error : DetailGoalUiState
+
+    val isSuccess: Boolean
+        get() = this is Success
 }

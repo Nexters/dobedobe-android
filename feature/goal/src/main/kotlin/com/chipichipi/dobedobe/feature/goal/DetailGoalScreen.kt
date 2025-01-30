@@ -96,12 +96,12 @@ private fun DetailGoalScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            if (uiState is DetailGoalUiState.Success) {
-                DetailGoalTopAppBar(
-                    navigateToBack = navigateToBack,
-                    onRemoveGoal = { setVisibleDialog(true) },
-                )
-            }
+            DetailGoalTopAppBar(
+                navigateToBack = navigateToBack,
+                onRemoveGoal = {
+                    if (uiState.isSuccess) setVisibleDialog(true)
+                },
+            )
         },
     ) { innerPadding ->
         when (uiState) {
