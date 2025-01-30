@@ -13,11 +13,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.chipichipi.dobedobe.R
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBackground
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeTextButton
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeTextField
@@ -46,22 +45,18 @@ private fun OnboardingScreen(
     ) {
         val textState = rememberTextFieldState()
 
-        // TODO : colorScheme 적용 필요
         Text(
-            text = "어떤 목표를 이루고 싶나요?",
-            fontWeight = FontWeight.Bold,
-            fontSize = 22.sp,
-            lineHeight = 33.sp,
-            color = Color(0xFF000000),
+            text = stringResource(R.string.onboarding_goal_prompt),
+            style = DobeDobeTheme.typography.heading1,
+            color = DobeDobeTheme.colors.gray900,
         )
 
         Spacer(modifier = Modifier.height(48.dp))
 
         DobeDobeTextField(
             state = textState,
-            hint = "ex) 1일 1책 읽기",
-            supportMessage = "목표가 간결할수록 집중력이 높아져요.",
-            // TODO : Writing 수정 필요
+            hint = stringResource(R.string.onboarding_goal_hint),
+            supportMessage = stringResource(R.string.onboarding_goal_support_message),
         )
 
         Spacer(modifier = Modifier.weight(1f))
@@ -74,11 +69,9 @@ private fun OnboardingScreen(
             onClick = completeOnboarding,
         ) {
             Text(
-                text = "완료",
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 17.sp,
-                lineHeight = 26.sp,
-                color = Color(0xFFFFFFFF),
+                text = stringResource(R.string.onboarding_goal_completed),
+                style = DobeDobeTheme.typography.heading2,
+                color = DobeDobeTheme.colors.white,
             )
         }
     }
