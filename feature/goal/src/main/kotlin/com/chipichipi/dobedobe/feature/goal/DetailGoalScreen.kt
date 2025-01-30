@@ -164,9 +164,11 @@ private fun DetailGoalContent(
     val header =
         if (goal.isCompleted) {
             stringResource(R.string.feature_detail_goal_complete_editor_header)
-        } else stringResource(
-            R.string.feature_detail_goal_uncompleted_editor_header
-        )
+        } else {
+            stringResource(
+                R.string.feature_detail_goal_uncompleted_editor_header,
+            )
+        }
 
     GoalEditor(
         modifier = modifier,

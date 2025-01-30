@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 class AddGoalViewModel(
     private val goalRepository: GoalRepository,
 ) : ViewModel() {
-
     private val goalTitle: MutableStateFlow<String> = MutableStateFlow("")
     val goalValidResult: StateFlow<GoalTitleValidResult> =
         goalTitle
