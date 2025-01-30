@@ -123,7 +123,6 @@ private fun DetailGoalScreen(
                     uiState.goalValidResult
                         .errorMessage()
                         ?.let { stringResource(id = it) }
-                        .orEmpty()
 
                 DetailGoalContent(
                     goal = goal,

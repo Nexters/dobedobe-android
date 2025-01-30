@@ -40,7 +40,6 @@ fun AddGoalRoute(
     val errorMessage =
         goalValidResult.errorMessage()
             ?.let { stringResource(id = it) }
-            .orEmpty()
 
     LaunchedEffect(Unit) {
         viewModel.navigateToBackEvent
