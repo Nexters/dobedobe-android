@@ -14,11 +14,13 @@ private val DarkAndroidBackgroundTheme = BackgroundTheme(color = Color.White)
 
 object DobeDobeTheme {
     val typography: DobeDobeTypography
-        @ReadOnlyComposable @Composable
+        @ReadOnlyComposable
+        @Composable
         get() = LocalDobeDobeTypography.current
 
     val colors: DobeDobeColors
-        @ReadOnlyComposable @Composable
+        @ReadOnlyComposable
+        @Composable
         get() = LocalDobeDobeColors.current
 }
 
