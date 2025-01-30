@@ -1,5 +1,6 @@
 package com.chipichipi.dobedobe.feature.dashboard
 
+import android.net.Uri
 import android.os.Build
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
@@ -48,6 +49,7 @@ import com.chipichipi.dobedobe.feature.dashboard.component.DashboardEditModeTopA
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardTopAppBar
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardViewMode
 import com.chipichipi.dobedobe.feature.dashboard.component.ExpandedPhotoFrame
+import com.chipichipi.dobedobe.feature.dashboard.model.DashboardModeState
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
@@ -68,6 +70,7 @@ internal fun DashboardRoute(
     viewModel: DashboardViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val modeState by viewModel.modeState.collectAsStateWithLifecycle()
 
     DashboardScreen(
         modifier = modifier.fillMaxSize(),
@@ -83,6 +86,8 @@ internal fun DashboardRoute(
         onUpsertPhotos = viewModel::upsertPhotos,
         onDeletePhotos = viewModel::deletePhotos,
         onChangeBubble = viewModel::changeBubble,
+        modeState = modeState,
+        onUpdatePhotoDrafts = viewModel::updatePhotoDrafts,
     )
 }
 
@@ -100,6 +105,8 @@ private fun DashboardScreen(
     onUpsertPhotos: (List<DashboardPhoto>) -> Unit,
     onDeletePhotos: (List<Int>) -> Unit,
     onChangeBubble: () -> Unit,
+    modeState: DashboardModeState,
+    onUpdatePhotoDrafts: (Int?, Uri) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -129,6 +136,8 @@ private fun DashboardScreen(
                     onToggleMode = onToggleMode,
                     onUpsertPhotos = onUpsertPhotos,
                     onDeletePhotos = onDeletePhotos,
+                    modeState = modeState,
+                    onUpdatePhotoDrafts = onUpdatePhotoDrafts,
                 )
             }
         }
@@ -149,9 +158,11 @@ private fun DashboardBody(
     onToggleMode: () -> Unit,
     onUpsertPhotos: (List<DashboardPhoto>) -> Unit,
     onDeletePhotos: (List<Int>) -> Unit,
+    modeState: DashboardModeState,
+    onUpdatePhotoDrafts: (Int?, Uri) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isEditMode = uiState.mode.isEditMode
+    val isEditMode = modeState is DashboardModeState.Edit
 
     SharedTransitionLayout(
         modifier = modifier,
@@ -200,7 +211,7 @@ private fun DashboardBody(
             },
         ) { innerPadding ->
             DashboardViewMode(
-                isViewMode = uiState.mode.isViewMode,
+                isViewMode = !isEditMode,
                 photoState = uiState.photoState,
                 bubbleTitle = uiState.bubbleTitle,
                 photoFramesState = photoFramesState,
@@ -235,10 +246,11 @@ private fun DashboardBody(
 
     if (isEditMode) {
         DashboardEditMode(
-            photoState = uiState.photoState,
+            modeState = modeState as DashboardModeState.Edit,
             onToggleMode = onToggleMode,
             onUpsertPhotos = onUpsertPhotos,
             onDeletePhotos = onDeletePhotos,
+            onUpdatePhotoDrafts = onUpdatePhotoDrafts,
         )
     }
 

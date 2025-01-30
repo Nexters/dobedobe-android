@@ -36,31 +36,27 @@ import androidx.compose.ui.unit.sp
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeDialog
 import com.chipichipi.dobedobe.core.model.DashboardPhoto
 import com.chipichipi.dobedobe.feature.dashboard.R
-import com.chipichipi.dobedobe.feature.dashboard.model.DashboardEditOptionsDialogState
+import com.chipichipi.dobedobe.feature.dashboard.model.DashboardModeState
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
 import com.chipichipi.dobedobe.feature.dashboard.util.updateModifiedPhotosToFile
 import kotlinx.coroutines.launch
 
 @Composable
 internal fun DashboardEditMode(
-    photoState: List<DashboardPhotoState>,
+    modeState: DashboardModeState.Edit,
     onToggleMode: () -> Unit,
     onUpsertPhotos: (List<DashboardPhoto>) -> Unit,
     onDeletePhotos: (List<Int>) -> Unit,
+    onUpdatePhotoDrafts: (Int?, Uri) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var photoDraftsState by remember { mutableStateOf(photoState) }
     var selectedPhotoId by remember { mutableStateOf<Int?>(null) }
 
     val photoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
             if (selectedPhotoId != null && uri != null) {
-                photoDraftsState = updateDraftsPhoto(
-                    state = photoDraftsState,
-                    id = selectedPhotoId,
-                    uri = uri,
-                )
+                onUpdatePhotoDrafts(selectedPhotoId, uri)
             }
 
             selectedPhotoId = null
@@ -74,15 +70,11 @@ internal fun DashboardEditMode(
     DashboardEditModeBody(
         modifier = modifier,
         onToggleMode = onToggleMode,
-        photoDraftsState = photoDraftsState,
+        photoDraftsState = modeState.drafts,
         onUpsertPhotos = onUpsertPhotos,
         onDeletePhotos = onDeletePhotos,
         onDeleteDraftsPhoto = { id ->
-            photoDraftsState = updateDraftsPhoto(
-                state = photoDraftsState,
-                id = id,
-                uri = Uri.EMPTY,
-            )
+            onUpdatePhotoDrafts(id, Uri.EMPTY)
         },
         onPickDraftsPhoto = { id ->
             selectedPhotoId = id
@@ -90,6 +82,10 @@ internal fun DashboardEditMode(
             photoPickerLauncher.launch(
                 PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
             )
+        },
+        selectedPhotoId = selectedPhotoId,
+        onChangeId = { id ->
+            selectedPhotoId = id
         },
     )
 }
@@ -102,33 +98,26 @@ private fun DashboardEditModeBody(
     onDeletePhotos: (List<Int>) -> Unit,
     onDeleteDraftsPhoto: (Int) -> Unit,
     onPickDraftsPhoto: (Int) -> Unit,
+    selectedPhotoId: Int?,
+    onChangeId: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    var editOptionDialogState by remember {
-        mutableStateOf<DashboardEditOptionsDialogState>(
-            DashboardEditOptionsDialogState.NotShown,
+    var isShowEditOptionDialog by remember { mutableStateOf(false) }
+
+    if (isShowEditOptionDialog && selectedPhotoId != null) {
+        DashboardEditOptionsDialog(
+            onDismissRequest = {
+                isShowEditOptionDialog = false
+            },
+            onPickPhoto = {
+                onPickDraftsPhoto(selectedPhotoId)
+            },
+            onDeletePhoto = {
+                onDeleteDraftsPhoto(selectedPhotoId)
+            },
         )
-    }
-
-    when (editOptionDialogState) {
-        is DashboardEditOptionsDialogState.NotShown -> {}
-        is DashboardEditOptionsDialogState.Shown -> {
-            val id = (editOptionDialogState as DashboardEditOptionsDialogState.Shown).id
-
-            DashboardEditOptionsDialog(
-                onDismissRequest = {
-                    editOptionDialogState = DashboardEditOptionsDialogState.NotShown
-                },
-                onPickPhoto = {
-                    onPickDraftsPhoto(id)
-                },
-                onDeletePhoto = {
-                    onDeleteDraftsPhoto(id)
-                },
-            )
-        }
     }
 
     Column(
@@ -170,8 +159,8 @@ private fun DashboardEditModeBody(
                         onPickDraftsPhoto(photo.config.id)
                     },
                     onDeletePhoto = {
-                        editOptionDialogState =
-                            DashboardEditOptionsDialogState.Shown(photo.config.id)
+                        onChangeId(photo.config.id)
+                        isShowEditOptionDialog = true
                     },
                 )
             }
@@ -254,23 +243,6 @@ private fun DashboardEditOptionsDialog(
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 17.sp,
             )
-        }
-    }
-}
-
-private fun updateDraftsPhoto(
-    state: List<DashboardPhotoState>,
-    id: Int?,
-    uri: Uri,
-): List<DashboardPhotoState> {
-    return state.map { draft ->
-        if (draft.config.id == id) {
-            draft.copy(
-                uri = uri,
-                hasUriChanged = true,
-            )
-        } else {
-            draft
         }
     }
 }
