@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,10 +22,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeCheckBox
 import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
+import com.chipichipi.dobedobe.core.designsystem.icon.DobeDobeIcons
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 
 @Composable
@@ -39,31 +40,27 @@ internal fun GoalToggleChip(
 ) {
     Column(
         modifier = modifier
-            .defaultMinSize(80.dp)
+            .defaultMinSize(minHeight = 90.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(DobeDobeTheme.colors.gray100)
-            .clickable { onCheckedChange(!isChecked) }
-            .padding(8.dp),
+            .clickable { onCheckedChange(!isChecked) },
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        if (isChecked) {
-            Icon(
-                modifier = Modifier.size(24.dp),
-                imageVector = checkedIcon,
-                tint = DobeDobeTheme.colors.gray900,
-                contentDescription = "checked",
-            )
-        }
-        if (isChecked.not()) {
-            DobeDobeCheckBox(
-                modifier = Modifier.size(24.dp),
-                checked = false,
-                enabled = false,
-            )
-        }
+        val icon =
+            if (isChecked) {
+                checkedIcon
+            } else {
+                ImageVector.vectorResource(DobeDobeIcons.Unchecked)
+            }
 
-        Spacer(modifier = Modifier.height(11.dp))
+        Icon(
+            modifier = Modifier.size(24.dp),
+            imageVector = icon,
+            tint = Color.Unspecified,
+            contentDescription = "checked",
+        )
+        Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = text,
             style = DobeDobeTheme.typography.heading2,

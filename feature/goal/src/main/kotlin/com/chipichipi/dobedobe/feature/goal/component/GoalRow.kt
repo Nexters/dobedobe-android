@@ -45,15 +45,14 @@ fun GoalRow(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 14.dp, vertical = 16.dp),
+                .padding(start = 6.dp, end = 14.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             DobeDobeCheckBox(
-                modifier = Modifier.size(29.dp),
                 checked = goal.isCompleted,
                 onCheckedChange = { onToggleCompleted() },
             )
-            Spacer(modifier = Modifier.width(11.dp))
+            Spacer(modifier = Modifier.width(3.dp))
             Text(
                 text = goal.title,
                 style = DobeDobeTheme.typography.heading2,
@@ -66,7 +65,7 @@ fun GoalRow(
                     modifier = Modifier
                         .size(24.dp, 30.dp)
                         .align(Alignment.Top)
-                        .offset(x = (-10).dp, y = (-16).dp),
+                        .offset(x = (-10).dp),
                     contentDescription = stringResource(R.string.feature_goal_row_check_icon_content_description),
                     tint = Color.Unspecified,
                 )

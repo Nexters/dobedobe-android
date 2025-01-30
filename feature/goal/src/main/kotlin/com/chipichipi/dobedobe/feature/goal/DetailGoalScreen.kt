@@ -197,7 +197,7 @@ private fun DetailGoalContent(
                 onCheckedChange = {
                     onTogglePinned()
                 },
-                checkedIcon = ImageVector.vectorResource(DobeDobeIcons.Bookmark),
+                checkedIcon = ImageVector.vectorResource(R.drawable.ic_bookmark_gray900),
                 modifier = Modifier.weight(1f),
             )
         }
