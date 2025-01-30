@@ -1,5 +1,6 @@
 package com.chipichipi.dobedobe.feature.goal
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -84,6 +85,8 @@ private fun AddGoalScreen(
     ) { innerPadding ->
         GoalEditor(
             modifier = Modifier
+                .fillMaxSize()
+                .background(DobeDobeTheme.colors.white)
                 .padding(innerPadding)
                 .padding(horizontal = 24.dp)
                 .padding(top = 24.dp),

@@ -1,5 +1,6 @@
 package com.chipichipi.dobedobe.feature.goal
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -138,6 +139,8 @@ private fun DetailGoalScreen(
                     onTogglePinned = { onTogglePinned(goal.id) },
                     onToggleCompleted = { onToggleCompleted(goal.id) },
                     modifier = modifier
+                        .fillMaxSize()
+                        .background(DobeDobeTheme.colors.white)
                         .padding(innerPadding)
                         .padding(horizontal = 24.dp)
                         .padding(top = 24.dp, bottom = 32.dp),
