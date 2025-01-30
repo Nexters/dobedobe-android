@@ -232,9 +232,9 @@ private fun DashboardBody(
         )
     }
 
-    if (isEditMode) {
+    if (modeState is DashboardModeState.Edit) {
         DashboardEditMode(
-            modeState = modeState as DashboardModeState.Edit,
+            modeState = modeState,
             onToggleMode = onToggleMode,
             onUpsertPhotos = onUpsertPhotos,
             onDeletePhotos = onDeletePhotos,
