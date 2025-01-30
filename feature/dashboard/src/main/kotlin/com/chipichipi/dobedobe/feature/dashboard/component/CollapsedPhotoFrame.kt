@@ -1,5 +1,6 @@
 package com.chipichipi.dobedobe.feature.dashboard.component
 
+import android.net.Uri
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
@@ -30,7 +31,7 @@ import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoConfig
 @Composable
 internal fun SharedTransitionScope.CollapsedPhotoFrame(
     config: DashboardPhotoConfig,
-    url: String,
+    uri: Uri,
     isExpanded: Boolean,
     rotation: Animatable<Float, AnimationVector1D>?,
     onToggleExpansion: (Int) -> Unit,
@@ -41,7 +42,7 @@ internal fun SharedTransitionScope.CollapsedPhotoFrame(
         rotation = rotation?.value ?: 0f,
         isExpanded = isExpanded,
         config = config,
-        url = url,
+        uri = uri,
         onToggleExpansion = {
             onToggleExpansion(config.id)
         },
@@ -56,7 +57,7 @@ private fun SharedTransitionScope.CollapsedPhotoFrame(
     rotation: Float,
     isExpanded: Boolean,
     config: DashboardPhotoConfig,
-    url: String,
+    uri: Uri,
     onToggleExpansion: () -> Unit,
     onEmptyFrameClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -78,7 +79,7 @@ private fun SharedTransitionScope.CollapsedPhotoFrame(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = config.alignment,
                 ) {
-                    if (url.isNotEmpty()) {
+                    if (uri != Uri.EMPTY) {
                         AsyncImage(
                             modifier = Modifier
                                 .offset(
@@ -94,7 +95,7 @@ private fun SharedTransitionScope.CollapsedPhotoFrame(
                                 .clip(RoundedCornerShape(24.dp))
                                 .clickable(onClick = onToggleExpansion),
                             contentScale = ContentScale.FillBounds,
-                            model = url,
+                            model = uri,
                             contentDescription = null,
                         )
                     } else {

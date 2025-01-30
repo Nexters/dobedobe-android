@@ -1,25 +1,20 @@
 package com.chipichipi.dobedobe.feature.dashboard
 
+import android.net.Uri
 import android.os.Build
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
@@ -32,23 +27,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBottomSheetScaffold
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeDialog
-import com.chipichipi.dobedobe.feature.dashboard.component.CollapsedPhotoFrame
-import com.chipichipi.dobedobe.feature.dashboard.component.DashboardBubble
-import com.chipichipi.dobedobe.feature.dashboard.component.DashboardCharacter
-import com.chipichipi.dobedobe.feature.dashboard.component.DashboardEditModeTopAppBar
+import com.chipichipi.dobedobe.core.model.DashboardPhoto
+import com.chipichipi.dobedobe.feature.dashboard.component.DashboardEditMode
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardTopAppBar
-import com.chipichipi.dobedobe.feature.dashboard.component.EditModePhotoFrame
+import com.chipichipi.dobedobe.feature.dashboard.component.DashboardViewMode
 import com.chipichipi.dobedobe.feature.dashboard.component.ExpandedPhotoFrame
+import com.chipichipi.dobedobe.feature.dashboard.model.DashboardModeState
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
@@ -69,6 +58,7 @@ internal fun DashboardRoute(
     viewModel: DashboardViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val modeState by viewModel.modeState.collectAsStateWithLifecycle()
 
     DashboardScreen(
         modifier = modifier.fillMaxSize(),
@@ -81,7 +71,11 @@ internal fun DashboardRoute(
         navigateToSetting = navigateToSetting,
         onGoalToggled = viewModel::toggleGoalCompletion,
         onToggleMode = viewModel::toggleMode,
+        onUpsertPhotos = viewModel::upsertPhotos,
+        onDeletePhotos = viewModel::deletePhotos,
         onChangeBubble = viewModel::changeBubble,
+        modeState = modeState,
+        onUpdatePhotoDrafts = viewModel::updatePhotoDrafts,
     )
 }
 
@@ -96,7 +90,11 @@ private fun DashboardScreen(
     navigateToSetting: () -> Unit,
     onGoalToggled: (Long) -> Unit,
     onToggleMode: () -> Unit,
+    onUpsertPhotos: (List<DashboardPhoto>) -> Unit,
+    onDeletePhotos: (List<DashboardPhoto>) -> Unit,
     onChangeBubble: () -> Unit,
+    modeState: DashboardModeState,
+    onUpdatePhotoDrafts: (Int?, Uri) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -124,6 +122,10 @@ private fun DashboardScreen(
                     onGoalToggled = onGoalToggled,
                     onChangeBubble = onChangeBubble,
                     onToggleMode = onToggleMode,
+                    onUpsertPhotos = onUpsertPhotos,
+                    onDeletePhotos = onDeletePhotos,
+                    modeState = modeState,
+                    onUpdatePhotoDrafts = onUpdatePhotoDrafts,
                 )
             }
         }
@@ -142,8 +144,14 @@ private fun DashboardBody(
     onGoalToggled: (Long) -> Unit,
     onChangeBubble: () -> Unit,
     onToggleMode: () -> Unit,
+    onUpsertPhotos: (List<DashboardPhoto>) -> Unit,
+    onDeletePhotos: (List<DashboardPhoto>) -> Unit,
+    modeState: DashboardModeState,
+    onUpdatePhotoDrafts: (Int?, Uri) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val isEditMode = modeState is DashboardModeState.Edit
+
     SharedTransitionLayout(
         modifier = modifier,
     ) {
@@ -162,7 +170,6 @@ private fun DashboardBody(
                 }
             }
         }
-        val isEditMode = uiState.mode.isEditMode
 
         DobeDobeBottomSheetScaffold(
             modifier = modifier
@@ -192,7 +199,7 @@ private fun DashboardBody(
             },
         ) { innerPadding ->
             DashboardViewMode(
-                isViewMode = uiState.mode.isViewMode,
+                isViewMode = !isEditMode,
                 photoState = uiState.photoState,
                 bubbleTitle = uiState.bubbleTitle,
                 photoFramesState = photoFramesState,
@@ -218,17 +225,20 @@ private fun DashboardBody(
                 .zIndex(1f),
         )
 
-        if (isEditMode) {
-            DashboardEditMode(
-                photoState = uiState.photoState,
-                onToggleMode = onToggleMode,
-            )
-        }
-
         DashboardPhotoRotationEffect(
             photoStates = uiState.photoState,
             rotationMap = photoFramesState.rotationMap,
             photoFramesState = photoFramesState,
+        )
+    }
+
+    if (modeState is DashboardModeState.Edit) {
+        DashboardEditMode(
+            modeState = modeState,
+            onToggleMode = onToggleMode,
+            onUpsertPhotos = onUpsertPhotos,
+            onDeletePhotos = onDeletePhotos,
+            onUpdatePhotoDrafts = onUpdatePhotoDrafts,
         )
     }
 
@@ -237,113 +247,6 @@ private fun DashboardBody(
         setGoalNotificationEnabled = setGoalNotificationEnabled,
         disableSystemNotificationDialog = disableSystemNotificationDialog,
     )
-}
-
-@OptIn(ExperimentalSharedTransitionApi::class)
-@Composable
-private fun SharedTransitionScope.DashboardViewMode(
-    isViewMode: Boolean,
-    photoState: List<DashboardPhotoState>,
-    bubbleTitle: String,
-    photoFramesState: DashboardPhotoFramesState,
-    onChangeBubble: () -> Unit,
-    onToggleExpansion: (Int) -> Unit,
-    onToggleMode: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center,
-    ) {
-        photoState.forEach { photo ->
-            CollapsedPhotoFrame(
-                config = photo.config,
-                url = photo.url,
-                isExpanded = photoFramesState.isExpanded(photo.config.id),
-                rotation = photoFramesState.rotationMap[photo.config.id],
-                onToggleExpansion = onToggleExpansion,
-                onEmptyFrameClick = onToggleMode,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .zIndex(0f),
-            )
-        }
-
-        if (isViewMode) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Spacer(Modifier.height(13.dp))
-                DashboardBubble(
-                    title = bubbleTitle,
-                    // TODO : font 적용
-                    textStyle = TextStyle(fontSize = 15.sp),
-                    // TODO: ColorScheme 적용
-                    modifier = Modifier.background(Color.White),
-                    onClick = onChangeBubble,
-                )
-                DashboardCharacter(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .zIndex(0.5f),
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun DashboardEditMode(
-    photoState: List<DashboardPhotoState>,
-    onToggleMode: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    // TODO : 색상 변경 필요
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(Color.Black.copy(0.7f)),
-    ) {
-        DashboardEditModeTopAppBar(
-            onToggleMode = onToggleMode,
-        )
-
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center,
-        ) {
-            photoState.forEach { photo ->
-                // TODO : EmptyFrameClick 처리
-                EditModePhotoFrame(
-                    config = photo.config,
-                    url = photo.url,
-                    rotation = photo.config.rotationZ,
-                    onClick = {},
-                )
-            }
-
-            Column(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 230.dp),
-                verticalArrangement = Arrangement.spacedBy(15.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                // TODO : 색상 변경 필요
-                Icon(
-                    painter = painterResource(R.drawable.ic_dashboard_edit_mode),
-                    tint = Color.White,
-                    contentDescription = "edit mode icon",
-                )
-
-                Text(
-                    text = stringResource(R.string.feature_dashboard_edit_mode_description),
-                    fontSize = 16.sp,
-                    color = Color.White,
-                )
-            }
-        }
-    }
 }
 
 @Composable
@@ -387,6 +290,7 @@ private fun GoalNotificationPermission(
             },
             // TODO : 변경 필요
             title = "목표에 대한 알림을 위해\n 권한이 필요합니다.",
+            modifier = Modifier.width(253.dp),
         ) {
             Button(
                 onClick = {

@@ -1,5 +1,6 @@
 package com.chipichipi.dobedobe.feature.dashboard.component
 
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -24,9 +25,10 @@ import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoConfig
 @Composable
 internal fun EditModePhotoFrame(
     config: DashboardPhotoConfig,
-    url: String,
+    uri: Uri,
     rotation: Float,
-    onClick: () -> Unit,
+    onPickPhoto: () -> Unit,
+    onDeletePhoto: () -> Unit,
 ) {
     val offsetX = config.offsetX.dp + if (config.offsetX < 0) (-4).dp else 4.dp
     val offsetY = config.offsetY.dp - 4.dp
@@ -53,13 +55,13 @@ internal fun EditModePhotoFrame(
                 .clip(RoundedCornerShape(24.dp))
                 .background(Color(0xFFE5E7EB)),
         ) {
-            if (url.isNotEmpty()) {
+            if (uri != Uri.EMPTY) {
                 AsyncImage(
                     modifier = Modifier
                         .fillMaxSize()
-                        .clickable(onClick = onClick),
+                        .clickable(onClick = onDeletePhoto),
                     contentScale = ContentScale.FillBounds,
-                    model = url,
+                    model = uri,
                     contentDescription = null,
                 )
             } else {
@@ -68,7 +70,7 @@ internal fun EditModePhotoFrame(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(Color(0xFFE5E7EB))
-                        .clickable(onClick = onClick),
+                        .clickable(onClick = onPickPhoto),
                 )
             }
         }
@@ -81,8 +83,10 @@ private fun EditModePhotoFramePreview() {
     DobeDobeTheme {
         EditModePhotoFrame(
             config = DashboardPhotoConfig.TOP,
-            url = "",
+            uri = Uri.EMPTY,
             rotation = 40f,
-        ) { }
+            onPickPhoto = {},
+            onDeletePhoto = {},
+        )
     }
 }
