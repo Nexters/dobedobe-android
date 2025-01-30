@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
@@ -21,43 +22,33 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 
-private val DefaultBubbleMinWidth = 135.dp
-private val DefaultBubbleMaxHeight = 75.dp
-private val DefaultBubbleMaxWidth = 287.dp
-private val DefaultBubbleTailHeight = 20.dp
-private val DefaultBubbleTailWidth = 34.dp
-private val DefaultContentVerticalPadding = 16.dp
-private val DefaultContentHorizontalPadding = 20.dp
-
 @Composable
 fun DobeDobeBubble(
     contentAlignment: Alignment,
-    tailPositionX: Float = 0.3f,
-    tailHeight: Dp = DefaultBubbleTailHeight,
     modifier: Modifier = Modifier,
+    tailPositionX: Float = 0.3f,
+    tailSize: DpSize = BubbleDefaults.tailSize(),
     content: @Composable BoxScope.() -> Unit,
 ) {
     val density = LocalDensity.current
-    val bubbleShape = bubbleShape(density, tailPositionX, tailHeight)
+    val bubbleShape = bubbleShape(density, tailPositionX, tailSize)
     Box(
         modifier = Modifier
             .sizeIn(
-                minWidth = DefaultBubbleMinWidth,
-                minHeight = DefaultBubbleMaxHeight,
-                maxWidth = DefaultBubbleMaxWidth,
+                minWidth = BubbleDefaults.MinWidth,
+                minHeight = BubbleDefaults.MinHeight,
+                maxWidth = BubbleDefaults.MaxWidth,
             )
             .shadow(3.dp, bubbleShape)
             .clip(bubbleShape)
             .then(modifier)
-            .padding(
-                horizontal = DefaultContentHorizontalPadding,
-                vertical = DefaultContentVerticalPadding,
-            )
-            .padding(bottom = tailHeight),
+            .padding(BubbleDefaults.ContentPadding)
+            .padding(bottom = tailSize.height),
         contentAlignment = contentAlignment,
         content = content,
     )
@@ -66,13 +57,12 @@ fun DobeDobeBubble(
 private fun bubbleShape(
     density: Density,
     tailPositionX: Float = 0.3f,
-    tailHeight: Dp = DefaultBubbleTailHeight,
-    tailWidth: Dp = DefaultBubbleTailWidth,
+    tailSize: DpSize = BubbleDefaults.tailSize(),
 ) = GenericShape { size, _ ->
     with(density) {
         val cornerRadius = 16.dp.toPx()
-        val tailWidthPx = tailWidth.toPx()
-        val tailHeightPx = tailHeight.toPx()
+        val tailWidthPx = tailSize.width.toPx()
+        val tailHeightPx = tailSize.height.toPx()
 
         val bubbleWidth = size.width
         val bubbleHeight = size.height - tailHeightPx
@@ -185,6 +175,26 @@ private fun Path.drawBottomEdge(cornerRadius: Float) {
         sweepAngleDegrees = 90f,
         forceMoveTo = false,
     )
+}
+
+object BubbleDefaults {
+    val MinWidth = 135.dp
+    val MinHeight = 75.dp
+    val MaxWidth = 287.dp
+
+    private val TailHeight = 20.dp
+    private val TailWidth = 34.dp
+
+    private val BubbleVerticalPadding = 16.dp
+    private val BubbleHorizontalPadding = 20.dp
+
+    val ContentPadding = PaddingValues(
+        horizontal = BubbleHorizontalPadding,
+        vertical = BubbleVerticalPadding,
+    )
+
+    fun tailSize(tailHeight: Dp = TailHeight, tailWidth: Dp = TailWidth) =
+        DpSize(tailWidth, tailHeight)
 }
 
 @ThemePreviews
