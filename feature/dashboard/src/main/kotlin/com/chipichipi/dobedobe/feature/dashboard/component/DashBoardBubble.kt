@@ -52,7 +52,7 @@ internal fun DashboardBubble(
         val annotatedString = buildAnnotatedString {
             withStyle(
                 SpanStyle(
-                    color = DobeDobeTheme.colors.green3
+                    color = DobeDobeTheme.colors.green3,
                 ),
             ) {
                 append(ellipsizedResult.title)

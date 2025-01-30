@@ -69,7 +69,7 @@ private fun GoalBottomSheetHeader(
         Text(
             text = stringResource(R.string.feature_dashboard_goal_bottom_sheet_title),
             style = DobeDobeTheme.typography.heading2,
-            color = DobeDobeTheme.colors.gray900
+            color = DobeDobeTheme.colors.gray900,
         )
 
         IconButton(
@@ -84,7 +84,7 @@ private fun GoalBottomSheetHeader(
             Icon(
                 painter = painterResource(DobeDobeIcons.Add),
                 contentDescription = "add goal",
-                tint = Color.Unspecified
+                tint = Color.Unspecified,
             )
         }
     }

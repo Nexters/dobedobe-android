@@ -87,7 +87,7 @@ private fun SettingBody(
         modifier = modifier,
     ) {
         SettingRow(
-            label = stringResource(R.string.feature_setting_goal_notifications)
+            label = stringResource(R.string.feature_setting_goal_notifications),
         ) {
             DobeDobeSwitch(
                 modifier = Modifier.padding(end = 8.dp),
@@ -103,7 +103,7 @@ private fun SettingBody(
         }
 
         SettingRow(
-            label = stringResource(R.string.feature_setting_app_feedback)
+            label = stringResource(R.string.feature_setting_app_feedback),
         ) {
             IconButton(
                 modifier = Modifier.size(42.dp),

@@ -39,7 +39,7 @@ internal fun SettingRow(
             Text(
                 text = label,
                 style = DobeDobeTheme.typography.body1,
-                color = DobeDobeTheme.colors.black
+                color = DobeDobeTheme.colors.black,
             )
 
             trailingContent()
@@ -48,7 +48,7 @@ internal fun SettingRow(
         HorizontalDivider(
             modifier = Modifier.fillMaxWidth(),
             thickness = 1.dp,
-            color = DobeDobeTheme.colors.gray200
+            color = DobeDobeTheme.colors.gray200,
         )
     }
 }
