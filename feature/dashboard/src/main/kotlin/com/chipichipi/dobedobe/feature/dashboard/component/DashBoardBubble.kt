@@ -17,10 +17,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBubble
+import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
+import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 
 @Composable
 internal fun DashboardBubble(
@@ -117,36 +118,38 @@ private data class EllipsizedTextResult(
     val suffix: String,
 )
 
-@Preview
+@ThemePreviews
 @Composable
-fun PreviewBubbleWithTail() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.LightGray),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        DashboardBubble(
-            modifier = Modifier.background(Color.White),
-            textStyle = TextStyle(fontSize = 15.sp),
-            // TODO : 랜덤 TODO 목표 받아와서 넣기,
-            onClick = {},
-            title = "놀고",
-        )
-        DashboardBubble(
-            modifier = Modifier.background(Color.White),
-            // TODO : 랜덤 TODO 목표 받아와서 넣기,
-            textStyle = TextStyle(fontSize = 15.sp),
-            onClick = {},
-            title = "놀고먹고자고놀고먹고자",
-        )
-        DashboardBubble(
-            modifier = Modifier.background(Color.White),
-            textStyle = TextStyle(fontSize = 15.sp),
-            // TODO : 랜덤 TODO 목표 받아와서 넣기,
-            onClick = {},
-            title = "놀고먹고자고놀고먹고자고힘내자",
-        )
+private fun PreviewBubbleWithTail() {
+    DobeDobeTheme {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.LightGray),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            DashboardBubble(
+                modifier = Modifier.background(Color.White),
+                textStyle = TextStyle(fontSize = 15.sp),
+                // TODO : 랜덤 TODO 목표 받아와서 넣기,
+                onClick = {},
+                title = "놀고",
+            )
+            DashboardBubble(
+                modifier = Modifier.background(Color.White),
+                // TODO : 랜덤 TODO 목표 받아와서 넣기,
+                textStyle = TextStyle(fontSize = 15.sp),
+                onClick = {},
+                title = "놀고먹고자고놀고먹고자",
+            )
+            DashboardBubble(
+                modifier = Modifier.background(Color.White),
+                textStyle = TextStyle(fontSize = 15.sp),
+                // TODO : 랜덤 TODO 목표 받아와서 넣기,
+                onClick = {},
+                title = "놀고먹고자고놀고먹고자고힘내자",
+            )
+        }
     }
 }

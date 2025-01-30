@@ -19,11 +19,11 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 
 private val DefaultBubbleMinWidth = 135.dp
 private val DefaultBubbleMaxHeight = 75.dp
@@ -187,33 +187,35 @@ private fun Path.drawBottomEdge(cornerRadius: Float) {
     )
 }
 
-@Preview
+@ThemePreviews
 @Composable
 private fun PreviewBubbleWithTail() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.LightGray),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        DobeDobeBubble(
+    DobeDobeTheme {
+        Column(
             modifier = Modifier
-                .background(Color.White)
-                .clickable { },
-            tailPositionX = 0.5f,
-            contentAlignment = Alignment.TopCenter,
+                .fillMaxWidth()
+                .background(Color.LightGray),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text("꿈은 이루어진다 꿈은 이루어진다 꿈은 이루어진다 꿈은 이루어진다 꿈은 이루어진다 꿈은 이루어진다 ⭐️", fontSize = 15.sp)
-        }
+            DobeDobeBubble(
+                modifier = Modifier
+                    .background(Color.White)
+                    .clickable { },
+                tailPositionX = 0.5f,
+                contentAlignment = Alignment.TopCenter,
+            ) {
+                Text("꿈은 이루어진다 꿈은 이루어진다 꿈은 이루어진다 꿈은 이루어진다 꿈은 이루어진다 꿈은 이루어진다 ⭐️", fontSize = 15.sp)
+            }
 
-        DobeDobeBubble(
-            modifier = Modifier
-                .background(Color.White)
-                .clickable { },
-            tailPositionX = 0.5f,
-            contentAlignment = Alignment.TopCenter,
-        ) {
-            Text("꿈은 이루어진다️", fontSize = 15.sp)
+            DobeDobeBubble(
+                modifier = Modifier
+                    .background(Color.White)
+                    .clickable { },
+                tailPositionX = 0.5f,
+                contentAlignment = Alignment.TopCenter,
+            ) {
+                Text("꿈은 이루어진다️", fontSize = 15.sp)
+            }
         }
     }
 }
