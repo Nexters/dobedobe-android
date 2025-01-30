@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeTopAppBar
 import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
+import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -59,17 +60,10 @@ internal fun GoalTopAppBar(
 @ThemePreviews
 @Composable
 private fun GoalTopAppBarPreview() {
-    GoalTopAppBar(
-        navigateToBack = {},
-        onAddGoal = {},
-    )
-}
-
-@ThemePreviews
-@Composable
-private fun GoalTopAppBarPreviewWithBack() {
-    GoalTopAppBar(
-        navigateToBack = {},
-        onAddGoal = {},
-    )
+    DobeDobeTheme {
+        AddGoalTopAppBar(
+            navigateToBack = {},
+            onAddGoal = {},
+        )
+    }
 }
