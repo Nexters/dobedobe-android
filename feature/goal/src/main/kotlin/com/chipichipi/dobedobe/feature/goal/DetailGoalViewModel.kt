@@ -54,9 +54,10 @@ class DetailGoalViewModel(
 
     fun removeGoal(id: Long) {
         viewModelScope.launch {
-            goalRepository.removeGoal(id).onSuccess {
-                _navigateToBackEvent.send(Unit)
-            }
+            goalRepository.removeGoal(id)
+                .onSuccess {
+                    _navigateToBackEvent.send(Unit)
+                }
         }
     }
 }
