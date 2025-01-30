@@ -38,12 +38,15 @@ internal class DashboardViewModel(
 
     private val mode: MutableStateFlow<DashboardMode> = MutableStateFlow(DashboardMode.VIEW)
 
+    private val bubbleTitle: MutableStateFlow<String> = MutableStateFlow("")
+
     val uiState: StateFlow<DashboardUiState> = combine(
         fakeDashboardPhotoState,
         isSystemNotificationDialogDisabledFlow,
         goalRepository.getSortedGoals(),
         mode,
-    ) { photoState, isSystemNotificationDialogDisabled, goals, mode ->
+        bubbleTitle,
+    ) { photoState, isSystemNotificationDialogDisabled, goals, mode, bubbleTitle ->
         val dashboardPhotoStates = DashboardPhotoConfig.entries.map { config ->
             val photo = photoState.find { it.id == config.id }
 
@@ -58,6 +61,7 @@ internal class DashboardViewModel(
             isSystemNotificationDialogDisabled = isSystemNotificationDialogDisabled,
             goals = goals,
             mode = mode,
+            bubbleTitle = bubbleTitle,
         )
     }
         .stateIn(
@@ -65,6 +69,10 @@ internal class DashboardViewModel(
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = DashboardUiState.Loading,
         )
+
+    init {
+        changeBubble()
+    }
 
     fun setGoalNotificationEnabled(enabled: Boolean) {
         viewModelScope.launch {
@@ -96,6 +104,21 @@ internal class DashboardViewModel(
                     DashboardMode.EDIT -> DashboardMode.VIEW
                 }
             }
+        }
+    }
+
+    fun changeBubble() {
+        viewModelScope.launch {
+            goalRepository.getTodoGoals()
+                .onSuccess { goals ->
+                    if (goals.isNotEmpty()) {
+                        bubbleTitle.value = goals.random().title
+                    }
+                }
+                .onFailure {
+                    // TODO : Error 처리
+                    Log.e("DashboardViewModel", "Fail to get random todo goal", it)
+                }
         }
     }
 }

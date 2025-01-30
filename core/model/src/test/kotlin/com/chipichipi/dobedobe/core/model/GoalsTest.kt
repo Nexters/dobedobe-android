@@ -65,4 +65,21 @@ class GoalsTest {
         val expectIds: List<Long> = listOf(1, 3, 2)
         actualIds shouldBe expectIds
     }
+
+    @Test
+    fun `완료되지 않은 Goal만 가져온다`() {
+        // given
+        val goals = Goals(
+            listOf(
+                fakeGoal(id = 1, isCompleted = false),
+                fakeGoal(id = 2, isCompleted = true, completedAt = 2),
+            ),
+        )
+        // when
+        val actualIds = goals.getTodoGoals().map { it.id }
+
+        // then
+        val expectIds: List<Long> = listOf(1)
+        actualIds shouldBe expectIds
+    }
 }
