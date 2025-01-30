@@ -10,7 +10,7 @@ object DobeDobeIcons {
     val Checked = R.drawable.ic_checked_24
     val Unchecked = R.drawable.ic_unchecked_24
     val Edit = R.drawable.ic_edit_22
-    val EditPlaceholder = R.drawable.ic_edit_placeholder_52
+    val EditPlaceholder = R.drawable.ic_edit_placeholder_58
     val Search = R.drawable.ic_search_24
     val EditMode = R.drawable.ic_edit_mode
     val Setting = R.drawable.ic_setting_24
