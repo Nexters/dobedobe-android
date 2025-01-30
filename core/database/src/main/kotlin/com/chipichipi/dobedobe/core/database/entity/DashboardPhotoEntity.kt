@@ -9,7 +9,7 @@ import com.chipichipi.dobedobe.core.model.DashboardPhoto
 data class DashboardPhotoEntity(
     @PrimaryKey
     val id: Int,
-    val uri: String,
+    val path: String,
 ) {
     companion object {
         const val TABLE_NAME = "dashboard_photo"
@@ -19,13 +19,13 @@ data class DashboardPhotoEntity(
 fun DashboardPhotoEntity.toModel(): DashboardPhoto {
     return DashboardPhoto(
         id = id,
-        uri = uri,
+        path = path,
     )
 }
 
 fun DashboardPhoto.toEntity(): DashboardPhotoEntity {
     return DashboardPhotoEntity(
         id = id,
-        uri = uri.orEmpty(),
+        path = path.orEmpty(),
     )
 }

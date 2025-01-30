@@ -134,7 +134,7 @@ private fun DashboardEditModeBody(
                 coroutineScope.launch {
                     val modifiedPhotos = photoDraftsState.filter { it.hasUriChanged }
                     val updatedPhotos = updateModifiedPhotosToFile(context, modifiedPhotos)
-                    val (photosToDelete, photosToUpsert) = updatedPhotos.partition { it.uri == null }
+                    val (photosToDelete, photosToUpsert) = updatedPhotos.partition { it.path == null }
 
                     if (photosToUpsert.isNotEmpty()) {
                         onUpsertPhotos(photosToUpsert)

@@ -26,7 +26,7 @@ internal suspend fun updateModifiedPhotosToFile(
 
         DashboardPhoto(
             id = photo.config.id,
-            uri = savedFile?.absolutePath,
+            path = savedFile?.absolutePath,
         )
     }
 }

@@ -46,7 +46,7 @@ internal class DashboardViewModel(
     ) { photoState, isSystemNotificationDialogDisabled, goals, bubbleTitle ->
         val dashboardPhotoStates = DashboardPhotoConfig.entries.map { config ->
             val photo = photoState.find { it.id == config.id }
-            val uri = photo?.uri?.let { Uri.fromFile(File(it)) } ?: Uri.EMPTY
+            val uri = photo?.path?.let { Uri.fromFile(File(it)) } ?: Uri.EMPTY
 
             DashboardPhotoState(
                 config = config,
