@@ -13,5 +13,7 @@
     <string name="feature_detail_goal_todo_editor_header">What do you want to achieve?</string>
     <string name="feature_detail_goal_editor_hint">Goal Name</string>
     <string name="feature_detail_goal_editor_support_message">The more concise your goals are, the more focused you\'ll be.</string>
+
     <string name="feature_goal_row_icon_content_description">Pinned</string>
+    <string name="feature_goal_toggle_chip_content_description">checked</string>
 </resources>

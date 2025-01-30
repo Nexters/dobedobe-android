@@ -17,4 +17,5 @@
     <string name="feature_detail_goal_editor_support_message">목표가 간결할수록 집중력이 높아져요.</string>
 
     <string name="feature_goal_row_icon_content_description">즐겨찾기</string>
+    <string name="feature_goal_toggle_chip_content_description">checked</string>
 </resources>

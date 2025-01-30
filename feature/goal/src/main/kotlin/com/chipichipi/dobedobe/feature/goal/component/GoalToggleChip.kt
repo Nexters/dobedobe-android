@@ -23,16 +23,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeCheckBox
 import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 
-// TODO: Color, Text Font 지정 필요
 @Composable
 internal fun GoalToggleChip(
     text: String,
@@ -45,7 +41,7 @@ internal fun GoalToggleChip(
         modifier = modifier
             .defaultMinSize(80.dp)
             .clip(RoundedCornerShape(8.dp))
-            .background(Color(0xFFF3F4F6))
+            .background(DobeDobeTheme.colors.gray100)
             .clickable { onCheckedChange(!isChecked) }
             .padding(8.dp),
         verticalArrangement = Arrangement.Center,
@@ -70,8 +66,7 @@ internal fun GoalToggleChip(
         Spacer(modifier = Modifier.height(11.dp))
         Text(
             text = text,
-            fontSize = 17.sp,
-            fontWeight = FontWeight.Bold,
+            style = DobeDobeTheme.typography.heading2,
         )
     }
 }
