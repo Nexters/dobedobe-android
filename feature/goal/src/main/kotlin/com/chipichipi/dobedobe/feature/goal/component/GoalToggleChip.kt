@@ -48,10 +48,10 @@ internal fun GoalToggleChip(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         if (isChecked) {
-            // TODO : 아이콘 변경
             Icon(
                 modifier = Modifier.size(24.dp),
                 imageVector = checkedIcon,
+                tint = DobeDobeTheme.colors.gray900,
                 contentDescription = "checked",
             )
         }
@@ -67,6 +67,7 @@ internal fun GoalToggleChip(
         Text(
             text = text,
             style = DobeDobeTheme.typography.heading2,
+            color = DobeDobeTheme.colors.gray900,
         )
     }
 }
