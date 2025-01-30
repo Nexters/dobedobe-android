@@ -70,19 +70,19 @@ private fun bubbleShape(
 ) = GenericShape { size, _ ->
     with(density) {
         val cornerRadius = 16.dp.toPx()
-        val tailWidth = tailWidth.toPx()
-        val tailHeight = tailHeight.toPx()
+        val tailWidthPx = tailWidth.toPx()
+        val tailHeightPx = tailHeight.toPx()
 
         val bubbleWidth = size.width
-        val bubbleHeight = size.height - tailHeight
+        val bubbleHeight = size.height - tailHeightPx
 
         val tailCenterX = bubbleWidth * tailPositionX
-        val tailStartX = tailCenterX - tailWidth / 2
-        val tailEndX = tailCenterX + tailWidth / 2
+        val tailStartX = tailCenterX - tailWidthPx / 2
+        val tailEndX = tailCenterX + tailWidthPx / 2
 
         drawTopEdge(bubbleWidth, cornerRadius)
         drawRightEdge(bubbleWidth, bubbleHeight, cornerRadius)
-        drawBubbleTail(bubbleHeight, tailStartX, tailEndX, tailHeight, density)
+        drawBubbleTail(bubbleHeight, tailStartX, tailEndX, tailHeightPx, density)
         drawLeftEdge(bubbleHeight, cornerRadius)
         drawBottomEdge(cornerRadius)
 
@@ -106,7 +106,6 @@ private fun Path.drawTopEdge(width: Float, cornerRadius: Float) {
     )
 }
 
-// 오른쪽 모서리 그리기
 private fun Path.drawRightEdge(width: Float, height: Float, cornerRadius: Float) {
     lineTo(width, height - cornerRadius)
     arcTo(
