@@ -42,6 +42,7 @@ fun DobeDobeBubble(
     content: @Composable BoxScope.() -> Unit,
 ) {
     val density = LocalDensity.current
+    val bubbleShape = bubbleShape(density, tailPositionX, tailHeight)
     Box(
         modifier = Modifier
             .sizeIn(
@@ -49,8 +50,8 @@ fun DobeDobeBubble(
                 minHeight = DefaultBubbleMaxHeight,
                 maxWidth = DefaultBubbleMaxWidth,
             )
-            .shadow(3.dp, bubbleShape(density, tailPositionX, tailHeight))
-            .clip(bubbleShape(density, tailPositionX, tailHeight))
+            .shadow(3.dp, bubbleShape)
+            .clip(bubbleShape)
             .then(modifier)
             .padding(
                 horizontal = DefaultContentHorizontalPadding,
