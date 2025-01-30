@@ -53,7 +53,7 @@ fun GoalEditor(
             errorMessage = errorMessage,
         )
         if (toggleContent != null) {
-            Spacer(Modifier.height(47.dp))
+            Spacer(Modifier.weight(1f))
             toggleContent()
         }
     }
@@ -70,6 +70,9 @@ private fun GoalDetailPreview() {
                     .padding(horizontal = 24.dp, vertical = 32.dp),
                 title = "스쿼트 50개",
                 onChangeTitle = {},
+                toggleContent = {
+                    Text(text = "Toggle Content")
+                },
             )
         }
     }
