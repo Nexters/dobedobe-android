@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
@@ -19,44 +20,35 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
-private val DefaultBubbleMinWidth = 135.dp
-private val DefaultBubbleMaxHeight = 75.dp
-private val DefaultBubbleMaxWidth = 287.dp
-private val DefaultBubbleTailHeight = 20.dp
-private val DefaultBubbleTailWidth = 34.dp
-private val DefaultContentVerticalPadding = 16.dp
-private val DefaultContentHorizontalPadding = 20.dp
+import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 
 @Composable
 fun DobeDobeBubble(
+    contentAlignment: Alignment,
     modifier: Modifier = Modifier,
     tailPositionX: Float = 0.3f,
-    tailHeight: Dp = DefaultBubbleTailHeight,
-    contentAlignment: Alignment,
+    tailSize: DpSize = BubbleDefaults.tailSize(),
     content: @Composable BoxScope.() -> Unit,
 ) {
     val density = LocalDensity.current
+    val bubbleShape = bubbleShape(density, tailPositionX, tailSize)
     Box(
         modifier = Modifier
             .sizeIn(
-                minWidth = DefaultBubbleMinWidth,
-                minHeight = DefaultBubbleMaxHeight,
-                maxWidth = DefaultBubbleMaxWidth,
+                minWidth = BubbleDefaults.MinWidth,
+                minHeight = BubbleDefaults.MinHeight,
+                maxWidth = BubbleDefaults.MaxWidth,
             )
-            .shadow(3.dp, bubbleShape(density, tailPositionX, tailHeight))
-            .clip(bubbleShape(density, tailPositionX, tailHeight))
+            .shadow(3.dp, bubbleShape)
+            .clip(bubbleShape)
             .then(modifier)
-            .padding(
-                horizontal = DefaultContentHorizontalPadding,
-                vertical = DefaultContentVerticalPadding,
-            )
-            .padding(bottom = tailHeight),
+            .padding(BubbleDefaults.ContentPadding)
+            .padding(bottom = tailSize.height),
         contentAlignment = contentAlignment,
         content = content,
     )
@@ -65,24 +57,23 @@ fun DobeDobeBubble(
 private fun bubbleShape(
     density: Density,
     tailPositionX: Float = 0.3f,
-    tailHeight: Dp = DefaultBubbleTailHeight,
-    tailWidth: Dp = DefaultBubbleTailWidth,
+    tailSize: DpSize = BubbleDefaults.tailSize(),
 ) = GenericShape { size, _ ->
     with(density) {
         val cornerRadius = 16.dp.toPx()
-        val tailWidth = tailWidth.toPx()
-        val tailHeight = tailHeight.toPx()
+        val tailWidthPx = tailSize.width.toPx()
+        val tailHeightPx = tailSize.height.toPx()
 
         val bubbleWidth = size.width
-        val bubbleHeight = size.height - tailHeight
+        val bubbleHeight = size.height - tailHeightPx
 
         val tailCenterX = bubbleWidth * tailPositionX
-        val tailStartX = tailCenterX - tailWidth / 2
-        val tailEndX = tailCenterX + tailWidth / 2
+        val tailStartX = tailCenterX - tailWidthPx / 2
+        val tailEndX = tailCenterX + tailWidthPx / 2
 
         drawTopEdge(bubbleWidth, cornerRadius)
         drawRightEdge(bubbleWidth, bubbleHeight, cornerRadius)
-        drawBubbleTail(bubbleHeight, tailStartX, tailEndX, tailHeight, density)
+        drawBubbleTail(bubbleHeight, tailStartX, tailEndX, tailHeightPx, density)
         drawLeftEdge(bubbleHeight, cornerRadius)
         drawBottomEdge(cornerRadius)
 
@@ -106,7 +97,6 @@ private fun Path.drawTopEdge(width: Float, cornerRadius: Float) {
     )
 }
 
-// 오른쪽 모서리 그리기
 private fun Path.drawRightEdge(width: Float, height: Float, cornerRadius: Float) {
     lineTo(width, height - cornerRadius)
     arcTo(
@@ -187,33 +177,55 @@ private fun Path.drawBottomEdge(cornerRadius: Float) {
     )
 }
 
-@Preview
+object BubbleDefaults {
+    val MinWidth = 135.dp
+    val MinHeight = 75.dp
+    val MaxWidth = 287.dp
+
+    private val TailHeight = 20.dp
+    private val TailWidth = 34.dp
+
+    private val BubbleVerticalPadding = 16.dp
+    private val BubbleHorizontalPadding = 20.dp
+
+    val ContentPadding = PaddingValues(
+        horizontal = BubbleHorizontalPadding,
+        vertical = BubbleVerticalPadding,
+    )
+
+    fun tailSize(tailHeight: Dp = TailHeight, tailWidth: Dp = TailWidth) =
+        DpSize(tailWidth, tailHeight)
+}
+
+@ThemePreviews
 @Composable
 private fun PreviewBubbleWithTail() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.LightGray),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        DobeDobeBubble(
+    DobeDobeTheme {
+        Column(
             modifier = Modifier
-                .background(Color.White)
-                .clickable { },
-            tailPositionX = 0.5f,
-            contentAlignment = Alignment.TopCenter,
+                .fillMaxWidth()
+                .background(Color.LightGray),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text("꿈은 이루어진다 꿈은 이루어진다 꿈은 이루어진다 꿈은 이루어진다 꿈은 이루어진다 꿈은 이루어진다 ⭐️", fontSize = 15.sp)
-        }
+            DobeDobeBubble(
+                modifier = Modifier
+                    .background(Color.White)
+                    .clickable { },
+                tailPositionX = 0.5f,
+                contentAlignment = Alignment.TopCenter,
+            ) {
+                Text("꿈은 이루어진다 꿈은 이루어진다 꿈은 이루어진다 꿈은 이루어진다 꿈은 이루어진다 꿈은 이루어진다 ⭐️", fontSize = 15.sp)
+            }
 
-        DobeDobeBubble(
-            modifier = Modifier
-                .background(Color.White)
-                .clickable { },
-            tailPositionX = 0.5f,
-            contentAlignment = Alignment.TopCenter,
-        ) {
-            Text("꿈은 이루어진다️", fontSize = 15.sp)
+            DobeDobeBubble(
+                modifier = Modifier
+                    .background(Color.White)
+                    .clickable { },
+                tailPositionX = 0.5f,
+                contentAlignment = Alignment.TopCenter,
+            ) {
+                Text("꿈은 이루어진다️", fontSize = 15.sp)
+            }
         }
     }
 }
