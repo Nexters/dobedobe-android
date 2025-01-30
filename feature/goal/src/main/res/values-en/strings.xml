@@ -16,4 +16,6 @@
 
     <string name="feature_goal_row_icon_content_description">Pinned</string>
     <string name="feature_goal_toggle_chip_content_description">checked</string>
+    <string name="feature_goal_title_error_message_blank">You can\'t save empty goal name</string>
+    <string name="feature_goal_title_error_message_too_long">You can only write 20 characters including spaces</string>
 </resources>

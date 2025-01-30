@@ -37,6 +37,10 @@ fun AddGoalRoute(
         focusManager.clearFocus()
         navigateToBack()
     }
+    val errorMessage =
+        goalValidResult.errorMessage()
+            ?.let { stringResource(id = it) }
+            .orEmpty()
 
     LaunchedEffect(Unit) {
         viewModel.navigateToBackEvent
@@ -53,7 +57,7 @@ fun AddGoalRoute(
                     focusManager.clearFocus()
                 }
             },
-        errorMessage = goalValidResult.errorMessage(),
+        errorMessage = errorMessage,
         onShowSnackbar = onShowSnackbar,
         navigateToBack = onBack,
         onChangeGoalName = viewModel::changeGoalTitle,

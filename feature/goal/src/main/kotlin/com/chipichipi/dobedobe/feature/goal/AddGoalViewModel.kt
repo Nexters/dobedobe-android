@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 class AddGoalViewModel(
     private val goalRepository: GoalRepository,
 ) : ViewModel() {
-    // TODO: 추후 복잡해지면 UI State를 따로 빼서 관리하는 방식으로 변경
+
     private val goalTitle: MutableStateFlow<String> = MutableStateFlow("")
     val goalValidResult: StateFlow<GoalTitleValidResult> =
         goalTitle

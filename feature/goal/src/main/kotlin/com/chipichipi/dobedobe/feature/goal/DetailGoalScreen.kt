@@ -119,6 +119,11 @@ private fun DetailGoalScreen(
 
             is DetailGoalUiState.Success -> {
                 val goal = uiState.goal
+                val errorMessage =
+                    uiState.goalValidResult
+                        .errorMessage()
+                        ?.let { stringResource(id = it) }
+                        .orEmpty()
 
                 DetailGoalContent(
                     goal = goal,
@@ -128,7 +133,7 @@ private fun DetailGoalScreen(
                         setVisibleDialog(false)
                         onRemoveGoal(goal.id)
                     },
-                    errorMessage = uiState.goalValidResult.errorMessage(),
+                    errorMessage = errorMessage,
                     onShowSnackbar = onShowSnackbar,
                     onChangeGoalName = { title -> onChangeGoalName(goal.id, title) },
                     onTogglePinned = { onTogglePinned(goal.id) },

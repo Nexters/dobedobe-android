@@ -18,4 +18,7 @@
 
     <string name="feature_goal_row_icon_content_description">즐겨찾기</string>
     <string name="feature_goal_toggle_chip_content_description">checked</string>
+
+    <string name="feature_goal_title_error_message_blank">빈 목표는 저장할 수 없어요</string>
+    <string name="feature_goal_title_error_message_too_long">띄어쓰기 포함 20자까지만 쓸 수 있어요</string>
 </resources>
