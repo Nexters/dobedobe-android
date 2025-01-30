@@ -10,9 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Bookmark
-import androidx.compose.material.icons.filled.CheckBox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -22,9 +19,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -32,6 +31,7 @@ import androidx.lifecycle.flowWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBackground
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeDialog
 import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
+import com.chipichipi.dobedobe.core.designsystem.icon.DobeDobeIcons
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.core.model.Goal
 import com.chipichipi.dobedobe.feature.goal.component.DetailGoalTopAppBar
@@ -183,8 +183,7 @@ private fun DetailGoalContent(
                 text = stringResource(R.string.feature_detail_goal_complete_chip),
                 isChecked = goal.isCompleted,
                 onCheckedChange = { onToggleCompleted() },
-                // TODO: design system 에서 icon 가져오기
-                checkedIcon = Icons.Default.CheckBox,
+                checkedIcon = ImageVector.vectorResource(DobeDobeIcons.Checked),
                 modifier = Modifier.weight(1f),
             )
             Spacer(modifier = Modifier.width(16.dp))
@@ -194,8 +193,7 @@ private fun DetailGoalContent(
                 onCheckedChange = {
                     onTogglePinned()
                 },
-                // TODO: design system 에서 icon 가져오기
-                checkedIcon = Icons.Filled.Bookmark,
+                checkedIcon = ImageVector.vectorResource(DobeDobeIcons.Bookmark),
                 modifier = Modifier.weight(1f),
             )
         }
