@@ -12,20 +12,19 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Pin
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeCheckBox
 import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.core.model.Goal
+import com.chipichipi.dobedobe.feature.goal.R
 import kotlinx.datetime.Instant
 
 @Composable
@@ -53,18 +52,15 @@ fun GoalRow(
             Spacer(modifier = Modifier.width(11.dp))
             Text(
                 text = goal.title,
-                fontWeight = FontWeight.Medium,
-                fontSize = 15.sp,
-                lineHeight = 21.sp,
-                style = MaterialTheme.typography.bodyLarge,
-                // TODO : font 조절 필요 ,
+                style = DobeDobeTheme.typography.heading2,
+                color = DobeDobeTheme.colors.gray800,
             )
             Spacer(modifier = Modifier.weight(1f))
-            if (goal.isPinned) { // TODO : 임시 값, 추후 디자인 변경 필요
+            if (goal.isPinned) {
+                // TODO : 임시 Icon, 추후 디자인 변경 필요
                 Icon(
                     imageVector = Icons.Default.Pin,
-                    contentDescription = "고정된 목표",
-                    // TODO : stringResource 추가 필요
+                    contentDescription = stringResource(R.string.feature_goal_row_icon_content_description),
                 )
             }
         }
