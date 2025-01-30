@@ -15,19 +15,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 
-/**
- * TODO : Dialog 컴포넌트 단순 Wrapper 임시 처리, 각 상태 디자인 정의 필요
- */
 @Composable
 fun DobeDobeDialog(
     onDismissRequest: () -> Unit,
@@ -45,7 +38,7 @@ fun DobeDobeDialog(
         Surface(
             modifier = modifier,
             shape = RoundedCornerShape(16.dp),
-            color = Color.White,
+            color = DobeDobeTheme.colors.white,
         ) {
             Column(
                 modifier = Modifier
@@ -56,9 +49,8 @@ fun DobeDobeDialog(
             ) {
                 Text(
                     text = title,
-                    fontSize = 17.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.Black,
+                    style = DobeDobeTheme.typography.heading2,
+                    color = DobeDobeTheme.colors.black,
                     modifier = Modifier
                         .padding(
                             top = 24.dp,
@@ -71,9 +63,6 @@ fun DobeDobeDialog(
     }
 }
 
-/**
- * TODO : Dialog 컴포넌트 단순 Wrapper 임시 처리, 각 상태 디자인 정의 필요
- */
 @Composable
 fun DobeDobeDialog(
     title: String,
@@ -88,7 +77,6 @@ fun DobeDobeDialog(
         usePlatformDefaultWidth = false,
     ),
 ) {
-    // TODO: string resource, font 로 적용
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = properties,
@@ -96,7 +84,7 @@ fun DobeDobeDialog(
         Surface(
             modifier = modifier,
             shape = RoundedCornerShape(16.dp),
-            color = Color.White,
+            color = DobeDobeTheme.colors.white,
         ) {
             Column(
                 modifier = Modifier
@@ -107,9 +95,8 @@ fun DobeDobeDialog(
             ) {
                 Text(
                     text = title,
-                    fontSize = 17.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.Black,
+                    style = DobeDobeTheme.typography.heading2,
+                    color = DobeDobeTheme.colors.black,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(top = 24.dp),
@@ -117,14 +104,11 @@ fun DobeDobeDialog(
 
                 if (description != null) {
                     Spacer(modifier = Modifier.height(8.dp))
-                    // TODO : font 적용
-                    // TODO : color scheme 적용 - gray900
                     Text(
                         text = description,
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Normal,
+                        style = DobeDobeTheme.typography.body2,
+                        color = DobeDobeTheme.colors.gray900,
                         textAlign = TextAlign.Center,
-                        color = Color(0xFF262C36),
                     )
                 }
 
@@ -134,10 +118,8 @@ fun DobeDobeDialog(
                     text = primaryText,
                     onClick = onClickPrimary,
                     colors = ButtonDefaults.buttonColors(
-                        // TODO: color scheme 적용 - gray900
-                        containerColor = Color(0xFF262C36),
-                        // TODO: color scheme 적용 - white
-                        contentColor = Color.White,
+                        containerColor = DobeDobeTheme.colors.gray900,
+                        contentColor = DobeDobeTheme.colors.white,
                     ),
                     modifier = Modifier.fillMaxWidth(),
                 )
@@ -145,10 +127,8 @@ fun DobeDobeDialog(
                     text = secondaryText,
                     onClick = onClickSecondary,
                     colors = ButtonDefaults.buttonColors(
-                        // TODO: color scheme 적용 - white
-                        containerColor = Color.White,
-                        // TODO: color scheme 적용 - error
-                        contentColor = Color(0xFFFF354D),
+                        containerColor = DobeDobeTheme.colors.white,
+                        contentColor = DobeDobeTheme.colors.red,
                     ),
                     modifier = Modifier.fillMaxWidth(),
                 )
@@ -162,7 +142,10 @@ private fun DialogButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    colors: ButtonColors = ButtonDefaults.buttonColors(),
+    colors: ButtonColors = ButtonDefaults.buttonColors(
+        containerColor = DobeDobeTheme.colors.gray900,
+        contentColor = DobeDobeTheme.colors.white,
+    ),
 ) {
     Button(
         modifier = modifier,
@@ -170,10 +153,9 @@ private fun DialogButton(
         shape = RoundedCornerShape(12.dp),
         colors = colors,
     ) {
-        // TODO : font 적용
         Text(
             text = text,
-            style = TextStyle(fontSize = 17.sp, fontWeight = FontWeight.SemiBold),
+            style = DobeDobeTheme.typography.heading2,
             textAlign = TextAlign.Center,
         )
     }
