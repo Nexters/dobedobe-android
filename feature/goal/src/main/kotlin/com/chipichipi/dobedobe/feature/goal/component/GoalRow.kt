@@ -56,7 +56,7 @@ fun GoalRow(
             Spacer(modifier = Modifier.width(11.dp))
             Text(
                 text = goal.title,
-                style = DobeDobeTheme.typography.heading1,
+                style = DobeDobeTheme.typography.heading2,
                 color = DobeDobeTheme.colors.gray800,
             )
             Spacer(modifier = Modifier.weight(1f))
