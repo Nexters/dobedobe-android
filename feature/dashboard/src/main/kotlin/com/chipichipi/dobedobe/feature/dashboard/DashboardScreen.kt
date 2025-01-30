@@ -7,6 +7,7 @@ import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -210,6 +211,7 @@ private fun DashboardBody(
                 onToggleMode = onToggleMode,
                 modifier = Modifier
                     .fillMaxSize()
+                    .background(DobeDobeTheme.colors.gray50)
                     .padding(innerPadding),
             )
         }

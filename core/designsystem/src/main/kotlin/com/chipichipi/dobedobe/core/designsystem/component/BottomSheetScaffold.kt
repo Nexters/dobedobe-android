@@ -13,8 +13,8 @@ import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
+import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 
-// TODO : BottomSheetScaffold 컴포넌트 단순 Wrapper 임시 처리, 각 상태 디자인 정의 필요
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DobeDobeBottomSheetScaffold(
@@ -38,6 +38,8 @@ fun DobeDobeBottomSheetScaffold(
             topBar = topBar,
             snackbarHost = snackbarHost,
             content = content,
+            sheetContainerColor = DobeDobeTheme.colors.white,
+            containerColor = DobeDobeTheme.colors.white,
         )
     }
 }
