@@ -9,7 +9,7 @@ class DobeDobeColors(isDarkTheme: Boolean = false) {
     val gray50 = Color(0xFFF9FAFB)
     val gray100 = Color(0xFFF3F4F6)
     val gray200 = Color(0xFFE5E7EB)
-    val gray300 = Color(0xFFF0F5FC)
+    val gray300 = Color(0xFFC0C4CA)
     val gray400 = Color(0xFF9CA3AF)
     val gray500 = Color(0xFF7A828C)
     val gray600 = Color(0xFF5F6875)
@@ -24,7 +24,7 @@ class DobeDobeColors(isDarkTheme: Boolean = false) {
     val white = Color.White
     val black = Color.Black
 
-    val red = Color(0xFFD0BCFF)
+    val red = Color(0xFFFF354D)
 }
 
 internal val LocalDobeDobeColors = staticCompositionLocalOf { DobeDobeColors() }
