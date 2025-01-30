@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -37,7 +36,6 @@ internal fun EditModePhotoFrame(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = config.alignment,
     ) {
-        // TODO : 색상 변경 필요
         Box(
             modifier = Modifier
                 .offset(
@@ -47,13 +45,13 @@ internal fun EditModePhotoFrame(
                 .rotate(rotation)
                 .border(
                     width = 4.dp,
-                    color = Color.White.copy(0.25f),
+                    color = DobeDobeTheme.colors.white.copy(0.25f),
                     shape = RoundedCornerShape(24.dp),
                 )
                 .padding(3.dp)
                 .size(config.size.dp)
                 .clip(RoundedCornerShape(24.dp))
-                .background(Color(0xFFE5E7EB)),
+                .background(DobeDobeTheme.colors.gray200),
         ) {
             if (uri != Uri.EMPTY) {
                 AsyncImage(
@@ -65,11 +63,10 @@ internal fun EditModePhotoFrame(
                     contentDescription = null,
                 )
             } else {
-                // TODO : 색상 변경 필요
                 EmptyPhotoFrame(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color(0xFFE5E7EB))
+                        .background(DobeDobeTheme.colors.gray200)
                         .clickable(onClick = onPickPhoto),
                 )
             }

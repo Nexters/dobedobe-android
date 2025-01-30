@@ -27,11 +27,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBottomSheetScaffold
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeDialog
+import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.core.model.DashboardPhoto
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardEditMode
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardTopAppBar
@@ -288,8 +290,7 @@ private fun GoalNotificationPermission(
             onDismissRequest = {
                 showGoalNotificationDialog = false
             },
-            // TODO : 변경 필요
-            title = "목표에 대한 알림을 위해\n 권한이 필요합니다.",
+            title = stringResource(R.string.feature_dashboard_goal_notification_prompt),
             modifier = Modifier.width(253.dp),
         ) {
             Button(
@@ -298,8 +299,11 @@ private fun GoalNotificationPermission(
                     showGoalNotificationDialog = false
                 },
             ) {
-                // TODO : 변경 필요
-                Text("확인")
+                Text(
+                    text = stringResource(R.string.feature_dashboard_goal_notification_confirm_text),
+                    style = DobeDobeTheme.typography.heading2,
+                    color = DobeDobeTheme.colors.white,
+                )
             }
         }
     }

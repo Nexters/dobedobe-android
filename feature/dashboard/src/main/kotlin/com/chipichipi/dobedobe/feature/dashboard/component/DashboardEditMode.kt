@@ -33,11 +33,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeDialog
 import com.chipichipi.dobedobe.core.designsystem.icon.DobeDobeIcons
+import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.core.model.DashboardPhoto
 import com.chipichipi.dobedobe.feature.dashboard.R
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardModeState
@@ -127,7 +126,9 @@ private fun DashboardEditModeBody(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color.Black.copy(0.7f)),
+            .background(
+                color = DobeDobeTheme.colors.black.copy(0.7f),
+            ),
     ) {
         DashboardEditModeTopAppBar(
             onToggleMode = onToggleMode,
@@ -179,17 +180,16 @@ private fun DashboardEditModeBody(
             verticalArrangement = Arrangement.spacedBy(19.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            // TODO : 색상 변경 필요
             Icon(
                 painter = painterResource(DobeDobeIcons.EditMode),
-                tint = Color.White,
                 contentDescription = "edit mode icon",
+                tint = Color.Unspecified,
             )
 
             Text(
                 text = stringResource(R.string.feature_dashboard_edit_mode_description),
-                fontSize = 16.sp,
-                color = Color.White,
+                style = DobeDobeTheme.typography.body1,
+                color = DobeDobeTheme.colors.white,
             )
         }
     }
@@ -201,10 +201,9 @@ private fun DashboardEditOptionsDialog(
     onPickPhoto: () -> Unit,
     onDeletePhoto: () -> Unit,
 ) {
-    // TODO : 컬러/string 변경 필요
     DobeDobeDialog(
         onDismissRequest = onDismissRequest,
-        title = "이미지 변경",
+        title = stringResource(R.string.feature_dashboard_edit_change_image_title),
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp),
@@ -216,17 +215,17 @@ private fun DashboardEditOptionsDialog(
             },
             shape = RoundedCornerShape(8.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF262C36),
-                contentColor = Color.White,
+                containerColor = DobeDobeTheme.colors.gray900,
+                contentColor = DobeDobeTheme.colors.white,
             ),
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(48.dp),
         ) {
             Text(
-                text = "앨범에서 이미지 찾기",
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 17.sp,
+                text = stringResource(R.string.feature_dashboard_edit_select_image_from_album),
+                style = DobeDobeTheme.typography.heading2,
+                color = DobeDobeTheme.colors.white,
             )
         }
 
@@ -237,17 +236,17 @@ private fun DashboardEditOptionsDialog(
             },
             shape = RoundedCornerShape(8.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color.White,
-                contentColor = Color.Red,
+                containerColor = DobeDobeTheme.colors.white,
+                contentColor = DobeDobeTheme.colors.red,
             ),
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(48.dp),
         ) {
             Text(
-                text = "이미지 삭제",
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 17.sp,
+                text = stringResource(R.string.feature_dashboard_edit_delete_image),
+                style = DobeDobeTheme.typography.heading2,
+                color = DobeDobeTheme.colors.red,
             )
         }
     }

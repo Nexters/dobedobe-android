@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
@@ -22,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBubble
 import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
+import com.chipichipi.dobedobe.feature.dashboard.R
 
 @Composable
 internal fun DashboardBubble(
@@ -38,8 +40,7 @@ internal fun DashboardBubble(
         val density = LocalDensity.current
 
         val maxTitleWidthPx = with(density) { 240.dp.toPx() }
-        // TODO : stringResource 받아오기
-        val suffix = " 해낼 거야!"
+        val suffix = " " + stringResource(R.string.feature_dashboard_bubble_suffix)
 
         val ellipsizedResult = textMeasurer.ellipsizeTextWithSuffix(
             title = title,
@@ -51,8 +52,7 @@ internal fun DashboardBubble(
         val annotatedString = buildAnnotatedString {
             withStyle(
                 SpanStyle(
-                    // TODO : colorScheme 적용
-                    color = Color(0xFF00B35D),
+                    color = DobeDobeTheme.colors.green3
                 ),
             ) {
                 append(ellipsizedResult.title)

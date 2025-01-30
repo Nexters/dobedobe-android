@@ -27,7 +27,7 @@ fun DobeDobeSwitch(
             checkedBorderColor = DobeDobeTheme.colors.gray900,
             uncheckedThumbColor = DobeDobeTheme.colors.gray300,
             uncheckedTrackColor = DobeDobeTheme.colors.white,
-            uncheckedBorderColor = DobeDobeTheme.colors.gray300
+            uncheckedBorderColor = DobeDobeTheme.colors.gray300,
         ),
     )
 }
