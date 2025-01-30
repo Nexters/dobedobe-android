@@ -2,7 +2,6 @@ package com.chipichipi.dobedobe.core.designsystem.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -48,23 +47,17 @@ fun DobeDobeDialog(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Column(
+                Text(
+                    text = title,
+                    fontSize = 17.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.Black,
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Text(
-                        text = title,
-                        fontSize = 17.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        color = Color.Black,
-                        modifier = Modifier
-                            .padding(
-                                top = 24.dp,
-                                bottom = 32.dp,
-                            ),
-                    )
-                }
+                        .padding(
+                            top = 24.dp,
+                            bottom = 32.dp,
+                        ),
+                )
 
                 content()
             }
