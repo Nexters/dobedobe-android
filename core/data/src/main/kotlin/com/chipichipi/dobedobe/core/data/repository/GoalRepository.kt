@@ -14,6 +14,8 @@ interface GoalRepository {
 
     suspend fun removeGoal(id: Long): Result<Unit>
 
+    suspend fun changeGoalTitle(id: Long, title: String): Result<Unit>
+
     suspend fun togglePin(id: Long): Result<Unit>
 
     suspend fun toggleCompletion(id: Long): Result<Unit>

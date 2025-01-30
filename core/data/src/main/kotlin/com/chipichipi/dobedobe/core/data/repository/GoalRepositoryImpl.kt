@@ -44,6 +44,16 @@ internal class GoalRepositoryImpl(
         }
     }
 
+    override suspend fun changeGoalTitle(id: Long, title: String): Result<Unit> {
+        return runCatching {
+            val goals: Goals =
+                goals.firstOrNull() ?: error("if Goals empty, cannot change goal title")
+            goals.checkGoalExists(id)
+            val changedGoal: Goal = goals.find(id).copy(title = title)
+            goalDao.updateGoal(changedGoal.toEntity())
+        }
+    }
+
     override suspend fun togglePin(id: Long): Result<Unit> {
         return runCatching {
             val goals: Goals = goals.firstOrNull() ?: error("if Goals empty, cannot toggle pin")
