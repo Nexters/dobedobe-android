@@ -1,7 +1,6 @@
 package com.chipichipi.dobedobe.feature.goal.component
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -11,12 +10,15 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeTopAppBar
 import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
+import com.chipichipi.dobedobe.core.designsystem.icon.DobeDobeIcons
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
+import com.chipichipi.dobedobe.feature.goal.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,27 +32,24 @@ internal fun AddGoalTopAppBar(
         navigationIcon = {
             IconButton(onClick = navigateToBack) {
                 Icon(
-                    Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = null,
+                    imageVector = ImageVector.vectorResource(DobeDobeIcons.ArrowBack),
+                    modifier = Modifier.size(24.dp),
+                    contentDescription = stringResource(R.string.feature_goal_navigate_back_icon_content_description),
+                    tint = DobeDobeTheme.colors.gray500,
                 )
             }
         },
         actions = {
+            // TODO: Icon image, setting 으로 변경... 기획이 바뀟네 ㅠㅠ
             TextButton(
                 onClick = onAddGoal,
                 colors = ButtonDefaults.textButtonColors().copy(
-                    // TODO : 컬러 변경 필요
                     contentColor = Color(0xFF03A9F4),
                 ),
             ) {
                 Text(
-                    "저장",
-                    // TODO: font 변경 필요
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 24.sp,
-                        fontWeight = FontWeight.Medium,
-                    ),
+                    text = "저장",
+                    style = DobeDobeTheme.typography.body1,
                 )
             }
         },
