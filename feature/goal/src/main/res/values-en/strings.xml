@@ -14,8 +14,11 @@
     <string name="feature_detail_goal_editor_hint">Goal Name</string>
     <string name="feature_detail_goal_editor_support_message">The more concise your goals are, the more focused you\'ll be.</string>
 
-    <string name="feature_goal_row_icon_content_description">Pinned</string>
+    <string name="feature_goal_row_check_icon_content_description">Pinned</string>
+    <string name="feature_goal_row_tap_icon_content_description">navigate detail goal</string>
     <string name="feature_goal_toggle_chip_content_description">checked</string>
     <string name="feature_goal_title_error_message_blank">You can\'t save empty goal name</string>
     <string name="feature_goal_title_error_message_too_long">You can only write 20 characters including spaces</string>
+
+    <string name="feature_goal_navigate_back_icon_content_description">navigate back</string>
 </resources>
