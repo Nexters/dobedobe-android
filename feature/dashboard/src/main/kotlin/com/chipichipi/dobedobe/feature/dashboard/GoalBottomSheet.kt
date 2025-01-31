@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -97,33 +96,33 @@ private fun GoalBottomSheetBody(
     onGoalToggled: (Long) -> Unit,
     onGoalClicked: (Long) -> Unit,
 ) {
-    LazyColumn(
-        modifier = Modifier
-            .requiredHeightIn(min = 269.dp)
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(18.dp),
-        contentPadding = PaddingValues(horizontal = 24.dp),
-    ) {
-        item {
-            if (goals.isEmpty()) {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(80.dp),
-                    text = stringResource(R.string.feature_dashboard_goal_bottom_sheet_empty_message),
-                    style = DobeDobeTheme.typography.body1,
-                    color = DobeDobeTheme.colors.gray500,
-                    textAlign = TextAlign.Center,
+    if (goals.isEmpty()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 80.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(
+                text = stringResource(R.string.feature_dashboard_goal_bottom_sheet_empty_message),
+                style = DobeDobeTheme.typography.body1,
+                color = DobeDobeTheme.colors.gray500,
+                textAlign = TextAlign.Center,
+            )
+        }
+    } else {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(18.dp),
+            contentPadding = PaddingValues(horizontal = 24.dp),
+        ) {
+            items(goals) { goal ->
+                GoalRow(
+                    goal = goal,
+                    onToggleCompleted = { onGoalToggled(goal.id) },
+                    onClick = { onGoalClicked(goal.id) },
                 )
             }
-        }
-
-        items(goals) { goal ->
-            GoalRow(
-                goal = goal,
-                onToggleCompleted = { onGoalToggled(goal.id) },
-                onClick = { onGoalClicked(goal.id) },
-            )
         }
     }
 }
