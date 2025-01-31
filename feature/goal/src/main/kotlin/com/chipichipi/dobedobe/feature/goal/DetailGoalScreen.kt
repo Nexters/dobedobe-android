@@ -188,6 +188,7 @@ private fun DetailGoalContent(
                 isChecked = goal.isCompleted,
                 onCheckedChange = { onToggleCompleted() },
                 checkedIcon = ImageVector.vectorResource(DobeDobeIcons.Checked),
+                unCheckedIcon = ImageVector.vectorResource(DobeDobeIcons.Unchecked),
                 modifier = Modifier.weight(1f),
             )
             Spacer(modifier = Modifier.width(16.dp))
@@ -198,6 +199,7 @@ private fun DetailGoalContent(
                     onTogglePinned()
                 },
                 checkedIcon = ImageVector.vectorResource(R.drawable.ic_bookmark_gray900),
+                unCheckedIcon = ImageVector.vectorResource(R.drawable.ic_bookmark_unchecked_24),
                 modifier = Modifier.weight(1f),
             )
         }

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckBoxOutlineBlank
 import androidx.compose.material.icons.filled.Pin
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -24,10 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
-import com.chipichipi.dobedobe.core.designsystem.icon.DobeDobeIcons
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 
 @Composable
@@ -36,6 +35,7 @@ internal fun GoalToggleChip(
     isChecked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     checkedIcon: ImageVector,
+    unCheckedIcon: ImageVector,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -47,16 +47,9 @@ internal fun GoalToggleChip(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        val icon =
-            if (isChecked) {
-                checkedIcon
-            } else {
-                ImageVector.vectorResource(DobeDobeIcons.Unchecked)
-            }
-
         Icon(
             modifier = Modifier.size(24.dp),
-            imageVector = icon,
+            imageVector = if (isChecked) checkedIcon else unCheckedIcon,
             tint = Color.Unspecified,
             contentDescription = "checked",
         )
@@ -83,6 +76,7 @@ private fun DobeDobeToggleChipPreview() {
                 isChecked = isChecked,
                 onCheckedChange = onCheckedChange,
                 checkedIcon = Icons.Default.Pin,
+                unCheckedIcon = Icons.Default.CheckBoxOutlineBlank,
                 modifier = Modifier.weight(1f),
             )
             Spacer(modifier = Modifier.width(16.dp))
@@ -91,6 +85,7 @@ private fun DobeDobeToggleChipPreview() {
                 isChecked = true,
                 onCheckedChange = {},
                 checkedIcon = Icons.Default.Pin,
+                unCheckedIcon = Icons.Default.CheckBoxOutlineBlank,
                 modifier = Modifier.weight(1f),
             )
         }
