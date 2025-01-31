@@ -16,7 +16,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
@@ -63,7 +62,7 @@ private fun DobeDobeDragHandle(
                 top = 8.dp,
                 bottom = 12.dp,
             ),
-        color = Color(0xFFD1D6DB),
+        color = DobeDobeTheme.colors.gray300,
         shape = RoundedCornerShape(4.dp),
     ) {
         Box(Modifier.size(width = 48.dp, height = 4.dp))
