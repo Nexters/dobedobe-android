@@ -26,7 +26,7 @@ import com.chipichipi.dobedobe.feature.dashboard.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun DashboardTopAppBar(
+internal fun DashboardViewModeTopAppBar(
     onEditClick: () -> Unit,
     navigateToSetting: () -> Unit,
     modifier: Modifier = Modifier,
@@ -60,7 +60,7 @@ internal fun DashboardTopAppBar(
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = DobeDobeTheme.colors.gray50,
+            containerColor = Color.Transparent,
         ),
     )
 }
@@ -113,9 +113,9 @@ internal fun DashboardEditModeTopAppBar(
 
 @ThemePreviews
 @Composable
-private fun DashboardTopAppBarPreview() {
+private fun DashboardViewModeTopAppBarPreview() {
     DobeDobeTheme {
-        DashboardTopAppBar(
+        DashboardViewModeTopAppBar(
             onEditClick = {},
             navigateToSetting = {},
         )

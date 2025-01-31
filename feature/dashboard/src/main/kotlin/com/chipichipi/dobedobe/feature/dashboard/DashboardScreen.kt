@@ -7,7 +7,6 @@ import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,12 +32,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.chipichipi.dobedobe.core.designsystem.component.DRAG_HANDLER_HEIGHT
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBottomSheetScaffold
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeDialog
-import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.core.model.DashboardPhoto
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardEditMode
-import com.chipichipi.dobedobe.feature.dashboard.component.DashboardTopAppBar
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardViewMode
 import com.chipichipi.dobedobe.feature.dashboard.component.ExpandedPhotoFrame
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardModeState
@@ -176,7 +174,7 @@ private fun DashboardBody(
         }
 
         DobeDobeBottomSheetScaffold(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .then(
                     if (isEditMode) {
@@ -192,29 +190,30 @@ private fun DashboardBody(
                     onGoalToggled = onGoalToggled,
                     onAddGoalClicked = navigateToAddGoal,
                     onGoalClicked = navigateToGoalDetail,
+                    modifier = Modifier
+                        .padding(top = 8.dp),
                 )
             },
             sheetPeekHeight = 380.dp,
-            topBar = {
-                DashboardTopAppBar(
-                    onEditClick = onToggleMode,
-                    navigateToSetting = navigateToSetting,
-                )
-            },
         ) { innerPadding ->
-            DashboardViewMode(
-                isViewMode = !isEditMode,
-                photoState = uiState.photoState,
-                bubbleTitle = uiState.bubbleTitle,
-                photoFramesState = photoFramesState,
-                onChangeBubble = onChangeBubble,
-                onToggleExpansion = onToggleExpansion,
-                onToggleMode = onToggleMode,
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(DobeDobeTheme.colors.gray50)
-                    .padding(innerPadding),
-            )
+                    .padding(
+                        bottom = innerPadding.calculateBottomPadding() - DRAG_HANDLER_HEIGHT,
+                    ),
+            ) {
+                DashboardViewMode(
+                    isViewMode = !isEditMode,
+                    photoState = uiState.photoState,
+                    bubbleTitle = uiState.bubbleTitle,
+                    photoFramesState = photoFramesState,
+                    onChangeBubble = onChangeBubble,
+                    onToggleExpansion = onToggleExpansion,
+                    onToggleMode = onToggleMode,
+                    navigateToSetting = navigateToSetting,
+                )
+            }
         }
 
         ExpandedPhotoFrame(

@@ -43,8 +43,11 @@ internal fun GoalBottomSheetContent(
     onGoalToggled: (Long) -> Unit,
     onGoalClicked: (Long) -> Unit,
     onAddGoalClicked: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Column {
+    Column(
+        modifier = modifier,
+    ) {
         GoalBottomSheetHeader(onAddGoalClicked)
         Spacer(modifier = Modifier.height(15.dp))
         GoalBottomSheetBody(

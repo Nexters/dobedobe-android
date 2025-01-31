@@ -35,13 +35,13 @@ internal fun DashboardCharacter(
         }
         .build()
 
-    var currentRaw by remember { mutableIntStateOf(R.raw.bird01) }
+    var currentRaw by remember { mutableIntStateOf(R.raw.rabbit01) }
     var isResetTrigger by remember { mutableStateOf(false) }
 
     LaunchedEffect(isResetTrigger) {
         if (isResetTrigger) {
             delay(4000)
-            currentRaw = R.raw.bird01
+            currentRaw = R.raw.rabbit01
             isResetTrigger = false
         }
     }
@@ -54,14 +54,14 @@ internal fun DashboardCharacter(
             model = currentRaw,
             contentDescription = "Character Image",
             imageLoader = imageLoader,
-            placeholder = painterResource(R.drawable.bird_placeholder),
+            placeholder = painterResource(R.drawable.rabbit_placeholder),
             modifier = Modifier
                 .size(180.dp, 225.dp)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null,
                 ) {
-                    currentRaw = R.raw.bird02
+                    currentRaw = R.raw.rabbit02
                     isResetTrigger = true
                 },
         )
