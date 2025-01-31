@@ -5,6 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -62,10 +63,11 @@ private fun GoalSnackBarEffect(
     onShowSnackbar: suspend (String, String?) -> Boolean,
 ) {
     if (backStackEntry == null) return
-    val snackBarState = backStackEntry.savedStateHandle.getStateFlow(
-        GoalSnackBarType.KEY,
-        GoalSnackBarType.IDLE,
-    )
+    val snackBarState by backStackEntry.savedStateHandle
+        .getStateFlow(
+            GoalSnackBarType.KEY,
+            GoalSnackBarType.IDLE,
+        ).collectAsStateWithLifecycle()
     val addGoalMessage =
         stringResource(id = R.string.feature_dashboard_add_goal_snackbar_message)
     val editGoalMessage =
@@ -74,7 +76,7 @@ private fun GoalSnackBarEffect(
         stringResource(id = R.string.feature_dashboard_remove_goal_snackbar_message)
 
     LaunchedEffect(snackBarState) {
-        when (snackBarState.value) {
+        when (snackBarState) {
             GoalSnackBarType.IDLE -> {}
             GoalSnackBarType.ADD -> onShowSnackbar(addGoalMessage, null)
             GoalSnackBarType.EDIT -> onShowSnackbar(editGoalMessage, null)
