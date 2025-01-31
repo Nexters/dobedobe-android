@@ -10,6 +10,7 @@ import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,8 +31,11 @@ fun GoalEditor(
 ) {
     val goalTitleState = rememberTextFieldState(title)
 
-    LaunchedEffect(goalTitleState.text) {
-        onChangeTitle(goalTitleState.text.toString())
+    LaunchedEffect(Unit) {
+        snapshotFlow { goalTitleState.text }
+            .collect {
+                onChangeTitle(goalTitleState.text.toString())
+            }
     }
 
     Column(modifier = modifier) {

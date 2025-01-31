@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -57,10 +58,13 @@ private fun OnboardingScreen(
         modifier = modifier.onboardingModifier(),
         horizontalAlignment = Alignment.Start,
     ) {
-        val titleState = rememberTextFieldState()
+        val goalTitleState = rememberTextFieldState()
 
-        LaunchedEffect(titleState.text) {
-            onChangeTitle(titleState.text.toString())
+        LaunchedEffect(Unit) {
+            snapshotFlow { goalTitleState.text }
+                .collect {
+                    onChangeTitle(goalTitleState.text.toString())
+                }
         }
 
         Text(
@@ -72,7 +76,7 @@ private fun OnboardingScreen(
         Spacer(modifier = Modifier.height(48.dp))
 
         DobeDobeTextField(
-            state = titleState,
+            state = goalTitleState,
             hint = stringResource(R.string.onboarding_goal_hint),
             supportMessage = stringResource(R.string.onboarding_goal_support_message),
             errorMessage = errorMessage,
