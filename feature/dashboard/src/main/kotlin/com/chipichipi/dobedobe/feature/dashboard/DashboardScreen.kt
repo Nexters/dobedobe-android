@@ -29,10 +29,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.chipichipi.dobedobe.core.designsystem.component.DRAG_HANDLER_HEIGHT
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBottomSheetScaffold
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeDialog
 import com.chipichipi.dobedobe.core.model.DashboardPhoto
@@ -200,7 +200,7 @@ private fun DashboardBody(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(
-                        bottom = innerPadding.calculateBottomPadding() - 24.dp,
+                        bottom = innerPadding.calculateBottomPadding() - DRAG_HANDLER_HEIGHT,
                     ),
             ) {
                 DashboardViewMode(

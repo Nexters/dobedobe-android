@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 
+val DRAG_HANDLER_HEIGHT = 24.dp
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DobeDobeBottomSheetScaffold(
