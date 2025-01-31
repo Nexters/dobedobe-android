@@ -42,6 +42,7 @@ internal fun DobeDobeNavHost(
         goalGraph(
             onShowSnackbar = onShowSnackbar,
             navigateToBack = navController::popBackStack,
+            saveSnackBarEvent = navController::saveSnackBarEvent,
         )
 
         settingScreen(

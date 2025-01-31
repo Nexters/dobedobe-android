@@ -28,8 +28,8 @@ class AddGoalViewModel(
                 initialValue = GoalTitleValidResult.Empty,
             )
 
-    private val _navigateToBackEvent = Channel<Unit>(capacity = Channel.BUFFERED)
-    val navigateToBackEvent: Flow<Unit> = _navigateToBackEvent.receiveAsFlow()
+    private val _addGoalEvent = Channel<Unit>(capacity = Channel.BUFFERED)
+    val addGoalEvent: Flow<Unit> = _addGoalEvent.receiveAsFlow()
 
     fun changeGoalTitle(title: String) {
         goalTitle.value = title
@@ -39,7 +39,7 @@ class AddGoalViewModel(
         viewModelScope.launch {
             if (goalValidResult.value.isValid()) {
                 goalRepository.addGoal(goalTitle.value).onSuccess {
-                    _navigateToBackEvent.send(Unit)
+                    _addGoalEvent.send(Unit)
                 }
             }
         }

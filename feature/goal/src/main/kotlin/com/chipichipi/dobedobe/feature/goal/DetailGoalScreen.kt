@@ -1,5 +1,6 @@
 package com.chipichipi.dobedobe.feature.goal
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -45,21 +46,33 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 internal fun DetailGoalRoute(
     onShowSnackbar: suspend (String, String?) -> Boolean,
+    saveSnackBarEvent: (GoalSnackBarType) -> Unit,
     navigateToBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DetailGoalViewModel = koinViewModel(),
 ) {
     val uiState: DetailGoalUiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val isGoalChanged: Boolean by viewModel.isGoalChanged.collectAsStateWithLifecycle()
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val focusManager = LocalFocusManager.current
     val onBack = {
+        if (isGoalChanged) {
+            saveSnackBarEvent(GoalSnackBarType.EDIT)
+        }
         focusManager.clearFocus()
         navigateToBack()
     }
 
+    BackHandler {
+        onBack()
+    }
+
     LaunchedEffect(Unit) {
-        viewModel.navigateToBackEvent
-            .onEach { onBack() }
+        viewModel.deleteGoalEvent
+            .onEach {
+                saveSnackBarEvent(GoalSnackBarType.REMOVE)
+                onBack()
+            }
             .flowWithLifecycle(lifecycle)
             .launchIn(this)
     }
