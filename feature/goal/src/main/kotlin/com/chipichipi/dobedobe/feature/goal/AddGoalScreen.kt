@@ -29,7 +29,6 @@ import org.koin.androidx.compose.koinViewModel
 fun AddGoalRoute(
     onShowSnackbar: suspend (String, String?) -> Boolean,
     navigateToBack: () -> Unit,
-    saveSnackBarEvent: (GoalSnackBarType) -> Unit,
     viewModel: AddGoalViewModel = koinViewModel(),
 ) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
@@ -46,7 +45,7 @@ fun AddGoalRoute(
     LaunchedEffect(Unit) {
         viewModel.addGoalEvent
             .onEach {
-                saveSnackBarEvent(GoalSnackBarType.ADD)
+                // TODO show Add Goal Success Snackbar
                 onBack()
             }
             .flowWithLifecycle(lifecycle)
