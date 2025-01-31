@@ -12,9 +12,6 @@
     <string name="feature_detail_goal_todo_editor_header">어떤 목표를 이루고 싶나요?</string>
     <string name="feature_detail_goal_editor_hint">목표 이름</string>
     <string name="feature_detail_goal_editor_support_message">목표가 간결할수록 집중력이 높아져요.</string>
-    <string name="feature_goal_row_check_icon_content_description">즐겨찾기</string>
-    <string name="feature_goal_row_tap_icon_content_description">목표 이동</string>
-    <string name="feature_goal_toggle_chip_content_description">확인</string>
     <string name="feature_goal_title_error_message_blank">빈 목표는 저장할 수 없어요</string>
     <string name="feature_goal_title_error_message_too_long">띄어쓰기 포함 20자까지만 쓸 수 있어요</string>
     <string name="feature_goal_navigate_back_icon_content_description">뒤로 가기</string>
