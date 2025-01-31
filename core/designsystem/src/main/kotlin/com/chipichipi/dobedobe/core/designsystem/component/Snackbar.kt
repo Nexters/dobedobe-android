@@ -1,5 +1,6 @@
 package com.chipichipi.dobedobe.core.designsystem.component
 
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarData
 import androidx.compose.material3.SnackbarDefaults
@@ -9,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.unit.dp
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 
 /**
@@ -19,7 +21,7 @@ fun DobeDobeSnackbar(
     snackbarData: SnackbarData,
     modifier: Modifier = Modifier,
     actionOnNewLine: Boolean = false,
-    shape: Shape = SnackbarDefaults.shape,
+    shape: Shape = RoundedCornerShape(10.dp),
     containerColor: Color = DobeDobeTheme.colors.gray800,
     contentColor: Color = DobeDobeTheme.colors.white,
     actionColor: Color = SnackbarDefaults.actionColor,

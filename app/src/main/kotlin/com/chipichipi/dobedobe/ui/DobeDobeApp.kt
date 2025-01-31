@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
@@ -20,8 +21,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBackground
+import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeSnackbar
 import com.chipichipi.dobedobe.navigation.DobeDobeNavHost
 import com.chipichipi.dobedobe.onboarding.OnboardingRoute
 import org.koin.androidx.compose.koinViewModel
@@ -44,7 +47,19 @@ internal fun DobeDobeApp(
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onBackground,
             contentWindowInsets = WindowInsets(0, 0, 0, 0),
-            snackbarHost = { SnackbarHost(snackbarHostState) },
+            snackbarHost = {
+                SnackbarHost(
+                    hostState = snackbarHostState,
+                    snackbar = {
+                        DobeDobeSnackbar(
+                            snackbarData = it,
+                            modifier = Modifier
+                                .navigationBarsPadding()
+                                .padding(bottom = 32.dp),
+                        )
+                    },
+                )
+            },
         ) { padding ->
             Box(
                 Modifier
