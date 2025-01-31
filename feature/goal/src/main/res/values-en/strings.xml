@@ -21,4 +21,5 @@
     <string name="feature_goal_title_error_message_too_long">You can only write 20 characters including spaces</string>
 
     <string name="feature_goal_navigate_back_icon_content_description">navigate back</string>
+    <string name="feature_add_goal_action_button">완료</string>
 </resources>

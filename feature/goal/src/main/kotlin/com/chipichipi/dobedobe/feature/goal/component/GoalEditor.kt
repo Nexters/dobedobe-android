@@ -26,6 +26,7 @@ fun GoalEditor(
     onChangeTitle: (String) -> Unit,
     modifier: Modifier = Modifier,
     errorMessage: String? = null,
+    onDone: (() -> Unit)? = null,
     toggleContent: @Composable (() -> Unit)? = null,
 ) {
     val goalTitleState = rememberTextFieldState(title)
@@ -47,6 +48,7 @@ fun GoalEditor(
             state = goalTitleState,
             hint = stringResource(R.string.feature_detail_goal_editor_hint),
             supportMessage = stringResource(R.string.feature_detail_goal_editor_support_message),
+            onKeyboardAction = { onDone?.invoke() },
             errorMessage = errorMessage,
         )
         if (toggleContent != null) {
