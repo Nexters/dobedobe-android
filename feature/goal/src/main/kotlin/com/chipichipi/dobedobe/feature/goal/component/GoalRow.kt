@@ -4,28 +4,30 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Pin
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeCheckBox
 import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
+import com.chipichipi.dobedobe.core.designsystem.icon.DobeDobeIcons
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.core.model.Goal
+import com.chipichipi.dobedobe.feature.goal.R
 import kotlinx.datetime.Instant
 
 @Composable
@@ -35,38 +37,45 @@ fun GoalRow(
     onClick: () -> Unit,
 ) {
     Surface(
-        color = Color.White,
+        modifier = Modifier.defaultMinSize(minHeight = 58.dp),
+        color = DobeDobeTheme.colors.gray50,
         shape = RoundedCornerShape(24.dp),
         onClick = onClick,
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 15.dp, top = 17.dp, bottom = 18.dp, end = 15.dp),
+                .padding(start = 6.dp, end = 14.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             DobeDobeCheckBox(
-                modifier = Modifier.size(29.dp),
                 checked = goal.isCompleted,
                 onCheckedChange = { onToggleCompleted() },
             )
-            Spacer(modifier = Modifier.width(11.dp))
+            Spacer(modifier = Modifier.width(3.dp))
             Text(
                 text = goal.title,
-                fontWeight = FontWeight.Medium,
-                fontSize = 15.sp,
-                lineHeight = 21.sp,
-                style = MaterialTheme.typography.bodyLarge,
-                // TODO : font 조절 필요 ,
+                style = DobeDobeTheme.typography.heading2,
+                color = DobeDobeTheme.colors.gray800,
             )
             Spacer(modifier = Modifier.weight(1f))
-            if (goal.isPinned) { // TODO : 임시 값, 추후 디자인 변경 필요
+            if (goal.isPinned) {
                 Icon(
-                    imageVector = Icons.Default.Pin,
-                    contentDescription = "고정된 목표",
-                    // TODO : stringResource 추가 필요
+                    imageVector = ImageVector.vectorResource(DobeDobeIcons.Bookmark),
+                    modifier = Modifier
+                        .size(24.dp, 30.dp)
+                        .align(Alignment.Top)
+                        .offset(x = (-10).dp),
+                    contentDescription = stringResource(R.string.feature_goal_row_check_icon_content_description),
+                    tint = Color.Unspecified,
                 )
             }
+            Icon(
+                imageVector = ImageVector.vectorResource(DobeDobeIcons.Tap),
+                modifier = Modifier.size(24.dp),
+                contentDescription = stringResource(R.string.feature_goal_row_check_icon_content_description),
+                tint = Color.Unspecified,
+            )
         }
     }
 }
@@ -93,7 +102,7 @@ private fun GoalRowPreview() {
                     id = 1L,
                     title = "Done",
                     isPinned = false,
-                    isCompleted = false,
+                    isCompleted = true,
                     createdAt = Instant.DISTANT_PAST,
                     completedAt = Instant.DISTANT_PAST,
                 ),
@@ -107,7 +116,7 @@ private fun GoalRowPreview() {
                     isPinned = true,
                     isCompleted = false,
                     createdAt = Instant.DISTANT_PAST,
-                    completedAt = Instant.DISTANT_PAST,
+                    completedAt = null,
                 ),
                 onClick = {},
                 onToggleCompleted = {},

@@ -15,4 +15,5 @@ object DobeDobeIcons {
     val EditMode = R.drawable.ic_edit_mode
     val Setting = R.drawable.ic_setting_24
     val ArrowForward = R.drawable.ic_arrow_forward_24
+    val Tap = R.drawable.ic_tap_24
 }

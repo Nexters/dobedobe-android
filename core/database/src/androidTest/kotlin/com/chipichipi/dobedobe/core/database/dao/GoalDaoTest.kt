@@ -8,8 +8,10 @@ import com.chipichipi.dobedobe.core.database.fixtures.fakeGoalEntities
 import com.chipichipi.dobedobe.core.database.fixtures.fakeGoalEntity
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Instant
 import org.junit.Before
@@ -66,7 +68,8 @@ class GoalDaoTest {
             goalDao.insertGoal(goal)
             goalDao.updateGoal(goal.copy(isCompleted = true, completedAt = Instant.DISTANT_FUTURE))
             // then
-            val retrievedGoal: GoalEntity = goalDao.getGoal(1L).first()
+            val retrievedGoal: GoalEntity? = goalDao.getGoal(1L).firstOrNull()
+            retrievedGoal.shouldNotBeNull()
             retrievedGoal.isCompleted.shouldBeTrue()
         }
 }

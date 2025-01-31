@@ -1,5 +1,6 @@
 package com.chipichipi.dobedobe.feature.goal
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,9 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Bookmark
-import androidx.compose.material.icons.filled.CheckBox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -22,8 +20,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -31,6 +32,7 @@ import androidx.lifecycle.flowWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBackground
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeDialog
 import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
+import com.chipichipi.dobedobe.core.designsystem.icon.DobeDobeIcons
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.core.model.Goal
 import com.chipichipi.dobedobe.feature.goal.component.DetailGoalTopAppBar
@@ -118,6 +120,10 @@ private fun DetailGoalScreen(
 
             is DetailGoalUiState.Success -> {
                 val goal = uiState.goal
+                val errorMessage =
+                    uiState.goalValidResult
+                        .errorMessage()
+                        ?.let { stringResource(id = it) }
 
                 DetailGoalContent(
                     goal = goal,
@@ -127,12 +133,14 @@ private fun DetailGoalScreen(
                         setVisibleDialog(false)
                         onRemoveGoal(goal.id)
                     },
-                    errorMessage = uiState.goalValidResult.errorMessage(),
+                    errorMessage = errorMessage,
                     onShowSnackbar = onShowSnackbar,
                     onChangeGoalName = { title -> onChangeGoalName(goal.id, title) },
                     onTogglePinned = { onTogglePinned(goal.id) },
                     onToggleCompleted = { onToggleCompleted(goal.id) },
                     modifier = modifier
+                        .fillMaxSize()
+                        .background(DobeDobeTheme.colors.white)
                         .padding(innerPadding)
                         .padding(horizontal = 24.dp)
                         .padding(top = 24.dp, bottom = 32.dp),
@@ -155,8 +163,14 @@ private fun DetailGoalContent(
     onToggleCompleted: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    // TODO : string resource 로 변경
-    val header = if (goal.isCompleted) "달성한 목표" else "도전중인 목표"
+    val header =
+        if (goal.isCompleted) {
+            stringResource(R.string.feature_detail_goal_complete_editor_header)
+        } else {
+            stringResource(
+                R.string.feature_detail_goal_uncompleted_editor_header,
+            )
+        }
 
     GoalEditor(
         modifier = modifier,
@@ -170,24 +184,22 @@ private fun DetailGoalContent(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             GoalToggleChip(
-                // TODO: string resource 로 변경
-                text = "목표 달성",
+                text = stringResource(R.string.feature_detail_goal_complete_chip),
                 isChecked = goal.isCompleted,
                 onCheckedChange = { onToggleCompleted() },
-                // TODO: design system 에서 icon 가져오기
-                checkedIcon = Icons.Default.CheckBox,
+                checkedIcon = ImageVector.vectorResource(DobeDobeIcons.Checked),
+                unCheckedIcon = ImageVector.vectorResource(DobeDobeIcons.Unchecked),
                 modifier = Modifier.weight(1f),
             )
             Spacer(modifier = Modifier.width(16.dp))
             GoalToggleChip(
-                // TODO: string resource 로 변경
-                text = "즐겨찾기",
+                text = stringResource(R.string.feature_detail_goal_pinned_chip),
                 isChecked = goal.isPinned,
                 onCheckedChange = {
                     onTogglePinned()
                 },
-                // TODO: design system 에서 icon 가져오기
-                checkedIcon = Icons.Filled.Bookmark,
+                checkedIcon = ImageVector.vectorResource(R.drawable.ic_bookmark_gray900),
+                unCheckedIcon = ImageVector.vectorResource(R.drawable.ic_bookmark_unchecked_24),
                 modifier = Modifier.weight(1f),
             )
         }
@@ -211,11 +223,10 @@ private fun GoalDeleteDialog(
     modifier: Modifier = Modifier,
 ) {
     if (!visible) return
-    // TODO : string resource 로 변경
     DobeDobeDialog(
-        title = "목표를 삭제하시겠어요?",
-        primaryText = "취소",
-        secondaryText = "삭제",
+        title = stringResource(R.string.feature_detail_goal_delete_dialog_title),
+        primaryText = stringResource(R.string.feature_detail_goal_delete_dialog_primary),
+        secondaryText = stringResource(R.string.feature_detail_goal_delete_dialog_secondary),
         onClickPrimary = onDismiss,
         onClickSecondary = onConfirm,
         onDismissRequest = onDismiss,
