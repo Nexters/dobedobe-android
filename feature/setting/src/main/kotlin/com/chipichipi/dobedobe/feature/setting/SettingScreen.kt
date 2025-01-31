@@ -22,6 +22,7 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeSwitch
 import com.chipichipi.dobedobe.core.designsystem.icon.DobeDobeIcons
+import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.core.notifications.NotificationUtil
 import com.chipichipi.dobedobe.core.notifications.NotificationUtil.areNotificationsEnabled
 import com.chipichipi.dobedobe.feature.setting.component.SettingRow
@@ -60,6 +61,7 @@ private fun SettingScreen(
                 navigateToBack = navigateToBack,
             )
         },
+        containerColor = DobeDobeTheme.colors.gray50
     ) { innerPadding ->
         SettingBody(
             isGoalNotificationEnabled = isGoalNotificationEnabled,
