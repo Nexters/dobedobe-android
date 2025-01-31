@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">dobedobe</string>
+    <string name="app_name">두비두비</string>
 
     <string name="onboarding_goal_prompt">이루고 싶은 목표를 알려주세요</string>
     <string name="onboarding_goal_hint">ex) 1일 1책 읽기</string>
