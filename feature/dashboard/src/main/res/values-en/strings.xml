@@ -12,4 +12,7 @@
     <string name="feature_dashboard_edit_delete_image">이미지 삭제</string>
     <string name="feature_dashboard_bubble_suffix">해낼 거야!</string>
     <string name="feature_dashboard_goal_bottom_sheet_title">나의 목표</string>
+    <string name="feature_dashboard_add_goal_snackbar_message">목표가 추가되었습니다.</string>
+    <string name="feature_dashboard_remove_goal_snackbar_message">목표가 삭제되었습니다.</string>
+    <string name="feature_dashboard_edit_goal_snackbar_message">목표가 수정되었습니다.</string>
 </resources>

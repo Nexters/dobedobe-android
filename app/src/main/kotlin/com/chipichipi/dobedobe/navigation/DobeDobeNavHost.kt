@@ -4,10 +4,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.chipichipi.dobedobe.feature.dashboard.R
 import com.chipichipi.dobedobe.feature.dashboard.navigation.DashboardRoute
 import com.chipichipi.dobedobe.feature.dashboard.navigation.dashboardScreen
 import com.chipichipi.dobedobe.feature.goal.GoalSnackBarType
@@ -64,21 +66,19 @@ private fun GoalSnackBarEffect(
         GoalSnackBarType.KEY,
         GoalSnackBarType.IDLE,
     )
+    val addGoalMessage =
+        stringResource(id = R.string.feature_dashboard_add_goal_snackbar_message)
+    val editGoalMessage =
+        stringResource(id = R.string.feature_dashboard_edit_goal_snackbar_message)
+    val removeGoalMessage =
+        stringResource(id = R.string.feature_dashboard_remove_goal_snackbar_message)
 
     LaunchedEffect(snackBarState) {
         when (snackBarState.value) {
             GoalSnackBarType.IDLE -> {}
-            GoalSnackBarType.ADD -> {
-                onShowSnackbar("목표가 추가되었습니다", "확인")
-            }
-
-            GoalSnackBarType.EDIT -> {
-                onShowSnackbar("목표가 수정되었습니다", "확인")
-            }
-
-            GoalSnackBarType.REMOVE -> {
-                onShowSnackbar("목표가 삭제되었습니다", "확인")
-            }
+            GoalSnackBarType.ADD -> onShowSnackbar(addGoalMessage, null)
+            GoalSnackBarType.EDIT -> onShowSnackbar(editGoalMessage, null)
+            GoalSnackBarType.REMOVE -> onShowSnackbar(removeGoalMessage, null)
         }
         backStackEntry.removeSnackBarEvent()
     }
