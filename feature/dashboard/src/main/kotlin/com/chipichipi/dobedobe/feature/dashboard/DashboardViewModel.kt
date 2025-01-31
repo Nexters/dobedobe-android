@@ -2,6 +2,7 @@ package com.chipichipi.dobedobe.feature.dashboard
 
 import android.net.Uri
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chipichipi.dobedobe.core.data.repository.DashboardRepository
@@ -11,6 +12,7 @@ import com.chipichipi.dobedobe.core.model.DashboardPhoto
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardModeState
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoConfig
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
+import com.chipichipi.dobedobe.feature.goal.GoalSnackBarType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -24,6 +26,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 
 internal class DashboardViewModel(
+    private val savedStateHandle: SavedStateHandle,
     private val userRepository: UserRepository,
     private val goalRepository: GoalRepository,
     private val dashboardRepository: DashboardRepository,
@@ -37,6 +40,12 @@ internal class DashboardViewModel(
     val modeState: StateFlow<DashboardModeState> = _modeState.asStateFlow()
 
     private val bubbleTitle: MutableStateFlow<String> = MutableStateFlow("")
+
+    val snackBarState: StateFlow<GoalSnackBarType> =
+        savedStateHandle.getStateFlow(
+            GoalSnackBarType.KEY,
+            GoalSnackBarType.IDLE,
+        )
 
     val uiState: StateFlow<DashboardUiState> = combine(
         dashboardRepository.getPhotos(),
@@ -158,5 +167,9 @@ internal class DashboardViewModel(
                     Log.e("DashboardViewModel", "Fail to get random todo goal", it)
                 }
         }
+    }
+
+    fun removeSnackBarEvent() {
+        savedStateHandle.remove<GoalSnackBarType>(GoalSnackBarType.KEY)
     }
 }
