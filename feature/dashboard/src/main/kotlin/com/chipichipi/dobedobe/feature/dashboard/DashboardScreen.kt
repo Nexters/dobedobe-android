@@ -10,14 +10,13 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.SheetValue
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
@@ -28,6 +27,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -293,21 +294,23 @@ private fun GoalNotificationPermission(
                 showGoalNotificationDialog = false
             },
             title = stringResource(R.string.feature_dashboard_goal_notification_prompt),
-            modifier = Modifier.width(253.dp),
-        ) {
-            Button(
-                onClick = {
-                    notificationsPermissionState.launchPermissionRequest()
-                    showGoalNotificationDialog = false
-                },
-            ) {
-                Text(
-                    text = stringResource(R.string.feature_dashboard_goal_notification_confirm_text),
-                    style = DobeDobeTheme.typography.heading2,
-                    color = DobeDobeTheme.colors.white,
+            description = stringResource(R.string.feature_dashboard_goal_notification_description),
+            header = {
+                Icon(
+                    painter = painterResource(R.drawable.ic_alarm_64),
+                    contentDescription = "alarm icon",
+                    tint = Color.Unspecified,
                 )
-            }
-        }
+            },
+            primaryText = stringResource(R.string.feature_dashboard_goal_notification_confirm_text),
+            onClickPrimary = {
+                notificationsPermissionState.launchPermissionRequest()
+                showGoalNotificationDialog = false
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
+        )
     }
 }
 

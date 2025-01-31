@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -23,55 +24,14 @@ import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 
 @Composable
 fun DobeDobeDialog(
-    onDismissRequest: () -> Unit,
     title: String,
-    modifier: Modifier = Modifier,
-    properties: DialogProperties = DialogProperties(
-        usePlatformDefaultWidth = false,
-    ),
-    content: @Composable () -> Unit,
-) {
-    Dialog(
-        onDismissRequest = onDismissRequest,
-        properties = properties,
-    ) {
-        Surface(
-            modifier = modifier,
-            shape = RoundedCornerShape(16.dp),
-            color = DobeDobeTheme.colors.white,
-        ) {
-            Column(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .padding(bottom = 16.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Text(
-                    text = title,
-                    style = DobeDobeTheme.typography.heading2,
-                    color = DobeDobeTheme.colors.gray900,
-                    modifier = Modifier
-                        .padding(
-                            top = 24.dp,
-                            bottom = 32.dp,
-                        ),
-                )
-                content()
-            }
-        }
-    }
-}
-
-@Composable
-fun DobeDobeDialog(
-    title: String,
-    primaryText: String,
-    secondaryText: String,
-    onClickPrimary: () -> Unit,
-    onClickSecondary: () -> Unit,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
+    header: (@Composable () -> Unit)? = null,
+    primaryText: String? = null,
+    secondaryText: String? = null,
+    onClickPrimary: () -> Unit = {},
+    onClickSecondary: () -> Unit = {},
     description: String? = null,
     properties: DialogProperties = DialogProperties(
         usePlatformDefaultWidth = false,
@@ -89,17 +49,23 @@ fun DobeDobeDialog(
             Column(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
-                    .padding(bottom = 16.dp),
+                    .padding(
+                        top = 24.dp,
+                        bottom = 16.dp,
+                    ),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
+                if (header != null) {
+                    header()
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
                 Text(
                     text = title,
                     style = DobeDobeTheme.typography.heading2,
                     color = DobeDobeTheme.colors.black,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .padding(top = 24.dp),
                 )
 
                 if (description != null) {
@@ -114,24 +80,29 @@ fun DobeDobeDialog(
 
                 Spacer(modifier = Modifier.height(32.dp))
 
-                DialogButton(
-                    text = primaryText,
-                    onClick = onClickPrimary,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = DobeDobeTheme.colors.gray900,
-                        contentColor = DobeDobeTheme.colors.white,
-                    ),
-                    modifier = Modifier.fillMaxWidth(),
-                )
-                DialogButton(
-                    text = secondaryText,
-                    onClick = onClickSecondary,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = DobeDobeTheme.colors.white,
-                        contentColor = DobeDobeTheme.colors.red,
-                    ),
-                    modifier = Modifier.fillMaxWidth(),
-                )
+                if (primaryText != null) {
+                    DialogButton(
+                        text = primaryText,
+                        onClick = onClickPrimary,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = DobeDobeTheme.colors.gray900,
+                            contentColor = DobeDobeTheme.colors.white,
+                        ),
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
+
+                if (secondaryText != null) {
+                    DialogButton(
+                        text = secondaryText,
+                        onClick = onClickSecondary,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = DobeDobeTheme.colors.white,
+                            contentColor = DobeDobeTheme.colors.red,
+                        ),
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
             }
         }
     }
@@ -148,9 +119,10 @@ private fun DialogButton(
     ),
 ) {
     Button(
-        modifier = modifier,
+        modifier = modifier
+            .heightIn(48.dp),
         onClick = onClick,
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(8.dp),
         colors = colors,
     ) {
         Text(
@@ -168,13 +140,8 @@ private fun DobeDobeDialogPreview() {
         DobeDobeDialog(
             onDismissRequest = {},
             title = "TEST",
-        ) {
-            Button(
-                onClick = {},
-            ) {
-                Text(text = "TEST")
-            }
-        }
+            primaryText = "Confirm",
+        )
     }
 }
 
