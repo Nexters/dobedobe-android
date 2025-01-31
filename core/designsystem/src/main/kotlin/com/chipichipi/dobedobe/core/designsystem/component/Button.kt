@@ -11,13 +11,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 
-/**
- * TODO : Button 컴포넌트 단순 Wrapper 임시 처리, 각 상태 디자인 정의 필요
- */
 @Composable
 fun DobeDobeTextButton(
     onClick: () -> Unit,
@@ -30,10 +26,10 @@ fun DobeDobeTextButton(
         modifier = modifier,
         enabled = enabled,
         colors = ButtonDefaults.textButtonColors(
-            contentColor = Color.White,
-            containerColor = Color.Black,
+            contentColor = DobeDobeTheme.colors.white,
+            containerColor = DobeDobeTheme.colors.gray900,
         ),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(12.dp),
         contentPadding = ButtonDefaults.TextButtonContentPadding,
         content = content,
     )
