@@ -38,7 +38,6 @@ internal class DetailGoalViewModel(
             started = SharingStarted.WhileSubscribed(5_000L),
             initialValue = DetailGoalUiState.Loading,
         )
-
     val isGoalChanged: StateFlow<Boolean> =
         combine(originalGoal, uiState) { original, current ->
             if (current is DetailGoalUiState.Success) {

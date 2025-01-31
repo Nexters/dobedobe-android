@@ -46,6 +46,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 internal fun DetailGoalRoute(
     onShowSnackbar: suspend (String, String?) -> Boolean,
+    saveSnackBarEvent: (GoalSnackBarType) -> Unit,
     navigateToBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DetailGoalViewModel = koinViewModel(),
@@ -56,7 +57,7 @@ internal fun DetailGoalRoute(
     val focusManager = LocalFocusManager.current
     val onBack = {
         if (isGoalChanged) {
-            // TODO: show edit snackbar
+            saveSnackBarEvent(GoalSnackBarType.EDIT)
         }
         focusManager.clearFocus()
         navigateToBack()
@@ -69,7 +70,7 @@ internal fun DetailGoalRoute(
     LaunchedEffect(Unit) {
         viewModel.deleteGoalEvent
             .onEach {
-                // TODO: show remove snackbar
+                saveSnackBarEvent(GoalSnackBarType.REMOVE)
                 onBack()
             }
             .flowWithLifecycle(lifecycle)
