@@ -29,13 +29,15 @@ fun DobeDobeTextField(
     errorMessage: String? = null,
     enabled: Boolean = true,
     readOnly: Boolean = false,
-    textStyle: TextStyle = DobeDobeTheme.typography.title1,
+    textStyle: TextStyle = DobeDobeTheme.typography.title1.copy(
+        color = DobeDobeTheme.colors.gray900,
+    ),
 ) {
     BasicTextField(
         state = state,
         enabled = enabled,
         readOnly = readOnly,
-        textStyle = textStyle.copy(color = DobeDobeTheme.colors.gray900),
+        textStyle = textStyle,
         decorator = { innerTextField ->
             Column(
                 modifier = Modifier.fillMaxWidth(),
