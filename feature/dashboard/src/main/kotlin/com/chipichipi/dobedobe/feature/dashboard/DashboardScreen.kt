@@ -2,7 +2,6 @@ package com.chipichipi.dobedobe.feature.dashboard
 
 import android.net.Uri
 import android.os.Build
-import android.system.Os.remove
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.core.Animatable
@@ -43,7 +42,6 @@ import com.chipichipi.dobedobe.feature.dashboard.component.DashboardViewMode
 import com.chipichipi.dobedobe.feature.dashboard.component.ExpandedPhotoFrame
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardModeState
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
-import com.chipichipi.dobedobe.feature.goal.GoalSnackBarType
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.isGranted
@@ -64,7 +62,6 @@ internal fun DashboardRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val modeState by viewModel.modeState.collectAsStateWithLifecycle()
-    val snackBarType by viewModel.snackBarState.collectAsStateWithLifecycle()
 
     DashboardScreen(
         modifier = modifier.fillMaxSize(),
@@ -83,37 +80,6 @@ internal fun DashboardRoute(
         modeState = modeState,
         onUpdatePhotoDrafts = viewModel::updatePhotoDrafts,
     )
-
-    ShowGoalSnackBarEffect(
-        snackBarType = snackBarType,
-        onShowSnackbar = onShowSnackbar,
-        removeSnackBarEvent = viewModel::removeSnackBarEvent,
-    )
-}
-
-@Composable
-private fun ShowGoalSnackBarEffect(
-    snackBarType: GoalSnackBarType,
-    onShowSnackbar: suspend (String, String?) -> Boolean,
-    removeSnackBarEvent: () -> Unit,
-) {
-    LaunchedEffect(snackBarType) {
-        when (snackBarType) {
-            GoalSnackBarType.IDLE -> {}
-            GoalSnackBarType.ADD -> {
-                onShowSnackbar("목표가 추가되었습니다", "확인")
-            }
-
-            GoalSnackBarType.EDIT -> {
-                onShowSnackbar("목표가 수정되었습니다", "확인")
-            }
-
-            GoalSnackBarType.REMOVE -> {
-                onShowSnackbar("목표가 삭제되었습니다", "확인")
-            }
-        }
-        removeSnackBarEvent()
-    }
 }
 
 @Composable
@@ -141,7 +107,7 @@ private fun DashboardScreen(
         when (uiState) {
             is DashboardUiState.Error,
             is DashboardUiState.Loading,
-                -> {
+            -> {
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
                 )
