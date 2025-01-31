@@ -61,7 +61,7 @@ private fun SettingScreen(
                 navigateToBack = navigateToBack,
             )
         },
-        containerColor = DobeDobeTheme.colors.gray50
+        containerColor = DobeDobeTheme.colors.gray50,
     ) { innerPadding ->
         SettingBody(
             isGoalNotificationEnabled = isGoalNotificationEnabled,
