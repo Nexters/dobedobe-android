@@ -44,7 +44,7 @@ internal fun DobeDobeNavHost(
         goalGraph(
             onShowSnackbar = onShowSnackbar,
             navigateToBack = navController::popBackStack,
-            saveSnackBarEvent = navController::saveSnackBarEvent,
+            sendSnackBarEvent = navController::saveSnackBarEvent,
         )
 
         settingScreen(
@@ -84,7 +84,7 @@ private fun GoalSnackBarEffect(
     }
 }
 
-fun NavController.saveSnackBarEvent(
+private fun NavController.saveSnackBarEvent(
     type: GoalSnackBarType,
 ) {
     val preBackStackEntry = previousBackStackEntry ?: return
@@ -93,6 +93,6 @@ fun NavController.saveSnackBarEvent(
     }
 }
 
-fun NavBackStackEntry.removeSnackBarEvent() {
+private fun NavBackStackEntry.removeSnackBarEvent() {
     savedStateHandle.remove<GoalSnackBarType>(GoalSnackBarType.KEY)
 }

@@ -19,14 +19,14 @@ fun NavController.navigateToGoalDetail(
 
 fun NavGraphBuilder.goalGraph(
     onShowSnackbar: suspend (String, String?) -> Boolean,
-    saveSnackBarEvent: (GoalSnackBarType) -> Unit,
+    sendSnackBarEvent: (GoalSnackBarType) -> Unit,
     navigateToBack: () -> Unit,
 ) {
     composable<GoalRoute.Add> {
         AddGoalRoute(
             onShowSnackbar = onShowSnackbar,
             navigateToBack = navigateToBack,
-            saveSnackBarEvent = saveSnackBarEvent,
+            sendSnackBarEvent = sendSnackBarEvent,
         )
     }
 
@@ -34,7 +34,7 @@ fun NavGraphBuilder.goalGraph(
         DetailGoalRoute(
             onShowSnackbar = onShowSnackbar,
             navigateToBack = navigateToBack,
-            saveSnackBarEvent = saveSnackBarEvent,
+            sendSnackBarEvent = sendSnackBarEvent,
         )
     }
 }
