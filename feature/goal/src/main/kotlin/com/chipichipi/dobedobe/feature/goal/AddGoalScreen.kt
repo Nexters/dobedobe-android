@@ -83,7 +83,6 @@ private fun AddGoalScreen(
         topBar = {
             AddGoalTopAppBar(
                 navigateToBack = navigateToBack,
-                onAddGoal = onAddGoal,
             )
         },
     ) { innerPadding ->
