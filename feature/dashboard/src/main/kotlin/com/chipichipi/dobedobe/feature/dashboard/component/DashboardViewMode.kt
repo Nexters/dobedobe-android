@@ -3,7 +3,6 @@ package com.chipichipi.dobedobe.feature.dashboard.component
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -42,7 +41,7 @@ internal fun SharedTransitionScope.DashboardViewMode(
                 painterResource(id = R.drawable.rabbit_sheet_content_background),
                 contentScale = ContentScale.FillBounds,
             ),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         DashboardViewModeTopAppBar(
             onEditClick = onToggleMode,
