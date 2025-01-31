@@ -73,13 +73,14 @@ private fun SupportMessage(
     supportMessage: String,
     errorMessage: String? = null,
 ) {
-    if (errorMessage == null) {
+    if (errorMessage == null && supportMessage.isNotBlank()) {
         Text(
             text = supportMessage,
             style = DobeDobeTheme.typography.body3,
             color = DobeDobeTheme.colors.gray500,
         )
-    } else {
+    }
+    if (errorMessage != null) {
         Text(
             text = errorMessage,
             style = DobeDobeTheme.typography.body3,
