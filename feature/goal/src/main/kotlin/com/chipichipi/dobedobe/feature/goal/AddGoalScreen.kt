@@ -98,6 +98,7 @@ private fun AddGoalScreen(
             header = stringResource(id = R.string.feature_detail_goal_todo_editor_header),
             errorMessage = errorMessage,
             onChangeTitle = onChangeGoalName,
+            onDone = onAddGoal,
         )
     }
 }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.KeyboardActionHandler
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Surface
@@ -25,6 +26,7 @@ fun DobeDobeTextField(
     hint: String = "",
     supportMessage: String = "",
     keyboardType: KeyboardType = KeyboardType.Text,
+    onKeyboardAction: KeyboardActionHandler? = null,
     imeAction: ImeAction = ImeAction.Done,
     errorMessage: String? = null,
     enabled: Boolean = true,
@@ -64,6 +66,7 @@ fun DobeDobeTextField(
             keyboardType = keyboardType,
             imeAction = imeAction,
         ),
+        onKeyboardAction = onKeyboardAction,
         modifier = modifier,
     )
 }
