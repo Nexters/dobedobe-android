@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -27,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
@@ -99,20 +99,33 @@ private fun GoalBottomSheetBody(
     onGoalToggled: (Long) -> Unit,
     onGoalClicked: (Long) -> Unit,
 ) {
-    LazyColumn(
-        modifier = Modifier
-            .requiredHeightIn(min = 200.dp)
-            .fillMaxSize(),
-        // TODO: 최소 높이 조절 필요
-        verticalArrangement = Arrangement.spacedBy(18.dp),
-        contentPadding = PaddingValues(horizontal = 24.dp),
-    ) {
-        items(goals) { goal ->
-            GoalRow(
-                goal = goal,
-                onToggleCompleted = { onGoalToggled(goal.id) },
-                onClick = { onGoalClicked(goal.id) },
+    if (goals.isEmpty()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 80.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(
+                text = stringResource(R.string.feature_dashboard_goal_bottom_sheet_empty_message),
+                style = DobeDobeTheme.typography.body1,
+                color = DobeDobeTheme.colors.gray500,
+                textAlign = TextAlign.Center,
             )
+        }
+    } else {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(18.dp),
+            contentPadding = PaddingValues(horizontal = 24.dp),
+        ) {
+            items(goals) { goal ->
+                GoalRow(
+                    goal = goal,
+                    onToggleCompleted = { onGoalToggled(goal.id) },
+                    onClick = { onGoalClicked(goal.id) },
+                )
+            }
         }
     }
 }
