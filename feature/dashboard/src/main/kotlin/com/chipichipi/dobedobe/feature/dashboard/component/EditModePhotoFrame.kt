@@ -60,7 +60,7 @@ internal fun EditModePhotoFrame(
                         .clickable(onClick = onDeletePhoto),
                     contentScale = ContentScale.FillBounds,
                     model = uri,
-                    contentDescription = null,
+                    contentDescription = "photo",
                 )
             } else {
                 EmptyPhotoFrame(
