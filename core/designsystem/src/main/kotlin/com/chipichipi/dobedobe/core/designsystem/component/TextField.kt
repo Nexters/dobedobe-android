@@ -12,28 +12,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 
-private val DefaultDobeDobeTextStyle: TextStyle = TextStyle(
-    fontSize = 28.sp,
-    lineHeight = 42.sp,
-    lineHeightStyle = LineHeightStyle(
-        alignment = LineHeightStyle.Alignment.Proportional,
-        trim = LineHeightStyle.Trim.None,
-    ),
-)
-
-/**
- * TODO : TextField 컴포넌트 단순 Wrapper 임시 처리, 각 상태 디자인 정의 필요
- */
 @Composable
 fun DobeDobeTextField(
     state: TextFieldState,
@@ -45,7 +29,9 @@ fun DobeDobeTextField(
     errorMessage: String? = null,
     enabled: Boolean = true,
     readOnly: Boolean = false,
-    textStyle: TextStyle = DefaultDobeDobeTextStyle,
+    textStyle: TextStyle = DobeDobeTheme.typography.title1.copy(
+        color = DobeDobeTheme.colors.gray900,
+    ),
 ) {
     BasicTextField(
         state = state,
@@ -54,19 +40,15 @@ fun DobeDobeTextField(
         textStyle = textStyle,
         decorator = { innerTextField ->
             Column(
-                modifier =
-                    Modifier
-                        .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Box {
                     if (state.text.isEmpty()) {
                         Text(
                             text = hint,
-                            // TODO : Color Scheme 적용 필요
-                            color = Color(0xFFE5E7EB),
+                            color = DobeDobeTheme.colors.gray200,
                             style = textStyle,
-                            fontWeight = FontWeight.SemiBold,
                         )
                     }
                     innerTextField()
@@ -91,20 +73,18 @@ private fun SupportMessage(
     supportMessage: String,
     errorMessage: String? = null,
 ) {
-    // TODO : colorScheme 적용 필요
-    if (errorMessage == null) {
+    if (errorMessage == null && supportMessage.isNotBlank()) {
         Text(
             text = supportMessage,
-            fontSize = 14.sp,
-            lineHeight = 21.sp,
-            color = Color(0xFF7A828C),
+            style = DobeDobeTheme.typography.body3,
+            color = DobeDobeTheme.colors.gray500,
         )
-    } else {
+    }
+    if (errorMessage != null) {
         Text(
             text = errorMessage,
-            fontSize = 14.sp,
-            lineHeight = 21.sp,
-            color = Color(0xFFFF354D),
+            style = DobeDobeTheme.typography.body3,
+            color = DobeDobeTheme.colors.red,
         )
     }
 }
