@@ -1,5 +1,7 @@
 package com.chipichipi.dobedobe.navigation
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,6 +36,8 @@ internal fun DobeDobeNavHost(
         navController = navController,
         startDestination = DashboardRoute,
         modifier = modifier,
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None },
     ) {
         dashboardScreen(
             onShowSnackbar = onShowSnackbar,
@@ -44,13 +48,13 @@ internal fun DobeDobeNavHost(
 
         goalGraph(
             onShowSnackbar = onShowSnackbar,
-            navigateToBack = navController::popBackStack,
+            navigateToBack = appState::navigateToBack,
             sendSnackBarEvent = navController::saveSnackBarEvent,
         )
 
         settingScreen(
             onShowSnackbar = onShowSnackbar,
-            navigateToBack = navController::popBackStack,
+            navigateToBack = appState::navigateToBack,
         )
     }
 

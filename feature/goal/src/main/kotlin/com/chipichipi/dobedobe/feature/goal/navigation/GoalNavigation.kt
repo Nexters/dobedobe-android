@@ -1,5 +1,6 @@
 package com.chipichipi.dobedobe.feature.goal.navigation
 
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -20,20 +21,20 @@ fun NavController.navigateToGoalDetail(
 fun NavGraphBuilder.goalGraph(
     onShowSnackbar: suspend (String, String?) -> Boolean,
     sendSnackBarEvent: (GoalSnackBarType) -> Unit,
-    navigateToBack: () -> Unit,
+    navigateToBack: (NavBackStackEntry) -> Unit,
 ) {
-    composable<GoalRoute.Add> {
+    composable<GoalRoute.Add> { from ->
         AddGoalRoute(
             onShowSnackbar = onShowSnackbar,
-            navigateToBack = navigateToBack,
+            navigateToBack = { navigateToBack(from) },
             sendSnackBarEvent = sendSnackBarEvent,
         )
     }
 
-    composable<GoalRoute.Detail> {
+    composable<GoalRoute.Detail> { from ->
         DetailGoalRoute(
             onShowSnackbar = onShowSnackbar,
-            navigateToBack = navigateToBack,
+            navigateToBack = { navigateToBack(from) },
             sendSnackBarEvent = sendSnackBarEvent,
         )
     }
