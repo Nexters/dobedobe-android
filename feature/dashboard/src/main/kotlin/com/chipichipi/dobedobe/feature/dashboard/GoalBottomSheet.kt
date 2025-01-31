@@ -13,8 +13,6 @@ import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -27,11 +25,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.chipichipi.dobedobe.core.designsystem.icon.DobeDobeIcons
+import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.core.model.Goal
 import com.chipichipi.dobedobe.feature.dashboard.preview.GoalPreviewParameterProvider
 import com.chipichipi.dobedobe.feature.goal.component.GoalRow
@@ -67,27 +67,24 @@ private fun GoalBottomSheetHeader(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            "나의 목표",
-            // TODO : stringResource 추가 필요
-            fontSize = 24.sp,
-            fontWeight = FontWeight.SemiBold,
+            text = stringResource(R.string.feature_dashboard_goal_bottom_sheet_title),
+            style = DobeDobeTheme.typography.heading2,
+            color = DobeDobeTheme.colors.gray900,
         )
+
         IconButton(
             modifier = Modifier
                 .size(width = 72.dp, height = 32.dp),
             colors = IconButtonDefaults.iconButtonColors().copy(
-                // TODO: colorScheme 적용 필요
-                containerColor = Color(0xFF00B35D),
-                contentColor = Color.White,
+                containerColor = DobeDobeTheme.colors.green3,
+                contentColor = DobeDobeTheme.colors.white,
             ),
             onClick = onAddGoalClicked,
         ) {
-            // TODO : icon 변경 필요
             Icon(
-                imageVector = Icons.Default.Add,
-                modifier = Modifier.size(14.dp),
-                contentDescription = "목표 검색",
-                // TODO : stringResource 추가 필요
+                painter = painterResource(DobeDobeIcons.Add),
+                contentDescription = "add goal",
+                tint = Color.Unspecified,
             )
         }
     }

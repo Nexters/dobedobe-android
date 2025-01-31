@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -15,11 +13,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeSwitch
+import com.chipichipi.dobedobe.core.designsystem.icon.DobeDobeIcons
+import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.core.notifications.NotificationUtil
 import com.chipichipi.dobedobe.core.notifications.NotificationUtil.areNotificationsEnabled
 import com.chipichipi.dobedobe.feature.setting.component.SettingRow
@@ -58,6 +61,7 @@ private fun SettingScreen(
                 navigateToBack = navigateToBack,
             )
         },
+        containerColor = DobeDobeTheme.colors.gray50,
     ) { innerPadding ->
         SettingBody(
             isGoalNotificationEnabled = isGoalNotificationEnabled,
@@ -84,9 +88,8 @@ private fun SettingBody(
     Column(
         modifier = modifier,
     ) {
-        // TODO : 언어 대응 필요
         SettingRow(
-            label = "알림",
+            label = stringResource(R.string.feature_setting_goal_notifications),
         ) {
             DobeDobeSwitch(
                 modifier = Modifier.padding(end = 8.dp),
@@ -101,19 +104,17 @@ private fun SettingBody(
             )
         }
 
-        // TODO : 언어 대응 필요
         SettingRow(
-            label = "앱 피드백 남기기",
+            label = stringResource(R.string.feature_setting_app_feedback),
         ) {
             IconButton(
                 modifier = Modifier.size(42.dp),
                 onClick = { openPlayStore(context) },
             ) {
-                // TODO: 아이콘 변경 필요
                 Icon(
-                    modifier = Modifier.size(24.dp),
-                    imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
+                    painter = painterResource(DobeDobeIcons.ArrowForward),
                     contentDescription = null,
+                    tint = Color.Unspecified,
                 )
             }
         }

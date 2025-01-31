@@ -17,9 +17,9 @@ class DobeDobeColors(isDarkTheme: Boolean = false) {
     val gray800 = Color(0xFF333945)
     val gray900 = Color(0xFF262C36)
 
-    val green1 = Color(0xFFD0BCFF)
-    val green2 = Color(0xFFD0BCFF)
-    val green3 = Color(0xFFD0BCFF)
+    val green1 = Color(0xFFF3FFF1)
+    val green2 = Color(0xFF00FF84)
+    val green3 = Color(0xFF00B35D)
 
     val white = Color.White
     val black = Color.Black

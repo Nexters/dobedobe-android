@@ -11,11 +11,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.feature.dashboard.DashboardPhotoFramesState
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
 
@@ -56,10 +54,11 @@ internal fun SharedTransitionScope.DashboardViewMode(
                 Spacer(Modifier.height(13.dp))
                 DashboardBubble(
                     title = bubbleTitle,
-                    // TODO : font 적용
-                    textStyle = TextStyle(fontSize = 15.sp),
-                    // TODO: ColorScheme 적용
-                    modifier = Modifier.background(Color.White),
+                    textStyle = DobeDobeTheme.typography.body2,
+                    modifier = Modifier
+                        .background(
+                            color = DobeDobeTheme.colors.white,
+                        ),
                     onClick = onChangeBubble,
                 )
                 DashboardCharacter(
