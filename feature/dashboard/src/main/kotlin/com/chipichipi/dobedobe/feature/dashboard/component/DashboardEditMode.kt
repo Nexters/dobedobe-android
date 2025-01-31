@@ -13,11 +13,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -204,50 +199,15 @@ private fun DashboardEditOptionsDialog(
     DobeDobeDialog(
         onDismissRequest = onDismissRequest,
         title = stringResource(R.string.feature_dashboard_edit_change_image_title),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp),
-    ) {
-        Button(
-            onClick = {
-                onPickPhoto()
-                onDismissRequest()
-            },
-            shape = RoundedCornerShape(8.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = DobeDobeTheme.colors.gray900,
-                contentColor = DobeDobeTheme.colors.white,
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(48.dp),
-        ) {
-            Text(
-                text = stringResource(R.string.feature_dashboard_edit_select_image_from_album),
-                style = DobeDobeTheme.typography.heading2,
-                color = DobeDobeTheme.colors.white,
-            )
-        }
-
-        Button(
-            onClick = {
-                onDeletePhoto()
-                onDismissRequest()
-            },
-            shape = RoundedCornerShape(8.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = DobeDobeTheme.colors.white,
-                contentColor = DobeDobeTheme.colors.red,
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(48.dp),
-        ) {
-            Text(
-                text = stringResource(R.string.feature_dashboard_edit_delete_image),
-                style = DobeDobeTheme.typography.heading2,
-                color = DobeDobeTheme.colors.red,
-            )
-        }
-    }
+        primaryText = stringResource(R.string.feature_dashboard_edit_select_image_from_album),
+        secondaryText = stringResource(R.string.feature_dashboard_edit_delete_image),
+        onClickPrimary = {
+            onPickPhoto()
+            onDismissRequest()
+        },
+        onClickSecondary = {
+            onDeletePhoto()
+            onDismissRequest()
+        },
+    )
 }
