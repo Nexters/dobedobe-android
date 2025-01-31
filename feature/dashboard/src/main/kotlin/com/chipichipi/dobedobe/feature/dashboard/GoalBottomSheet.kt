@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
@@ -98,12 +99,25 @@ private fun GoalBottomSheetBody(
 ) {
     LazyColumn(
         modifier = Modifier
-            .requiredHeightIn(min = 200.dp)
+            .requiredHeightIn(min = 269.dp)
             .fillMaxSize(),
-        // TODO: 최소 높이 조절 필요
         verticalArrangement = Arrangement.spacedBy(18.dp),
         contentPadding = PaddingValues(horizontal = 24.dp),
     ) {
+        item {
+            if (goals.isEmpty()) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(80.dp),
+                    text = stringResource(R.string.feature_dashboard_goal_bottom_sheet_empty_message),
+                    style = DobeDobeTheme.typography.body1,
+                    color = DobeDobeTheme.colors.gray500,
+                    textAlign = TextAlign.Center,
+                )
+            }
+        }
+
         items(goals) { goal ->
             GoalRow(
                 goal = goal,

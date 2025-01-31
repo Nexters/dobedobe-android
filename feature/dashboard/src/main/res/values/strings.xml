@@ -15,4 +15,5 @@
     <string name="feature_dashboard_add_goal_snackbar_message">목표가 추가되었습니다.</string>
     <string name="feature_dashboard_remove_goal_snackbar_message">목표가 삭제되었습니다.</string>
     <string name="feature_dashboard_edit_goal_snackbar_message">목표가 수정되었습니다.</string>
+    <string name="feature_dashboard_goal_bottom_sheet_empty_message">목표를 설정하고\n작은 실천부터 시작해봐요.</string>
 </resources>
