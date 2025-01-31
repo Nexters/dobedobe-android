@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeCheckBox
@@ -27,7 +26,6 @@ import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
 import com.chipichipi.dobedobe.core.designsystem.icon.DobeDobeIcons
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.core.model.Goal
-import com.chipichipi.dobedobe.feature.goal.R
 import kotlinx.datetime.Instant
 
 @Composable
@@ -66,14 +64,14 @@ fun GoalRow(
                         .size(24.dp, 30.dp)
                         .align(Alignment.Top)
                         .offset(x = (-10).dp),
-                    contentDescription = stringResource(R.string.feature_goal_row_check_icon_content_description),
+                    contentDescription = "Favorites",
                     tint = Color.Unspecified,
                 )
             }
             Icon(
                 imageVector = ImageVector.vectorResource(DobeDobeIcons.Tap),
                 modifier = Modifier.size(24.dp),
-                contentDescription = stringResource(R.string.feature_goal_row_check_icon_content_description),
+                contentDescription = "Go to detail",
                 tint = Color.Unspecified,
             )
         }
