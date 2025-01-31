@@ -1,6 +1,5 @@
 package com.chipichipi.dobedobe.feature.goal
 
-
 enum class GoalSnackBarType {
     IDLE,
     ADD,
