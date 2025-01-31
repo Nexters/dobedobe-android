@@ -25,5 +25,6 @@
     <string name="feature_goal_title_error_message_too_long">띄어쓰기 포함 20자까지만 쓸 수 있어요</string>
 
     <string name="feature_goal_navigate_back_icon_content_description">뒤로 가기</string>
+    <string name="feature_add_goal_action_button">완료</string>
 
 </resources>

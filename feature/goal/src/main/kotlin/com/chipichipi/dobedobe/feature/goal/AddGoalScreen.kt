@@ -3,8 +3,12 @@ package com.chipichipi.dobedobe.feature.goal
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -18,6 +22,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBackground
+import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeTextButton
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.feature.goal.component.AddGoalTopAppBar
 import com.chipichipi.dobedobe.feature.goal.component.GoalEditor
@@ -60,7 +65,8 @@ fun AddGoalRoute(
                 detectTapGestures {
                     focusManager.clearFocus()
                 }
-            },
+            }
+            .imePadding(),
         errorMessage = errorMessage,
         onShowSnackbar = onShowSnackbar,
         navigateToBack = onBack,
@@ -92,13 +98,26 @@ private fun AddGoalScreen(
                 .background(DobeDobeTheme.colors.white)
                 .padding(innerPadding)
                 .padding(horizontal = 24.dp)
-                .padding(top = 24.dp),
+                .padding(top = 24.dp, bottom = 32.dp),
             title = "",
             header = stringResource(id = R.string.feature_detail_goal_todo_editor_header),
             errorMessage = errorMessage,
             onChangeTitle = onChangeGoalName,
             onDone = onAddGoal,
-        )
+        ) {
+            DobeDobeTextButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(54.dp),
+                onClick = onAddGoal,
+            ) {
+                Text(
+                    text = stringResource(R.string.feature_add_goal_action_button),
+                    style = DobeDobeTheme.typography.heading2,
+                    color = DobeDobeTheme.colors.white,
+                )
+            }
+        }
     }
 }
 
