@@ -50,7 +50,7 @@ fun DobeDobeDialog(
                 Text(
                     text = title,
                     style = DobeDobeTheme.typography.heading2,
-                    color = DobeDobeTheme.colors.black,
+                    color = DobeDobeTheme.colors.gray900,
                     modifier = Modifier
                         .padding(
                             top = 24.dp,
