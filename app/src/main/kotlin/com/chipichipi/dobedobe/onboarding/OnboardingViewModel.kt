@@ -17,7 +17,6 @@ class OnboardingViewModel(
     private val userRepository: UserRepository,
     private val goalRepository: GoalRepository,
 ) : ViewModel() {
-
     private val title: MutableStateFlow<String> = MutableStateFlow("")
     val titleValidResult: StateFlow<GoalTitleValidResult> =
         title.map(Goal::validateTitle)
