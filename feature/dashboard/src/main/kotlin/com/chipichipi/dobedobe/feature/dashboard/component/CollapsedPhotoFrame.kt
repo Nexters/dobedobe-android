@@ -21,10 +21,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoConfig
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -99,7 +99,6 @@ private fun SharedTransitionScope.CollapsedPhotoFrame(
                             contentDescription = null,
                         )
                     } else {
-                        // TODO : 색상 변경 필요
                         EmptyPhotoFrame(
                             modifier = Modifier
                                 .offset(
@@ -109,7 +108,9 @@ private fun SharedTransitionScope.CollapsedPhotoFrame(
                                 .size(config.size.dp)
                                 .rotate(rotation)
                                 .clip(RoundedCornerShape(24.dp))
-                                .background(Color(0xFFE5E7EB))
+                                .background(
+                                    color = DobeDobeTheme.colors.gray200,
+                                )
                                 .clickable(onClick = onEmptyFrameClick),
                         )
                     }

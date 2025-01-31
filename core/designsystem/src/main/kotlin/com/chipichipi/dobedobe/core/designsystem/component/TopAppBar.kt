@@ -4,10 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.AltRoute
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.HelpOutline
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.TopAppBar
@@ -16,12 +12,12 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
+import com.chipichpi.dobedobe.core.designsystem.R
 
-/**
- * TODO : TopAppBar 컴포넌트 단순 Wrapper 임시 처리, 각 상태 디자인 정의 필요
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DobeDobeTopAppBar(
@@ -30,7 +26,9 @@ fun DobeDobeTopAppBar(
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
     windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
-    colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors(),
+    colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors(
+        containerColor = DobeDobeTheme.colors.gray50,
+    ),
 ) {
     TopAppBar(
         modifier = modifier,
@@ -51,7 +49,8 @@ private fun DobeDobeTopAppBarPreview() {
         DobeDobeTopAppBar(
             navigationIcon = {
                 Icon(
-                    Icons.AutoMirrored.Filled.ArrowBack,
+                    painter = painterResource(R.drawable.ic_arrow_back_24),
+                    tint = Color.Unspecified,
                     contentDescription = null,
                 )
             },
@@ -61,11 +60,13 @@ private fun DobeDobeTopAppBarPreview() {
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Icon(
-                        Icons.AutoMirrored.Filled.HelpOutline,
+                        painter = painterResource(R.drawable.ic_edit_24),
+                        tint = Color.Unspecified,
                         contentDescription = null,
                     )
                     Icon(
-                        Icons.AutoMirrored.Filled.AltRoute,
+                        painter = painterResource(R.drawable.ic_setting_24),
+                        tint = Color.Unspecified,
                         contentDescription = null,
                     )
                 }

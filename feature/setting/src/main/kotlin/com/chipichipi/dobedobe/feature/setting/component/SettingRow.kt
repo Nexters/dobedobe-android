@@ -11,10 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 
@@ -39,22 +36,19 @@ internal fun SettingRow(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            // TODO : 폰트 스타일 변경 필요
             Text(
                 text = label,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = Color.Black,
+                style = DobeDobeTheme.typography.body1,
+                color = DobeDobeTheme.colors.black,
             )
 
             trailingContent()
         }
 
-        // TODO : 색상 변경 필요
         HorizontalDivider(
             modifier = Modifier.fillMaxWidth(),
-            thickness = 8.dp,
-            color = Color(0xFFF2F3F6),
+            thickness = 1.dp,
+            color = DobeDobeTheme.colors.gray200,
         )
     }
 }

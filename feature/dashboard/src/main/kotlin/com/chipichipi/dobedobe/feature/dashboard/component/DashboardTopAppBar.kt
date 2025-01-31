@@ -5,9 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.AltRoute
-import androidx.compose.material.icons.automirrored.filled.HelpOutline
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -18,10 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeTopAppBar
 import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
+import com.chipichipi.dobedobe.core.designsystem.icon.DobeDobeIcons
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.feature.dashboard.R
 
@@ -39,29 +38,29 @@ internal fun DashboardTopAppBar(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                // TODO: 아이콘 교체 필요
                 IconButton(
                     onClick = onEditClick,
                 ) {
                     Icon(
-                        Icons.AutoMirrored.Filled.HelpOutline,
+                        painter = painterResource(DobeDobeIcons.Edit),
                         contentDescription = "edit icon",
+                        tint = Color.Unspecified,
                     )
                 }
-                // TODO: 아이콘 교체 필요
+
                 IconButton(
                     onClick = navigateToSetting,
                 ) {
                     Icon(
-                        Icons.AutoMirrored.Filled.AltRoute,
+                        painter = painterResource(DobeDobeIcons.Setting),
                         contentDescription = "setting icon",
+                        tint = Color.Unspecified,
                     )
                 }
             }
         },
-        // TODO : 컬러 변경 필요
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color(0xFFECFFE1),
+            containerColor = DobeDobeTheme.colors.gray50,
         ),
     )
 }
@@ -81,7 +80,6 @@ internal fun DashboardEditModeTopAppBar(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                // TODO : 색상 변경 필요
                 TextButton(
                     onClick = onToggleMode,
                     contentPadding = PaddingValues(horizontal = 24.dp),
@@ -90,7 +88,8 @@ internal fun DashboardEditModeTopAppBar(
                         modifier = Modifier
                             .clickable(onClick = onToggleMode),
                         text = stringResource(R.string.feature_dashboard_edit_mode_top_bar_cancel),
-                        color = Color.White,
+                        style = DobeDobeTheme.typography.body1,
+                        color = DobeDobeTheme.colors.white,
                     )
                 }
 
@@ -100,12 +99,12 @@ internal fun DashboardEditModeTopAppBar(
                 ) {
                     Text(
                         text = stringResource(R.string.feature_dashboard_edit_mode_top_bar_confirm),
-                        color = Color(0xFF00FF85),
+                        style = DobeDobeTheme.typography.body1,
+                        color = DobeDobeTheme.colors.green2,
                     )
                 }
             }
         },
-        // TODO : 컬러 변경 필요
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.Transparent,
         ),

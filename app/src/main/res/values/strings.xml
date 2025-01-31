@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">dobedobe</string>
+
+    <string name="onboarding_goal_prompt">이루고 싶은 목표를 알려주세요</string>
+    <string name="onboarding_goal_hint">ex) 1일 1책 읽기</string>
+    <string name="onboarding_goal_support_message">목표가 간결할수록 집중력이 높아져요.</string>
+    <string name="onboarding_goal_completed">작성 완료</string>
 </resources>

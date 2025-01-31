@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_setting">설정</string>
+    <string name="feature_setting_app_feedback">앱 피드백 남기기</string>
+    <string name="feature_setting_goal_notifications">알림</string>
 </resources>
