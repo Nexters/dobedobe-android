@@ -45,7 +45,7 @@ fun DobeDobeTextField(
                     if (state.text.isEmpty()) {
                         Text(
                             text = hint,
-                            color = DobeDobeTheme.colors.gray500,
+                            color = DobeDobeTheme.colors.gray200,
                             style = textStyle,
                         )
                     }
