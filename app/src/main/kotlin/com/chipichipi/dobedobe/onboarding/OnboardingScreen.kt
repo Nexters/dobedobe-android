@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Text
@@ -83,6 +84,7 @@ private fun Modifier.onboardingModifier() =
             .fillMaxSize()
             .padding(horizontal = 24.dp)
             .padding(top = 72.dp, bottom = 32.dp)
+            .navigationBarsPadding()
             .imePadding(),
     )
 
