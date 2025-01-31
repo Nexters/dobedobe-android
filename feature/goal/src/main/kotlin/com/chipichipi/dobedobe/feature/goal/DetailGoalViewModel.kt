@@ -9,9 +9,12 @@ import com.chipichipi.dobedobe.core.model.Goal
 import com.chipichipi.dobedobe.feature.goal.navigation.GoalRoute
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -20,17 +23,37 @@ internal class DetailGoalViewModel(
     savedStateHandle: SavedStateHandle,
     private val goalRepository: GoalRepository,
 ) : ViewModel() {
+    private var originalGoal: MutableStateFlow<Goal?> = MutableStateFlow(null)
+
     val uiState: StateFlow<DetailGoalUiState> = savedStateHandle.toRoute<GoalRoute.Detail>()
         .let { route -> goalRepository.getGoal(route.id) }
         .mapNotNull { it?.let(DetailGoalUiState::Success) }
+        .onEach {
+            if (originalGoal.value == null) {
+                originalGoal.value = it.goal
+            }
+        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000L),
             initialValue = DetailGoalUiState.Loading,
         )
+    val isGoalChanged: StateFlow<Boolean> =
+        combine(originalGoal, uiState) { original, current ->
+            if (current is DetailGoalUiState.Success) {
+                original != current.goal
+            } else {
+                false
+            }
+        }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.Eagerly,
+                initialValue = false,
+            )
 
-    private val _navigateToBackEvent = Channel<Unit>(capacity = Channel.BUFFERED)
-    val navigateToBackEvent: Flow<Unit> = _navigateToBackEvent.receiveAsFlow()
+    private val _deleteGoalEvent = Channel<Unit>(capacity = Channel.BUFFERED)
+    val deleteGoalEvent: Flow<Unit> = _deleteGoalEvent.receiveAsFlow()
 
     fun changeGoalTitle(id: Long, title: String) {
         viewModelScope.launch {
@@ -56,7 +79,7 @@ internal class DetailGoalViewModel(
         viewModelScope.launch {
             goalRepository.removeGoal(id)
                 .onSuccess {
-                    _navigateToBackEvent.send(Unit)
+                    _deleteGoalEvent.send(Unit)
                 }
         }
     }
