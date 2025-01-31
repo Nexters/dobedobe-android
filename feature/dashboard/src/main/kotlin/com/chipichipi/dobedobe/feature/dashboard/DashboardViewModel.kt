@@ -175,7 +175,8 @@ internal class DashboardViewModel(
             .distinctUntilChanged()
             .distinctUntilChanged { _, new ->
                 val id = bubbleGoal.value.id
-                new.any { it.id == id }
+                val isBubbleGoalCompleted = new.any { it.id == id }
+                isBubbleGoalCompleted
             }
 
         return combine(
