@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,6 +42,7 @@ import com.chipichipi.dobedobe.feature.goal.component.GoalEditor
 import com.chipichipi.dobedobe.feature.goal.component.GoalToggleChip
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -54,26 +56,18 @@ internal fun DetailGoalRoute(
     val isGoalChanged: Boolean by viewModel.isGoalChanged.collectAsStateWithLifecycle()
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val focusManager = LocalFocusManager.current
+    val coroutineScope = rememberCoroutineScope()
+    val editSnackBarMessage = stringResource(R.string.feature_goal_edit_goal_snackbar_message)
+    val removeSnackBarMessage = stringResource(R.string.feature_goal_remove_goal_snackbar_message)
+
     val onBack = {
         if (isGoalChanged) {
-            // TODO: show edit snackbar
+            coroutineScope.launch {
+                onShowSnackbar(editSnackBarMessage, null)
+            }
         }
         focusManager.clearFocus()
         navigateToBack()
-    }
-
-    BackHandler {
-        onBack()
-    }
-
-    LaunchedEffect(Unit) {
-        viewModel.deleteGoalEvent
-            .onEach {
-                // TODO: show remove snackbar
-                onBack()
-            }
-            .flowWithLifecycle(lifecycle)
-            .launchIn(this)
     }
 
     DetailGoalScreen(
@@ -92,6 +86,22 @@ internal fun DetailGoalRoute(
         onToggleCompleted = viewModel::toggleCompleted,
         onRemoveGoal = viewModel::removeGoal,
     )
+
+    BackHandler {
+        onBack()
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.deleteGoalEvent
+            .onEach {
+                coroutineScope.launch {
+                    onShowSnackbar(removeSnackBarMessage, null)
+                }
+                onBack()
+            }
+            .flowWithLifecycle(lifecycle)
+            .launchIn(this)
+    }
 }
 
 @Composable

@@ -8,6 +8,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
@@ -23,6 +24,7 @@ import com.chipichipi.dobedobe.feature.goal.component.AddGoalTopAppBar
 import com.chipichipi.dobedobe.feature.goal.component.GoalEditor
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -34,18 +36,23 @@ fun AddGoalRoute(
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val focusManager = LocalFocusManager.current
     val goalValidResult by viewModel.goalValidResult.collectAsStateWithLifecycle()
-    val onBack = {
-        focusManager.clearFocus()
-        navigateToBack()
-    }
+    val coroutineScope = rememberCoroutineScope()
     val errorMessage =
         goalValidResult.errorMessage()
             ?.let { stringResource(id = it) }
+    val addGoalSnackbarMessage =
+        stringResource(id = R.string.feature_goal_add_goal_snackbar_message)
+    val onBack = {
+        coroutineScope.launch {
+            onShowSnackbar(addGoalSnackbarMessage, null)
+        }
+        focusManager.clearFocus()
+        navigateToBack()
+    }
 
     LaunchedEffect(Unit) {
         viewModel.addGoalEvent
             .onEach {
-                // TODO show Add Goal Success Snackbar
                 onBack()
             }
             .flowWithLifecycle(lifecycle)
