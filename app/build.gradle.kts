@@ -1,13 +1,31 @@
+import org.jetbrains.kotlin.konan.properties.Properties
+
 plugins {
     alias(libs.plugins.dobedobe.android.application)
     alias(libs.plugins.dobedobe.kotlinx.serialization)
 }
 
+val properties =
+    Properties().apply {
+        load(rootProject.file("local.properties").inputStream())
+    }
+
 android {
-    namespace = "com.chipichipi.dobedobe"
+    namespace = libs.versions.applicationId.get()
+
+    signingConfigs {
+        create("release") {
+            keyAlias = properties.getProperty("KEY_ALIAS")
+            keyPassword = properties.getProperty("KEY_PASSWORD")
+            storeFile = file("${project.rootDir.absolutePath}/keystore/dobedobe_key.keystore")
+            storePassword = properties.getProperty("STORE_PASSWORD")
+        }
+    }
 
     defaultConfig {
-        applicationId = "com.chipichipi.dobedobe"
+        applicationId = libs.versions.applicationId.get()
+        versionName = libs.versions.appVersion.get()
+        versionCode = libs.versions.versionCode.get().toInt()
     }
 
     buildTypes {
@@ -18,6 +36,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 
