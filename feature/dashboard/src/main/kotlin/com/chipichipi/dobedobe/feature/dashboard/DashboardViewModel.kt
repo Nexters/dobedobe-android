@@ -8,9 +8,12 @@ import com.chipichipi.dobedobe.core.data.repository.DashboardRepository
 import com.chipichipi.dobedobe.core.data.repository.GoalRepository
 import com.chipichipi.dobedobe.core.data.repository.UserRepository
 import com.chipichipi.dobedobe.core.model.DashboardPhoto
+import com.chipichipi.dobedobe.core.model.Goal
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardModeState
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoConfig
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -18,6 +21,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -36,14 +41,19 @@ internal class DashboardViewModel(
         MutableStateFlow(DashboardModeState.View)
     val modeState: StateFlow<DashboardModeState> = _modeState.asStateFlow()
 
-    private val bubbleTitle: MutableStateFlow<String> = MutableStateFlow("")
+    private val changeBubbleEvent: Channel<Unit> = Channel(capacity = Channel.BUFFERED)
+    private val bubbleGoal: StateFlow<BubbleGoal> = bubbleGoalFlow().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = BubbleGoal.empty(),
+    )
 
     val uiState: StateFlow<DashboardUiState> = combine(
         dashboardRepository.getPhotos(),
         isSystemNotificationDialogDisabledFlow,
         goalRepository.getSortedGoals(),
-        bubbleTitle,
-    ) { photoState, isSystemNotificationDialogDisabled, goals, bubbleTitle ->
+        bubbleGoal,
+    ) { photoState, isSystemNotificationDialogDisabled, goals, bubbleGoal ->
         val dashboardPhotoStates = DashboardPhotoConfig.entries.map { config ->
             val photo = photoState.find { it.id == config.id }
             val uri = photo?.path?.let { Uri.fromFile(File(it)) } ?: Uri.EMPTY
@@ -58,7 +68,7 @@ internal class DashboardViewModel(
             photoState = dashboardPhotoStates,
             isSystemNotificationDialogDisabled = isSystemNotificationDialogDisabled,
             goals = goals,
-            bubbleTitle = bubbleTitle,
+            bubbleTitle = bubbleGoal.title,
         )
     }
         .stateIn(
@@ -66,10 +76,6 @@ internal class DashboardViewModel(
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = DashboardUiState.Loading,
         )
-
-    init {
-        changeBubble()
-    }
 
     fun setGoalNotificationEnabled(enabled: Boolean) {
         viewModelScope.launch {
@@ -147,16 +153,62 @@ internal class DashboardViewModel(
 
     fun changeBubble() {
         viewModelScope.launch {
-            goalRepository.getTodoGoals()
-                .onSuccess { goals ->
-                    if (goals.isNotEmpty()) {
-                        bubbleTitle.value = goals.random().title
-                    }
+            changeBubbleEvent.send(Unit)
+        }
+    }
+
+    /**
+     * bubbleGoal 을 random 으로 변경하는 로직
+     *
+     * - todoGoals 가 empty 일 경우, Empty BubbleGoal 을 반환
+     * - todoGoals 가 empty 가 아닌 경우
+     *
+     * 1) goalRepository 에 있는 goal 이 변경될 경우
+     *      1-1) old goals 와 new goals 가 다르면 변경
+     *      1-2) 만약, bubbleGoal 의 id 가 todoGoals 에 포함되어 있으면 변경
+     *
+     * 2) changeBubbleEvent 가 발생할 경우
+     *      - 무조건 random 하게 변경
+     * */
+    private fun bubbleGoalFlow(): Flow<BubbleGoal> {
+        val todoGoals: Flow<List<Goal>> = goalRepository.getTodoGoals()
+            .distinctUntilChanged()
+            .distinctUntilChanged { _, new ->
+                val id = bubbleGoal.value.id
+                val isBubbleGoalCompleted = new.any { it.id == id }
+                isBubbleGoalCompleted
+            }
+
+        return combine(
+            todoGoals,
+            changeBubbleEvent.receiveAsFlow().onStart {
+                emit(Unit)
+            },
+        ) { goals, _ ->
+            goals.filter { it.id != bubbleGoal.value.id }.shuffled()
+        }
+            .map(List<Goal>::firstOrNull)
+            .map { goal ->
+                if (goal != null) {
+                    BubbleGoal.from(goal)
+                } else {
+                    BubbleGoal.empty()
                 }
-                .onFailure {
-                    // TODO : Error 처리
-                    Log.e("DashboardViewModel", "Fail to get random todo goal", it)
-                }
+            }
+    }
+
+    private data class BubbleGoal(
+        val title: String,
+        val id: Long?,
+    ) {
+        companion object {
+            private val Empty = BubbleGoal(title = "", id = null)
+
+            fun empty(): BubbleGoal = Empty
+
+            fun from(goal: Goal): BubbleGoal {
+                return BubbleGoal(goal.title, goal.id)
+            }
         }
     }
 }

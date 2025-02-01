@@ -122,6 +122,7 @@ private fun DashboardScreen(
                     navigateToGoalDetail = navigateToGoalDetail,
                     navigateToSetting = navigateToSetting,
                     onGoalToggled = onGoalToggled,
+                    // TODO: 캐릭터 누르면 말풍선 바뀌는걸로 옮기기!
                     onChangeBubble = onChangeBubble,
                     onToggleMode = onToggleMode,
                     onUpsertPhotos = onUpsertPhotos,
