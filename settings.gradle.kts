@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -20,5 +21,17 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "dobedobe"
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
- 
+include(":core:designsystem")
+include(":core:model")
+include(":core:data")
+include(":core:common")
+include(":core:database")
+include(":core:datastore")
+include(":core:datastore-proto")
+include(":core:notifications")
+
+include(":feature:dashboard")
+include(":feature:goal")
+include(":feature:setting")

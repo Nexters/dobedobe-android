@@ -1,59 +1,80 @@
+import org.jetbrains.kotlin.konan.properties.Properties
+
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.dobedobe.android.application)
+    alias(libs.plugins.dobedobe.kotlinx.serialization)
 }
 
+val properties =
+    Properties().apply {
+        load(rootProject.file("local.properties").inputStream())
+    }
+
 android {
-    namespace = "com.chipichipi.dobedobe"
-    compileSdk = 35
+    namespace = libs.versions.applicationId.get()
+
+    signingConfigs {
+        create("release") {
+            keyAlias = properties.getProperty("KEY_ALIAS")
+            keyPassword = properties.getProperty("KEY_PASSWORD")
+            storeFile = file("${project.rootDir.absolutePath}/keystore/dobedobe_key.keystore")
+            storePassword = properties.getProperty("STORE_PASSWORD")
+        }
+    }
 
     defaultConfig {
-        applicationId = "com.chipichipi.dobedobe"
-        minSdk = 26
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        applicationId = libs.versions.applicationId.get()
+        versionName = libs.versions.appVersion.get()
+        versionCode = libs.versions.versionCode.get().toInt()
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-    buildFeatures {
-        compose = true
+
+    packaging {
+        resources.excludes.apply {
+            add("/META-INF/{AL2.0,LGPL2.1}")
+            add("META-INF/**")
+        }
     }
 }
 
 dependencies {
+    implementation(projects.feature.dashboard)
+    implementation(projects.feature.goal)
+    implementation(projects.feature.setting)
+
+    implementation(projects.core.common)
+    implementation(projects.core.data)
+    implementation(projects.core.designsystem)
+    implementation(projects.core.model)
+    implementation(projects.core.notifications)
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.lifecycle.runtimeCompose)
+    implementation(libs.androidx.lifecycle.viewModelCompose)
+    implementation(libs.androidx.core.splashscreen)
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.androidx.startup)
+    testImplementation(libs.koin.test.junit5)
+    testImplementation(libs.koin.android.test)
+    testImplementation(libs.androidx.navigation.testing)
+
+    androidTestImplementation(libs.androidx.lifecycle.runtimeTesting)
+    androidTestImplementation(libs.androidx.navigation.testing)
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.androidx.test.espresso.core)
 }

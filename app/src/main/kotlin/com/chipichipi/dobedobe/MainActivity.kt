@@ -4,44 +4,47 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.chipichipi.dobedobe.ui.theme.DobedobeTheme
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
+import com.chipichipi.dobedobe.ui.DobeDobeApp
+import com.chipichipi.dobedobe.ui.MainUiState
+import com.chipichipi.dobedobe.ui.MainViewModel
+import com.chipichipi.dobedobe.ui.rememberDobeDobeAppState
+import kotlinx.coroutines.launch
+import org.koin.androidx.compose.KoinAndroidContext
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
+    private val viewModel: MainViewModel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.mainUiState.collect {}
+            }
+        }
+
+        splashScreen.setKeepOnScreenCondition {
+            viewModel.mainUiState.value is MainUiState.Loading
+        }
+
         setContent {
-            DobedobeTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+            val appState = rememberDobeDobeAppState()
+
+            DobeDobeTheme {
+                KoinAndroidContext {
+                    DobeDobeApp(
+                        appState = appState,
                     )
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    DobedobeTheme {
-        Greeting("Android")
     }
 }

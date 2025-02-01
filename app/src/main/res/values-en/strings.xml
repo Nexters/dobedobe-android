@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">dobedobe</string>
+
+    <string name="onboarding_goal_prompt">What goal do you want to achieve?</string>
+    <string name="onboarding_goal_hint">ex) Read 1 book per day</string>
+    <string name="onboarding_goal_support_message">The simpler the goal, the better the focus.</string>
+    <string name="onboarding_goal_completed">Complete</string>
+</resources>
