@@ -31,6 +31,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun OnboardingAddGoalRoute(
+    navigateToSelectCharacter: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: OnboardingViewModel = koinViewModel(),
 ) {
@@ -42,16 +43,20 @@ internal fun OnboardingAddGoalRoute(
     OnboardingAddGoalScreen(
         errorMessage = errorMessage,
         modifier = modifier,
-        completeOnboarding = viewModel::completeOnboarding,
         onChangeTitle = viewModel::changeGoalTitle,
+        navigateToSelectCharacter = {
+            if (titleValidResult.isValid()) {
+                navigateToSelectCharacter()
+            }
+        },
     )
 }
 
 @Composable
 private fun OnboardingAddGoalScreen(
     errorMessage: String?,
-    completeOnboarding: () -> Unit,
     onChangeTitle: (String) -> Unit,
+    navigateToSelectCharacter: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -88,7 +93,7 @@ private fun OnboardingAddGoalScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(54.dp),
-            onClick = completeOnboarding,
+            onClick = navigateToSelectCharacter,
         ) {
             Text(
                 text = stringResource(R.string.onboarding_goal_completed),
@@ -117,8 +122,8 @@ private fun OnboardingScreenPreview() {
             OnboardingAddGoalScreen(
                 modifier = Modifier.fillMaxSize(),
                 errorMessage = "10글자 이상 입력해주세요",
-                completeOnboarding = {},
                 onChangeTitle = {},
+                navigateToSelectCharacter = {}
             )
         }
     }

@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.chipichipi.dobedobe.onboarding.navigation.OnboardingAddGoalRoute
+import com.chipichipi.dobedobe.onboarding.navigation.navigateToSelectCharacter
 import com.chipichipi.dobedobe.onboarding.navigation.onboardingAddGoalScreen
 import com.chipichipi.dobedobe.onboarding.navigation.onboardingSelectCharacterScreen
 
@@ -15,7 +16,9 @@ internal fun OnboardingNavHost() {
         navController = navController,
         startDestination = OnboardingAddGoalRoute
     ) {
-        onboardingAddGoalScreen()
+        onboardingAddGoalScreen(
+            navigateToSelectCharacter = navController::navigateToSelectCharacter
+        )
         onboardingSelectCharacterScreen()
     }
 }
