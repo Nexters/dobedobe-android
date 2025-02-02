@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.chipichipi.dobedobe.onboarding.navigation.OnboardingAddGoalRoute
 import com.chipichipi.dobedobe.onboarding.navigation.onboardingAddGoalScreen
+import com.chipichipi.dobedobe.onboarding.navigation.onboardingSelectCharacterScreen
 
 @Composable
 internal fun OnboardingNavHost() {
@@ -15,5 +16,6 @@ internal fun OnboardingNavHost() {
         startDestination = OnboardingAddGoalRoute
     ) {
         onboardingAddGoalScreen()
+        onboardingSelectCharacterScreen()
     }
 }
