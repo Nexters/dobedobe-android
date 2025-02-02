@@ -30,7 +30,7 @@ import com.chipichipi.dobedobe.feature.goal.errorMessage
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-internal fun OnboardingRoute(
+internal fun OnboardingAddGoalRoute(
     modifier: Modifier = Modifier,
     viewModel: OnboardingViewModel = koinViewModel(),
 ) {
@@ -39,7 +39,7 @@ internal fun OnboardingRoute(
         titleValidResult.errorMessage()
             ?.let { stringResource(id = it) }
 
-    OnboardingScreen(
+    OnboardingAddGoalScreen(
         errorMessage = errorMessage,
         modifier = modifier,
         completeOnboarding = viewModel::completeOnboarding,
@@ -48,7 +48,7 @@ internal fun OnboardingRoute(
 }
 
 @Composable
-private fun OnboardingScreen(
+private fun OnboardingAddGoalScreen(
     errorMessage: String?,
     completeOnboarding: () -> Unit,
     onChangeTitle: (String) -> Unit,
@@ -114,7 +114,7 @@ private fun Modifier.onboardingModifier() =
 private fun OnboardingScreenPreview() {
     DobeDobeTheme {
         DobeDobeBackground {
-            OnboardingScreen(
+            OnboardingAddGoalScreen(
                 modifier = Modifier.fillMaxSize(),
                 errorMessage = "10글자 이상 입력해주세요",
                 completeOnboarding = {},
