@@ -10,6 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.chipichipi.dobedobe.feature.dashboard.R
@@ -94,7 +95,7 @@ private fun NavController.saveSnackBarEvent(
     type: GoalSnackBarType,
 ) {
     val preBackStackEntry = previousBackStackEntry ?: return
-    if (preBackStackEntry.destination.route == DashboardRoute::class.java.canonicalName) {
+    if (preBackStackEntry.destination.hasRoute<DashboardRoute>()) {
         preBackStackEntry.savedStateHandle[GoalSnackBarType.KEY] = type
     }
 }
