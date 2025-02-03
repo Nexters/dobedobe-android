@@ -37,6 +37,10 @@ internal class DashboardViewModel(
         .map { it.isSystemNotificationDialogDisabled }
         .distinctUntilChanged()
 
+    private val character = userRepository.userData
+        .map { it.characterType }
+        .distinctUntilChanged()
+
     private val _modeState: MutableStateFlow<DashboardModeState> =
         MutableStateFlow(DashboardModeState.View)
     val modeState: StateFlow<DashboardModeState> = _modeState.asStateFlow()
@@ -53,7 +57,8 @@ internal class DashboardViewModel(
         isSystemNotificationDialogDisabledFlow,
         goalRepository.getSortedGoals(),
         bubbleGoal,
-    ) { photoState, isSystemNotificationDialogDisabled, goals, bubbleGoal ->
+        character,
+    ) { photoState, isSystemNotificationDialogDisabled, goals, bubbleGoal, character ->
         val dashboardPhotoStates = DashboardPhotoConfig.entries.map { config ->
             val photo = photoState.find { it.id == config.id }
             val uri = photo?.path?.let { Uri.fromFile(File(it)) } ?: Uri.EMPTY
@@ -69,6 +74,7 @@ internal class DashboardViewModel(
             isSystemNotificationDialogDisabled = isSystemNotificationDialogDisabled,
             goals = goals,
             bubbleTitle = bubbleGoal.title,
+            character = character,
         )
     }
         .stateIn(

@@ -1,5 +1,7 @@
 package com.chipichipi.dobedobe.feature.dashboard.component
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.RawRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -26,6 +28,9 @@ import kotlinx.coroutines.delay
 
 @Composable
 internal fun DashboardCharacter(
+    @RawRes defaultApngRes: Int,
+    @RawRes reactionApngRes: Int,
+    @DrawableRes placeholder: Int,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -35,13 +40,13 @@ internal fun DashboardCharacter(
         }
         .build()
 
-    var currentRaw by remember { mutableIntStateOf(R.raw.rabbit01) }
+    var currentRaw by remember { mutableIntStateOf(defaultApngRes) }
     var isResetTrigger by remember { mutableStateOf(false) }
 
     LaunchedEffect(isResetTrigger) {
         if (isResetTrigger) {
             delay(4000)
-            currentRaw = R.raw.rabbit01
+            currentRaw = defaultApngRes
             isResetTrigger = false
         }
     }
@@ -54,14 +59,14 @@ internal fun DashboardCharacter(
             model = currentRaw,
             contentDescription = "Character Image",
             imageLoader = imageLoader,
-            placeholder = painterResource(R.drawable.rabbit_placeholder),
+            placeholder = painterResource(placeholder),
             modifier = Modifier
                 .size(180.dp, 225.dp)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null,
                 ) {
-                    currentRaw = R.raw.rabbit02
+                    currentRaw = reactionApngRes
                     isResetTrigger = true
                 },
         )
@@ -72,6 +77,10 @@ internal fun DashboardCharacter(
 @Composable
 private fun DashboardCharacterPreview() {
     DobeDobeTheme {
-        DashboardCharacter()
+        DashboardCharacter(
+            defaultApngRes = R.raw.rabbit01,
+            reactionApngRes = R.raw.rabbit02,
+            placeholder = R.drawable.rabbit_placeholder,
+        )
     }
 }

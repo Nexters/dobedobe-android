@@ -17,8 +17,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
+import com.chipichipi.dobedobe.core.model.CharacterType
 import com.chipichipi.dobedobe.feature.dashboard.DashboardPhotoFramesState
-import com.chipichipi.dobedobe.feature.dashboard.R
+import com.chipichipi.dobedobe.feature.dashboard.model.CharacterResources
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -32,14 +33,17 @@ internal fun SharedTransitionScope.DashboardViewMode(
     onToggleExpansion: (Int) -> Unit,
     onToggleMode: () -> Unit,
     navigateToSetting: () -> Unit,
+    character: CharacterType,
     modifier: Modifier = Modifier,
 ) {
+    val resources = CharacterResources.from(character)
+
     Column(
         modifier = modifier
             .fillMaxSize()
             .paint(
-                painterResource(id = R.drawable.rabbit_sheet_content_background),
-                contentScale = ContentScale.Crop,
+                painterResource(id = resources.backgroundRes),
+                contentScale = ContentScale.FillBounds,
             ),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -84,6 +88,9 @@ internal fun SharedTransitionScope.DashboardViewMode(
                         modifier = Modifier
                             .fillMaxSize()
                             .zIndex(0.5f),
+                        defaultApngRes = resources.defaultApngRes,
+                        reactionApngRes = resources.reactionApngRes,
+                        placeholder = resources.placeholderRes,
                     )
                 }
             }
