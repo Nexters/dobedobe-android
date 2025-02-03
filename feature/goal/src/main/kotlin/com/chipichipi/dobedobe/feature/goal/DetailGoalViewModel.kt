@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
@@ -23,14 +24,13 @@ internal class DetailGoalViewModel(
     savedStateHandle: SavedStateHandle,
     private val goalRepository: GoalRepository,
 ) : ViewModel() {
-    private var originalGoal: MutableStateFlow<Goal?> = MutableStateFlow(null)
+    private val originalGoal: MutableStateFlow<Goal?> = MutableStateFlow(null)
     private val goalTitleDraft: MutableStateFlow<String> = MutableStateFlow("")
 
     val uiState: StateFlow<DetailGoalUiState> = savedStateHandle.getGoalFlow()
         .combine(goalTitleDraft) { goal, draftTitle ->
             DetailGoalUiState.Success(goal, draftTitle)
         }
-        .onEach { initOriginalGoal(it.goal) }
         .onEach { changeGoalTitleIfNeeded(it.goal, it.draftTitle) }
         .stateIn(
             scope = viewModelScope,
@@ -54,6 +54,13 @@ internal class DetailGoalViewModel(
 
     private val _deleteGoalEvent = Channel<Unit>(capacity = Channel.BUFFERED)
     val deleteGoalEvent: Flow<Unit> = _deleteGoalEvent.receiveAsFlow()
+
+    init {
+        viewModelScope.launch {
+            val initialGoal = savedStateHandle.getGoalFlow().first()
+            originalGoal.value = initialGoal
+        }
+    }
 
     fun changeGoalTitle(title: String) {
         goalTitleDraft.value = title
@@ -84,11 +91,6 @@ internal class DetailGoalViewModel(
         return toRoute<GoalRoute.Detail>()
             .let { route -> goalRepository.getGoal(route.id) }
             .filterNotNull()
-    }
-
-    private fun initOriginalGoal(goal: Goal?) {
-        val draftOriginalGoal = goal ?: return
-        originalGoal.value = draftOriginalGoal
     }
 
     private fun changeGoalTitleIfNeeded(goal: Goal, newTitle: String) {
