@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeCheckBox
@@ -58,6 +59,8 @@ fun GoalRow(
             Text(
                 modifier = Modifier.weight(1f),
                 text = goal.title,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 style = DobeDobeTheme.typography.heading2,
                 color = DobeDobeTheme.colors.gray800,
             )
