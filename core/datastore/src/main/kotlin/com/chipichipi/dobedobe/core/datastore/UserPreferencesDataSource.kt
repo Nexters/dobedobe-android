@@ -61,7 +61,7 @@ class UserPreferencesDataSource(
         try {
             preferences.updateData {
                 it.copy {
-                    when (type) {
+                    character = when (type) {
                         CharacterType.Bird -> CharacterProto.BIRD
                         CharacterType.Rabbit -> CharacterProto.RABBIT
                     }
