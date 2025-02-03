@@ -56,5 +56,9 @@ data class Goal(
                 else -> GoalTitleValidResult.Valid
             }
         }
+
+        fun isValid(title: String): Boolean {
+            return validateTitle(title).isValid()
+        }
     }
 }

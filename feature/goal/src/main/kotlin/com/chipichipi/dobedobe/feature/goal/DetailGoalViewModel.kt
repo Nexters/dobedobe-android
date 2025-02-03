@@ -13,7 +13,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
@@ -23,21 +24,20 @@ internal class DetailGoalViewModel(
     savedStateHandle: SavedStateHandle,
     private val goalRepository: GoalRepository,
 ) : ViewModel() {
-    private var originalGoal: MutableStateFlow<Goal?> = MutableStateFlow(null)
+    private val originalGoal: MutableStateFlow<Goal?> = MutableStateFlow(null)
+    private val goalTitleDraft: MutableStateFlow<String> = MutableStateFlow("")
 
-    val uiState: StateFlow<DetailGoalUiState> = savedStateHandle.toRoute<GoalRoute.Detail>()
-        .let { route -> goalRepository.getGoal(route.id) }
-        .mapNotNull { it?.let(DetailGoalUiState::Success) }
-        .onEach {
-            if (originalGoal.value == null) {
-                originalGoal.value = it.goal
-            }
+    val uiState: StateFlow<DetailGoalUiState> = savedStateHandle.getGoalFlow()
+        .combine(goalTitleDraft) { goal, draftTitle ->
+            DetailGoalUiState.Success(goal, draftTitle)
         }
+        .onEach { changeGoalTitleIfNeeded(it.goal, it.draftTitle) }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000L),
             initialValue = DetailGoalUiState.Loading,
         )
+
     val isGoalChanged: StateFlow<Boolean> =
         combine(originalGoal, uiState) { original, current ->
             if (current is DetailGoalUiState.Success) {
@@ -55,12 +55,15 @@ internal class DetailGoalViewModel(
     private val _deleteGoalEvent = Channel<Unit>(capacity = Channel.BUFFERED)
     val deleteGoalEvent: Flow<Unit> = _deleteGoalEvent.receiveAsFlow()
 
-    fun changeGoalTitle(id: Long, title: String) {
+    init {
         viewModelScope.launch {
-            if (Goal.validateTitle(title).isValid()) {
-                goalRepository.changeGoalTitle(id, title)
-            }
+            val initialGoal = savedStateHandle.getGoalFlow().first()
+            originalGoal.value = initialGoal
         }
+    }
+
+    fun changeGoalTitle(title: String) {
+        goalTitleDraft.value = title
     }
 
     fun togglePinned(id: Long) {
@@ -81,6 +84,22 @@ internal class DetailGoalViewModel(
                 .onSuccess {
                     _deleteGoalEvent.send(Unit)
                 }
+        }
+    }
+
+    private fun SavedStateHandle.getGoalFlow(): Flow<Goal> {
+        return toRoute<GoalRoute.Detail>()
+            .let { route -> goalRepository.getGoal(route.id) }
+            .filterNotNull()
+    }
+
+    private fun changeGoalTitleIfNeeded(goal: Goal, newTitle: String) {
+        if (Goal.isValid(newTitle).not()) return
+
+        if (goal.title != newTitle) {
+            viewModelScope.launch {
+                goalRepository.changeGoalTitle(goal.id, newTitle)
+            }
         }
     }
 }

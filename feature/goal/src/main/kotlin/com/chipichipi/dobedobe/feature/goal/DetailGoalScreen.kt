@@ -98,7 +98,7 @@ private fun DetailGoalScreen(
     uiState: DetailGoalUiState,
     onShowSnackbar: suspend (String, String?) -> Boolean,
     navigateToBack: () -> Unit,
-    onChangeGoalName: (Long, String) -> Unit,
+    onChangeGoalName: (String) -> Unit,
     onTogglePinned: (Long) -> Unit,
     onToggleCompleted: (Long) -> Unit,
     onRemoveGoal: (Long) -> Unit,
@@ -146,7 +146,7 @@ private fun DetailGoalScreen(
                     },
                     errorMessage = errorMessage,
                     onShowSnackbar = onShowSnackbar,
-                    onChangeGoalName = { title -> onChangeGoalName(goal.id, title) },
+                    onChangeGoalName = { title -> onChangeGoalName(title) },
                     onTogglePinned = { onTogglePinned(goal.id) },
                     onToggleCompleted = { onToggleCompleted(goal.id) },
                     modifier = modifier
