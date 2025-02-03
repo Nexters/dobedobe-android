@@ -25,7 +25,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 internal fun OnboardingSelectCharacterRoute(
     modifier: Modifier = Modifier,
-    viewModel: OnboardingViewModel = koinViewModel(),
+    viewModel: OnboardingAddGoalViewModel = koinViewModel(),
 ) {
     val selectedCharacter by viewModel.selectedCharacter.collectAsStateWithLifecycle()
 

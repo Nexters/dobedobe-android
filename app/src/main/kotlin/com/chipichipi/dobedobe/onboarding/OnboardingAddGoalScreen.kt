@@ -31,9 +31,9 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun OnboardingAddGoalRoute(
-    navigateToSelectCharacter: () -> Unit,
+    navigateToSelectCharacter: (String) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: OnboardingViewModel = koinViewModel(),
+    viewModel: OnboardingAddGoalViewModel = koinViewModel(),
 ) {
     val titleValidResult by viewModel.titleValidResult.collectAsStateWithLifecycle()
     val errorMessage =
@@ -46,7 +46,7 @@ internal fun OnboardingAddGoalRoute(
         onChangeTitle = viewModel::changeGoalTitle,
         navigateToSelectCharacter = {
             if (titleValidResult.isValid()) {
-                navigateToSelectCharacter()
+//                navigateToSelectCharacter()
             }
         },
     )
