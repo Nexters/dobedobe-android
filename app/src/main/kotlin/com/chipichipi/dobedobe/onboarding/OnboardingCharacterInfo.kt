@@ -107,6 +107,7 @@ private fun CharacterInfo(
         ) {
             Box(
                 modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
             ) {
                 Image(
                     modifier = Modifier
