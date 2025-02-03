@@ -17,7 +17,7 @@ import com.chipichipi.dobedobe.onboarding.navigation.onboardingSelectCharacterSc
 
 @Composable
 internal fun OnboardingNavHost(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val navController = rememberNavController()
 
@@ -30,12 +30,12 @@ internal fun OnboardingNavHost(
                 ),
             ),
         navController = navController,
-        startDestination = OnboardingAddGoalRoute
+        startDestination = OnboardingAddGoalRoute,
     ) {
         onboardingAddGoalScreen(
             navigateToSelectCharacter = { goalTitle ->
                 navController.navigateToSelectCharacter(goalTitle)
-            }
+            },
         )
         onboardingSelectCharacterScreen()
     }

@@ -123,7 +123,7 @@ private fun OnboardingScreenPreview() {
                 modifier = Modifier.fillMaxSize(),
                 errorMessage = "10글자 이상 입력해주세요",
                 onChangeTitle = {},
-                navigateToSelectCharacter = {}
+                navigateToSelectCharacter = {},
             )
         }
     }

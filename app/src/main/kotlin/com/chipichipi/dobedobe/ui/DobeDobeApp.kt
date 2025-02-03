@@ -27,7 +27,6 @@ import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBackground
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeSnackbar
 import com.chipichipi.dobedobe.navigation.DobeDobeNavHost
 import com.chipichipi.dobedobe.navigation.OnboardingNavHost
-import com.chipichipi.dobedobe.onboarding.OnboardingAddGoalRoute
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

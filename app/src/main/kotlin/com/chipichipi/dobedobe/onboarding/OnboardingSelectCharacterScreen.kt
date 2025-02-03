@@ -33,7 +33,7 @@ internal fun OnboardingSelectCharacterRoute(
         modifier = modifier,
         selectedCharacter = selectedCharacter,
         onCharacterToggled = viewModel::toggleCharacter,
-        onOnboardingCompleted = viewModel::completeOnboarding
+        onOnboardingCompleted = viewModel::completeOnboarding,
     )
 }
 
@@ -42,7 +42,7 @@ private fun OnboardingSelectCharacterScreen(
     selectedCharacter: CharacterType,
     onCharacterToggled: () -> Unit,
     onOnboardingCompleted: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
@@ -50,27 +50,27 @@ private fun OnboardingSelectCharacterScreen(
             .padding(horizontal = 24.dp)
             .padding(
                 top = 48.dp,
-                bottom = 32.dp
+                bottom = 32.dp,
             ),
         verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.Start
+        horizontalAlignment = Alignment.Start,
     ) {
         Text(
             text = stringResource(R.string.onboarding_select_character_title),
             style = DobeDobeTheme.typography.heading1,
-            color = DobeDobeTheme.colors.black
+            color = DobeDobeTheme.colors.black,
         )
         Spacer(modifier = Modifier.height(48.dp))
 
         OnboardingBirdInfo(
             selectedCharacter = selectedCharacter,
-            onClick = onCharacterToggled
+            onClick = onCharacterToggled,
         )
         Spacer(modifier = Modifier.height(32.dp))
 
         OnboardingRabbitInfo(
             selectedCharacter = selectedCharacter,
-            onClick = onCharacterToggled
+            onClick = onCharacterToggled,
         )
         Spacer(modifier = Modifier.weight(1f))
 

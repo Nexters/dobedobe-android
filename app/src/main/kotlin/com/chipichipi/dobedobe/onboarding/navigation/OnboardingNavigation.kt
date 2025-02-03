@@ -13,7 +13,7 @@ internal data object OnboardingAddGoalRoute
 
 @Serializable
 data class OnboardingSelectCharacterRoute(
-    val goalTitle: String
+    val goalTitle: String,
 )
 
 internal fun NavController.navigateToSelectCharacter(
@@ -21,7 +21,7 @@ internal fun NavController.navigateToSelectCharacter(
     navOptions: NavOptions? = null,
 ) = navigate(
     route = OnboardingSelectCharacterRoute(goalTitle),
-    navOptions = navOptions
+    navOptions = navOptions,
 )
 
 internal fun NavGraphBuilder.onboardingAddGoalScreen(
@@ -29,7 +29,7 @@ internal fun NavGraphBuilder.onboardingAddGoalScreen(
 ) {
     composable<OnboardingAddGoalRoute> {
         OnboardingAddGoalRoute(
-            navigateToSelectCharacter = navigateToSelectCharacter
+            navigateToSelectCharacter = navigateToSelectCharacter,
         )
     }
 }

@@ -31,7 +31,7 @@ import com.chipichipi.dobedobe.core.model.CharacterType
 internal fun OnboardingBirdInfo(
     selectedCharacter: CharacterType,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val selected = selectedCharacter == CharacterType.Bird
 
@@ -43,7 +43,7 @@ internal fun OnboardingBirdInfo(
         characterRes = R.drawable.onboarding_bird,
         bubbleRes = R.drawable.bubble_bird,
         selected = selected,
-        onClick = onClick
+        onClick = onClick,
     )
 }
 
@@ -51,7 +51,7 @@ internal fun OnboardingBirdInfo(
 internal fun OnboardingRabbitInfo(
     selectedCharacter: CharacterType,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val selected = selectedCharacter == CharacterType.Rabbit
 
@@ -63,7 +63,7 @@ internal fun OnboardingRabbitInfo(
         characterRes = R.drawable.onboarding_rabbit,
         bubbleRes = R.drawable.bubble_rabbit,
         selected = selected,
-        onClick = onClick
+        onClick = onClick,
     )
 }
 
@@ -76,12 +76,12 @@ private fun CharacterInfo(
     @DrawableRes bubbleRes: Int,
     selected: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val color = if (selected) DobeDobeTheme.colors.green1 else DobeDobeTheme.colors.gray50
     val borderStroke = BorderStroke(
         width = 2.dp,
-        color = if (selected) DobeDobeTheme.colors.green3 else DobeDobeTheme.colors.gray200
+        color = if (selected) DobeDobeTheme.colors.green3 else DobeDobeTheme.colors.gray200,
     )
 
     Column(
@@ -92,7 +92,7 @@ private fun CharacterInfo(
         Text(
             text = title,
             style = DobeDobeTheme.typography.heading2,
-            color = DobeDobeTheme.colors.gray900
+            color = DobeDobeTheme.colors.gray900,
         )
 
         Surface(
@@ -103,17 +103,17 @@ private fun CharacterInfo(
                 .clickable(onClick = onClick),
             shape = RoundedCornerShape(12.dp),
             border = borderStroke,
-            color = color
+            color = color,
         ) {
             Box(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
             ) {
                 Image(
                     modifier = Modifier
                         .align(characterAlignment)
                         .size(192.dp, 136.dp),
                     painter = painterResource(characterRes),
-                    contentDescription = "character"
+                    contentDescription = "character",
                 )
 
                 Image(
@@ -122,7 +122,7 @@ private fun CharacterInfo(
                         .align(bubbleAlignment)
                         .size(120.dp, 46.dp),
                     painter = painterResource(bubbleRes),
-                    contentDescription = "bubble"
+                    contentDescription = "bubble",
                 )
             }
 
@@ -139,7 +139,7 @@ private fun CharacterUnselectedOverlay() {
         modifier = Modifier
             .fillMaxSize()
             .background(
-                color = DobeDobeTheme.colors.gray50.copy(0.7f)
-            )
+                color = DobeDobeTheme.colors.gray50.copy(0.7f),
+            ),
     )
 }

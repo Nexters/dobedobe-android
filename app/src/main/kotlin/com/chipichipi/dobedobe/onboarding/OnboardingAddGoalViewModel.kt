@@ -23,7 +23,6 @@ internal class OnboardingAddGoalViewModel : ViewModel() {
                 initialValue = GoalTitleValidResult.Empty,
             )
 
-
     fun changeGoalTitle(newTitle: String) {
         _title.value = newTitle
     }

@@ -81,7 +81,8 @@ private fun UserPreferences.toModel() =
         characterType = when (character) {
             null,
             CharacterProto.UNRECOGNIZED,
-            CharacterProto.BIRD -> CharacterType.Bird
+            CharacterProto.BIRD,
+            -> CharacterType.Bird
             CharacterProto.RABBIT -> CharacterType.Rabbit
-        }
+        },
     )
