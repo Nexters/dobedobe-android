@@ -12,14 +12,20 @@ import kotlinx.serialization.Serializable
 internal data object OnboardingAddGoalRoute
 
 @Serializable
-internal data object OnboardingSelectCharacterRoute
+data class OnboardingSelectCharacterRoute(
+    val goalTitle: String
+)
 
 internal fun NavController.navigateToSelectCharacter(
+    goalTitle: String,
     navOptions: NavOptions? = null,
-) = navigate(route = OnboardingSelectCharacterRoute, navOptions)
+) = navigate(
+    route = OnboardingSelectCharacterRoute(goalTitle),
+    navOptions = navOptions
+)
 
 internal fun NavGraphBuilder.onboardingAddGoalScreen(
-    navigateToSelectCharacter: () -> Unit,
+    navigateToSelectCharacter: (String) -> Unit,
 ) {
     composable<OnboardingAddGoalRoute> {
         OnboardingAddGoalRoute(

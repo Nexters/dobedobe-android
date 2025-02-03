@@ -5,6 +5,7 @@ import com.chipichipi.dobedobe.feature.dashboard.di.dashboardModule
 import com.chipichipi.dobedobe.feature.goal.di.goalModule
 import com.chipichipi.dobedobe.feature.setting.di.settingModule
 import com.chipichipi.dobedobe.onboarding.OnboardingAddGoalViewModel
+import com.chipichipi.dobedobe.onboarding.OnboardingSelectCharacterViewModel
 import com.chipichipi.dobedobe.ui.MainViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
@@ -26,4 +27,5 @@ val appModule =
         )
         viewModelOf(::MainViewModel)
         viewModelOf(::OnboardingAddGoalViewModel)
+        viewModelOf(::OnboardingSelectCharacterViewModel)
     }

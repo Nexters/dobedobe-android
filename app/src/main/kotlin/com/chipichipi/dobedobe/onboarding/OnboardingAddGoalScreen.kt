@@ -46,7 +46,7 @@ internal fun OnboardingAddGoalRoute(
         onChangeTitle = viewModel::changeGoalTitle,
         navigateToSelectCharacter = {
             if (titleValidResult.isValid()) {
-//                navigateToSelectCharacter()
+                navigateToSelectCharacter(viewModel.title.value)
             }
         },
     )

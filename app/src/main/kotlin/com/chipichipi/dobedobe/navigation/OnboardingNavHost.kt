@@ -33,7 +33,9 @@ internal fun OnboardingNavHost(
         startDestination = OnboardingAddGoalRoute
     ) {
         onboardingAddGoalScreen(
-            navigateToSelectCharacter = navController::navigateToSelectCharacter
+            navigateToSelectCharacter = { goalTitle ->
+                navController.navigateToSelectCharacter(goalTitle)
+            }
         )
         onboardingSelectCharacterScreen()
     }

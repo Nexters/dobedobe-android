@@ -7,13 +7,16 @@ import com.chipichipi.dobedobe.core.model.GoalTitleValidResult
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 internal class OnboardingAddGoalViewModel : ViewModel() {
-    private val title: MutableStateFlow<String> = MutableStateFlow("")
+    private val _title: MutableStateFlow<String> = MutableStateFlow("")
+    val title: StateFlow<String> = _title.asStateFlow()
+
     val titleValidResult: StateFlow<GoalTitleValidResult> =
-        title.map(Goal::validateTitle)
+        _title.map(Goal::validateTitle)
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.Eagerly,
@@ -22,6 +25,6 @@ internal class OnboardingAddGoalViewModel : ViewModel() {
 
 
     fun changeGoalTitle(newTitle: String) {
-        title.value = newTitle
+        _title.value = newTitle
     }
 }
