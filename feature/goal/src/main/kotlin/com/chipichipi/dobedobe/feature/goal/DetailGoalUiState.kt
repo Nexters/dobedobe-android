@@ -8,7 +8,7 @@ sealed interface DetailGoalUiState {
 
     data class Success(
         val goal: Goal,
-        val draftTitle: String = "",
+        val draftTitle: String,
     ) : DetailGoalUiState {
         val goalValidResult: GoalTitleValidResult = Goal.validateTitle(draftTitle)
     }
