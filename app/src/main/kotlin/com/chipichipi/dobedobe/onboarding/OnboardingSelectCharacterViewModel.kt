@@ -8,6 +8,8 @@ import com.chipichipi.dobedobe.core.data.repository.GoalRepository
 import com.chipichipi.dobedobe.core.data.repository.UserRepository
 import com.chipichipi.dobedobe.core.model.CharacterType
 import com.chipichipi.dobedobe.onboarding.navigation.OnboardingSelectCharacterRoute
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -25,10 +27,14 @@ internal class OnboardingSelectCharacterViewModel(
 
     fun completeOnboarding() {
         viewModelScope.launch {
-            goalRepository.addGoal(route.goalTitle)
-                .onSuccess {
-                    userRepository.completeOnBoarding()
-                }
+            val goalDeferred = async { goalRepository.addGoal(route.goalTitle) }
+            val characterDeferred = async { userRepository.saveCharacter(selectedCharacter.value) }
+
+            val results = awaitAll(goalDeferred, characterDeferred)
+
+            if (results.all { it.isSuccess }) {
+                userRepository.completeOnBoarding()
+            }
         }
     }
 

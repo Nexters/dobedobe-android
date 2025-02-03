@@ -4,4 +4,5 @@ data class UserData(
     val isOnboardingCompleted: Boolean,
     val isGoalNotificationEnabled: Boolean,
     val isSystemNotificationDialogDisabled: Boolean,
+    val characterType: CharacterType,
 )
