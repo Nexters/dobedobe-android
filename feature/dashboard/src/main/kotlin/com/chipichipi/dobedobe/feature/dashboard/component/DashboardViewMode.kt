@@ -39,7 +39,7 @@ internal fun SharedTransitionScope.DashboardViewMode(
             .fillMaxSize()
             .paint(
                 painterResource(id = R.drawable.rabbit_sheet_content_background),
-                contentScale = ContentScale.FillBounds,
+                contentScale = ContentScale.Crop,
             ),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {

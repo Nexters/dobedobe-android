@@ -58,7 +58,7 @@ internal fun EditModePhotoFrame(
                     modifier = Modifier
                         .fillMaxSize()
                         .clickable(onClick = onDeletePhoto),
-                    contentScale = ContentScale.FillBounds,
+                    contentScale = ContentScale.Crop,
                     model = uri,
                     contentDescription = "photo",
                 )
