@@ -124,10 +124,10 @@ private fun Path.drawBubbleTail(
         // 꼬리 오른쪽 부분 그리기
         relativeCubicTo(
             dx1 = -13.dp.toPx(),
-            dy1 = 5.dp.toPx(),
-            dx2 = 7.dp.toPx(),
+            dy1 = 10.dp.toPx(),
+            dx2 = 8.dp.toPx(),
             dy2 = 24.dp.toPx(),
-            dx3 = -11.dp.toPx(),
+            dx3 = -8.dp.toPx(),
             dy3 = tailHeight,
         )
 
@@ -138,9 +138,9 @@ private fun Path.drawBubbleTail(
         // 꼬리 왼쪽 부분 그리기
         cubicTo(
             x1 = x - 14.dp.toPx(),
-            y1 = y - 4.dp.toPx(),
+            y1 = y - 8.dp.toPx(),
             x2 = x - 9.dp.toPx(),
-            y2 = height + 3.dp.toPx(),
+            y2 = height + 2.dp.toPx(),
             x3 = tailStartX,
             y3 = height,
         )
