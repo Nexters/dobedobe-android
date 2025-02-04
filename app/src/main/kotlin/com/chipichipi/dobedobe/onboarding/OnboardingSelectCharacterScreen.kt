@@ -62,14 +62,14 @@ private fun OnboardingSelectCharacterScreen(
         )
         Spacer(modifier = Modifier.height(48.dp))
 
-        OnboardingBirdInfo(
-            selectedCharacter = selectedCharacter,
+        OnboardingBirdCard(
+            selected = selectedCharacter == CharacterType.Bird,
             onClick = onCharacterToggled,
         )
         Spacer(modifier = Modifier.height(32.dp))
 
-        OnboardingRabbitInfo(
-            selectedCharacter = selectedCharacter,
+        OnboardingRabbitCard(
+            selected = selectedCharacter == CharacterType.Rabbit,
             onClick = onCharacterToggled,
         )
         Spacer(modifier = Modifier.weight(1f))

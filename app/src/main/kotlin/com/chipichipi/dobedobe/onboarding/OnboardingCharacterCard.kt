@@ -25,17 +25,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.chipichipi.dobedobe.R
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
-import com.chipichipi.dobedobe.core.model.CharacterType
 
 @Composable
-internal fun OnboardingBirdInfo(
-    selectedCharacter: CharacterType,
+internal fun OnboardingBirdCard(
+    selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val selected = selectedCharacter == CharacterType.Bird
-
-    CharacterInfo(
+    CharacterCard(
         modifier = modifier,
         title = stringResource(R.string.onboarding_bird_character_description),
         characterAlignment = Alignment.BottomStart,
@@ -48,14 +45,12 @@ internal fun OnboardingBirdInfo(
 }
 
 @Composable
-internal fun OnboardingRabbitInfo(
-    selectedCharacter: CharacterType,
+internal fun OnboardingRabbitCard(
+    selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val selected = selectedCharacter == CharacterType.Rabbit
-
-    CharacterInfo(
+    CharacterCard(
         modifier = modifier,
         title = stringResource(R.string.onboarding_rabbit_character_description),
         characterAlignment = Alignment.BottomEnd,
@@ -68,7 +63,7 @@ internal fun OnboardingRabbitInfo(
 }
 
 @Composable
-private fun CharacterInfo(
+private fun CharacterCard(
     title: String,
     characterAlignment: Alignment,
     bubbleAlignment: Alignment,
