@@ -1,6 +1,7 @@
 package com.chipichipi.dobedobe.core.data.repository
 
 import com.chipichipi.dobedobe.core.datastore.UserPreferencesDataSource
+import com.chipichipi.dobedobe.core.model.CharacterType
 import com.chipichipi.dobedobe.core.model.UserData
 import kotlinx.coroutines.flow.Flow
 
@@ -25,6 +26,12 @@ internal class UserRepositoryImpl(
     override suspend fun disableSystemNotificationDialog(): Result<Unit> {
         return runCatching {
             userPreferencesDataSource.disableSystemNotificationDialog()
+        }
+    }
+
+    override suspend fun saveCharacter(type: CharacterType): Result<Unit> {
+        return runCatching {
+            userPreferencesDataSource.saveCharacter(type)
         }
     }
 }

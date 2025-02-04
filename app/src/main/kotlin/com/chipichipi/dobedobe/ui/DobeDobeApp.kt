@@ -26,7 +26,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBackground
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeSnackbar
 import com.chipichipi.dobedobe.navigation.DobeDobeNavHost
-import com.chipichipi.dobedobe.onboarding.OnboardingRoute
+import com.chipichipi.dobedobe.navigation.OnboardingNavHost
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -75,7 +75,7 @@ internal fun DobeDobeApp(
                 when (mainUiState) {
                     is MainUiState.Loading -> Unit
                     is MainUiState.Onboarding -> {
-                        OnboardingRoute()
+                        OnboardingNavHost()
                     }
                     is MainUiState.Success -> {
                         DobeDobeNavHost(

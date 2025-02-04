@@ -212,6 +212,7 @@ private fun DashboardBody(
                     onToggleExpansion = onToggleExpansion,
                     onToggleMode = onToggleMode,
                     navigateToSetting = navigateToSetting,
+                    character = uiState.character,
                 )
             }
         }
