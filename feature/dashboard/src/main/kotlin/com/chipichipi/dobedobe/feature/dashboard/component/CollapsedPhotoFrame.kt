@@ -94,7 +94,7 @@ private fun SharedTransitionScope.CollapsedPhotoFrame(
                                 .rotate(rotation)
                                 .clip(RoundedCornerShape(24.dp))
                                 .clickable(onClick = onToggleExpansion),
-                            contentScale = ContentScale.FillBounds,
+                            contentScale = ContentScale.Crop,
                             model = uri,
                             contentDescription = null,
                         )

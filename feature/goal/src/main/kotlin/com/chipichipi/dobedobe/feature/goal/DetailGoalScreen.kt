@@ -219,9 +219,6 @@ private fun DetailGoalContent(
         visible = visibleDialog,
         onConfirm = onConfirmDialog,
         onDismiss = onDismissDialog,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp),
     )
 }
 
@@ -252,9 +249,6 @@ private fun DeleteDialogPreview() {
             visible = true,
             onConfirm = {},
             onDismiss = {},
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp),
         )
     }
 }
