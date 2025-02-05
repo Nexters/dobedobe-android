@@ -6,8 +6,11 @@ import com.chipichipi.dobedobe.core.model.GoalTitleValidResult
 sealed interface DetailGoalUiState {
     data object Loading : DetailGoalUiState
 
-    data class Success(val goal: Goal) : DetailGoalUiState {
-        val goalValidResult: GoalTitleValidResult = Goal.validateTitle(goal.title)
+    data class Success(
+        val goal: Goal,
+        val draftTitle: String,
+    ) : DetailGoalUiState {
+        val goalValidResult: GoalTitleValidResult = Goal.validateTitle(draftTitle)
     }
 
     data object Error : DetailGoalUiState

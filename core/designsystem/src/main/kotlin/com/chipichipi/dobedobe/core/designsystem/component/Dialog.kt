@@ -42,7 +42,9 @@ fun DobeDobeDialog(
         properties = properties,
     ) {
         Surface(
-            modifier = modifier,
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
             shape = RoundedCornerShape(16.dp),
             color = DobeDobeTheme.colors.white,
         ) {

@@ -30,28 +30,33 @@ import com.chipichipi.dobedobe.feature.goal.errorMessage
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-internal fun OnboardingRoute(
+internal fun OnboardingAddGoalRoute(
+    navigateToSelectCharacter: (String) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: OnboardingViewModel = koinViewModel(),
+    viewModel: OnboardingAddGoalViewModel = koinViewModel(),
 ) {
     val titleValidResult by viewModel.titleValidResult.collectAsStateWithLifecycle()
     val errorMessage =
         titleValidResult.errorMessage()
             ?.let { stringResource(id = it) }
 
-    OnboardingScreen(
+    OnboardingAddGoalScreen(
         errorMessage = errorMessage,
         modifier = modifier,
-        completeOnboarding = viewModel::completeOnboarding,
         onChangeTitle = viewModel::changeGoalTitle,
+        navigateToSelectCharacter = {
+            if (titleValidResult.isValid()) {
+                navigateToSelectCharacter(viewModel.title.value)
+            }
+        },
     )
 }
 
 @Composable
-private fun OnboardingScreen(
+private fun OnboardingAddGoalScreen(
     errorMessage: String?,
-    completeOnboarding: () -> Unit,
     onChangeTitle: (String) -> Unit,
+    navigateToSelectCharacter: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -88,7 +93,7 @@ private fun OnboardingScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(54.dp),
-            onClick = completeOnboarding,
+            onClick = navigateToSelectCharacter,
         ) {
             Text(
                 text = stringResource(R.string.onboarding_goal_completed),
@@ -114,11 +119,11 @@ private fun Modifier.onboardingModifier() =
 private fun OnboardingScreenPreview() {
     DobeDobeTheme {
         DobeDobeBackground {
-            OnboardingScreen(
+            OnboardingAddGoalScreen(
                 modifier = Modifier.fillMaxSize(),
                 errorMessage = "10글자 이상 입력해주세요",
-                completeOnboarding = {},
                 onChangeTitle = {},
+                navigateToSelectCharacter = {},
             )
         }
     }

@@ -9,7 +9,6 @@ import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
@@ -213,6 +212,7 @@ private fun DashboardBody(
                     onToggleExpansion = onToggleExpansion,
                     onToggleMode = onToggleMode,
                     navigateToSetting = navigateToSetting,
+                    character = uiState.character,
                 )
             }
         }
@@ -307,9 +307,6 @@ private fun GoalNotificationPermission(
                 notificationsPermissionState.launchPermissionRequest()
                 showGoalNotificationDialog = false
             },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp),
         )
     }
 }

@@ -1,5 +1,6 @@
 package com.chipichipi.dobedobe.core.data.repository
 
+import com.chipichipi.dobedobe.core.model.CharacterType
 import com.chipichipi.dobedobe.core.model.UserData
 import kotlinx.coroutines.flow.Flow
 
@@ -11,4 +12,6 @@ interface UserRepository {
     suspend fun setGoalNotificationEnabled(enabled: Boolean): Result<Unit>
 
     suspend fun disableSystemNotificationDialog(): Result<Unit>
+
+    suspend fun saveCharacter(type: CharacterType): Result<Unit>
 }

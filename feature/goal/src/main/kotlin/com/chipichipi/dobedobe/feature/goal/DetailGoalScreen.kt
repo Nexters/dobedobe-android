@@ -6,12 +6,10 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -100,7 +98,7 @@ private fun DetailGoalScreen(
     uiState: DetailGoalUiState,
     onShowSnackbar: suspend (String, String?) -> Boolean,
     navigateToBack: () -> Unit,
-    onChangeGoalName: (Long, String) -> Unit,
+    onChangeGoalName: (String) -> Unit,
     onTogglePinned: (Long) -> Unit,
     onToggleCompleted: (Long) -> Unit,
     onRemoveGoal: (Long) -> Unit,
@@ -148,7 +146,7 @@ private fun DetailGoalScreen(
                     },
                     errorMessage = errorMessage,
                     onShowSnackbar = onShowSnackbar,
-                    onChangeGoalName = { title -> onChangeGoalName(goal.id, title) },
+                    onChangeGoalName = { title -> onChangeGoalName(title) },
                     onTogglePinned = { onTogglePinned(goal.id) },
                     onToggleCompleted = { onToggleCompleted(goal.id) },
                     modifier = modifier
@@ -204,7 +202,6 @@ private fun DetailGoalContent(
                 unCheckedIcon = ImageVector.vectorResource(DobeDobeIcons.Unchecked),
                 modifier = Modifier.weight(1f),
             )
-            Spacer(modifier = Modifier.width(16.dp))
             GoalToggleChip(
                 text = stringResource(R.string.feature_detail_goal_pinned_chip),
                 isChecked = goal.isPinned,
@@ -222,9 +219,6 @@ private fun DetailGoalContent(
         visible = visibleDialog,
         onConfirm = onConfirmDialog,
         onDismiss = onDismissDialog,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp),
     )
 }
 
@@ -255,9 +249,6 @@ private fun DeleteDialogPreview() {
             visible = true,
             onConfirm = {},
             onDismiss = {},
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp),
         )
     }
 }
