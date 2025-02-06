@@ -16,13 +16,16 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.updateLayoutParams
 import com.canhub.cropper.CropImageView
+import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 
 @Composable
@@ -107,6 +110,27 @@ private fun ActionTextButton(
             text = text,
             style = DobeDobeTheme.typography.body1,
             color = DobeDobeTheme.colors.white,
+        )
+    }
+}
+
+@ThemePreviews
+@Composable
+private fun CropViewScreenPreview() {
+    DobeDobeTheme {
+        val context = LocalContext.current
+        val cropView = remember {
+            CropImageView(context).apply {
+                isAutoZoomEnabled = false
+                cropShape = CropImageView.CropShape.RECTANGLE
+                setFixedAspectRatio(true)
+            }
+        }
+
+        CropViewScreen(
+            onCancel = {},
+            onSave = {},
+            cropImageView = cropView,
         )
     }
 }
