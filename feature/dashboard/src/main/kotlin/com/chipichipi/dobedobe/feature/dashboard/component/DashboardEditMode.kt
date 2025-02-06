@@ -55,7 +55,7 @@ internal fun DashboardEditMode(
     val context = LocalContext.current
     var showCropView by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
-    val cropView = remember {
+    val cropView = remember(context) {
         CropImageView(context).apply {
             isAutoZoomEnabled = false
             cropShape = CropImageView.CropShape.RECTANGLE
