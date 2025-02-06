@@ -3,9 +3,7 @@ package com.chipichipi.dobedobe.feature.setting
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -54,6 +52,7 @@ private fun SettingScreen(
     onNotificationToggled: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -85,38 +84,41 @@ private fun SettingBody(
 ) {
     val context = LocalContext.current
 
+    val handleNotificationToggle: (Boolean) -> Unit = { enabled ->
+        NotificationUtil.handleNotificationToggle(
+            context = context,
+            enabled = enabled,
+            onNotificationToggled = onNotificationToggled,
+        )
+    }
+
     Column(
         modifier = modifier,
     ) {
         SettingRow(
             label = stringResource(R.string.feature_setting_goal_notifications),
+            onClick = {
+                handleNotificationToggle(!isGoalNotificationEnabled)
+            }
         ) {
             DobeDobeSwitch(
                 modifier = Modifier.padding(end = 8.dp),
                 checked = isGoalNotificationEnabled,
                 onCheckedChange = { checked ->
-                    NotificationUtil.handleNotificationToggle(
-                        context = context,
-                        enabled = checked,
-                        onNotificationToggled = onNotificationToggled,
-                    )
+                    handleNotificationToggle(checked)
                 },
             )
         }
 
         SettingRow(
             label = stringResource(R.string.feature_setting_app_feedback),
+            onClick = { openPlayStore(context) }
         ) {
-            IconButton(
-                modifier = Modifier.size(42.dp),
-                onClick = { openPlayStore(context) },
-            ) {
-                Icon(
-                    painter = painterResource(DobeDobeIcons.ArrowForward),
-                    contentDescription = null,
-                    tint = Color.Unspecified,
-                )
-            }
+            Icon(
+                painter = painterResource(DobeDobeIcons.ArrowForward),
+                contentDescription = null,
+                tint = Color.Unspecified,
+            )
         }
     }
 }
