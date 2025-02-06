@@ -1,8 +1,11 @@
 package com.chipichipi.dobedobe.feature.setting
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -10,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -35,11 +39,11 @@ internal fun SettingRoute(
     modifier: Modifier = Modifier,
     viewModel: SettingViewModel = koinViewModel(),
 ) {
-    val isGoalNotificationEnabled by viewModel.isGoalNotificationEnabled.collectAsStateWithLifecycle()
+    val settingUiState by viewModel.settingUiState.collectAsStateWithLifecycle()
 
     SettingScreen(
         modifier = modifier,
-        isGoalNotificationEnabled = isGoalNotificationEnabled,
+        uiState = settingUiState,
         navigateToBack = navigateToBack,
         onNotificationToggled = viewModel::setGoalNotificationEnabled,
     )
@@ -47,12 +51,11 @@ internal fun SettingRoute(
 
 @Composable
 private fun SettingScreen(
-    isGoalNotificationEnabled: Boolean,
+    uiState: SettingUiState,
     navigateToBack: () -> Unit,
     onNotificationToggled: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -62,13 +65,26 @@ private fun SettingScreen(
         },
         containerColor = DobeDobeTheme.colors.gray50,
     ) { innerPadding ->
-        SettingBody(
-            isGoalNotificationEnabled = isGoalNotificationEnabled,
-            onNotificationToggled = onNotificationToggled,
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-        )
+            contentAlignment = Alignment.Center,
+        ) {
+            when (uiState) {
+                is SettingUiState.Loading -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp),
+                    )
+                }
+                is SettingUiState.Success -> {
+                    SettingBody(
+                        isGoalNotificationEnabled = uiState.isGoalNotificationEnabled,
+                        onNotificationToggled = onNotificationToggled,
+                    )
+                }
+            }
+        }
     }
 
     GoalNotificationEffect(
@@ -93,13 +109,14 @@ private fun SettingBody(
     }
 
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .fillMaxSize(),
     ) {
         SettingRow(
             label = stringResource(R.string.feature_setting_goal_notifications),
             onClick = {
                 handleNotificationToggle(!isGoalNotificationEnabled)
-            }
+            },
         ) {
             DobeDobeSwitch(
                 modifier = Modifier.padding(end = 8.dp),
@@ -112,7 +129,7 @@ private fun SettingBody(
 
         SettingRow(
             label = stringResource(R.string.feature_setting_app_feedback),
-            onClick = { openPlayStore(context) }
+            onClick = { openPlayStore(context) },
         ) {
             Icon(
                 painter = painterResource(DobeDobeIcons.ArrowForward),
