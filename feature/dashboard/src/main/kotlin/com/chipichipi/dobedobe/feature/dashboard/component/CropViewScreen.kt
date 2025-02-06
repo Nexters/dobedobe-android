@@ -87,11 +87,11 @@ private fun ActionBar(
     ) {
         ActionTextButton(
             text = stringResource(R.string.feature_dashboard_edit_mode_cancel),
-            onClick = onCancel
+            onClick = onCancel,
         )
         ActionTextButton(
             text = stringResource(R.string.feature_dashboard_edit_mode_confirm),
-            onClick = onSave
+            onClick = onSave,
         )
     }
 }
