@@ -21,12 +21,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.updateLayoutParams
 import com.canhub.cropper.CropImageView
 import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
+import com.chipichipi.dobedobe.feature.dashboard.R
 
 @Composable
 internal fun CropViewScreen(
@@ -83,8 +85,14 @@ private fun ActionBar(
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        ActionTextButton(text = "취소", onClick = onCancel)
-        ActionTextButton(text = "저장", onClick = onSave)
+        ActionTextButton(
+            text = stringResource(R.string.feature_dashboard_edit_mode_cancel),
+            onClick = onCancel
+        )
+        ActionTextButton(
+            text = stringResource(R.string.feature_dashboard_edit_mode_confirm),
+            onClick = onSave
+        )
     }
 }
 

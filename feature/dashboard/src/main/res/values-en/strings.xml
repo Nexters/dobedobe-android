@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_dashboard">Home</string>
-    <string name="feature_dashboard_edit_mode_top_bar_confirm">Save</string>
-    <string name="feature_dashboard_edit_mode_top_bar_cancel">Cancel</string>
+    <string name="feature_dashboard_edit_mode_confirm">Save</string>
+    <string name="feature_dashboard_edit_mode_cancel">Cancel</string>
     <string name="feature_dashboard_edit_mode_description">Please select the photo you want to change.</string>
     <string name="feature_dashboard_goal_notification_prompt">Notification permission is needed to remind\n you of your goals outside the app.</string>
     <string name="feature_dashboard_goal_notification_description">please allow Notification permission</string>
