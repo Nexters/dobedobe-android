@@ -11,12 +11,12 @@ import kotlinx.coroutines.launch
 internal class SettingViewModel(
     private val userRepository: UserRepository,
 ) : ViewModel() {
-    val isGoalNotificationEnabled = userRepository.userData
-        .map { it.isGoalNotificationEnabled }
+    val settingUiState = userRepository.userData
+        .map { SettingUiState.Success(it.isGoalNotificationEnabled) }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = false,
+            initialValue = SettingUiState.Loading,
         )
 
     fun setGoalNotificationEnabled(checked: Boolean) {

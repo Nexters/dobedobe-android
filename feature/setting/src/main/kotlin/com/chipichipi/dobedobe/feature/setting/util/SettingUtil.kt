@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 
-// TODO : 주소 확인 필요
 internal fun openPlayStore(context: Context) {
     val intent = Intent(
         Intent.ACTION_VIEW,
