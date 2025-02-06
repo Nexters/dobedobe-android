@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_dashboard">홈</string>
-    <string name="feature_dashboard_edit_mode_top_bar_confirm">저장</string>
-    <string name="feature_dashboard_edit_mode_top_bar_cancel">취소</string>
+    <string name="feature_dashboard_edit_mode_confirm">저장</string>
+    <string name="feature_dashboard_edit_mode_cancel">취소</string>
     <string name="feature_dashboard_edit_mode_description">변경하고 싶은 사진을 선택해 주세요</string>
     <string name="feature_dashboard_goal_notification_prompt">앱 밖에서도 목표를\n되새길 수 있어요</string>
     <string name="feature_dashboard_goal_notification_description">알림 권한이 필요해요</string>

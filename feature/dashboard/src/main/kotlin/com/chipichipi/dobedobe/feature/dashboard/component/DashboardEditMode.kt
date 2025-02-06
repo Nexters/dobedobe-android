@@ -29,6 +29,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.canhub.cropper.CropImageView
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeDialog
 import com.chipichipi.dobedobe.core.designsystem.icon.DobeDobeIcons
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
@@ -36,6 +37,8 @@ import com.chipichipi.dobedobe.core.model.DashboardPhoto
 import com.chipichipi.dobedobe.feature.dashboard.R
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardModeState
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
+import com.chipichipi.dobedobe.feature.dashboard.util.bitmapToUri
+import com.chipichipi.dobedobe.feature.dashboard.util.deleteDraftFiles
 import com.chipichipi.dobedobe.feature.dashboard.util.updateModifiedPhotosToFile
 import kotlinx.coroutines.launch
 
@@ -49,25 +52,41 @@ internal fun DashboardEditMode(
     modifier: Modifier = Modifier,
 ) {
     var selectedPhotoId by remember { mutableStateOf<Int?>(null) }
+    val context = LocalContext.current
+    var showCropView by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
+    val cropView = remember(context) {
+        CropImageView(context).apply {
+            isAutoZoomEnabled = false
+            cropShape = CropImageView.CropShape.RECTANGLE
+            setFixedAspectRatio(true)
+        }
+    }
 
     val photoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
             if (selectedPhotoId != null && uri != null) {
-                onUpdatePhotoDrafts(selectedPhotoId, uri)
+                cropView.setImageUriAsync(uri)
+                showCropView = true
             }
-
-            selectedPhotoId = null
         },
     )
 
+    val onExitEditMode: () -> Unit = {
+        coroutineScope.launch {
+            deleteDraftFiles(context)
+            onToggleMode()
+        }
+    }
+
     BackHandler {
-        onToggleMode()
+        onExitEditMode()
     }
 
     DashboardEditModeBody(
         modifier = modifier,
-        onToggleMode = onToggleMode,
+        onToggleMode = onExitEditMode,
         photoDraftsState = modeState.drafts,
         onUpsertPhotos = onUpsertPhotos,
         onDeletePhotos = onDeletePhotos,
@@ -86,6 +105,28 @@ internal fun DashboardEditMode(
             selectedPhotoId = id
         },
     )
+
+    if (showCropView) {
+        CropViewScreen(
+            onCancel = {
+                showCropView = false
+                selectedPhotoId = null
+            },
+            onSave = {
+                coroutineScope.launch {
+                    cropView.getCroppedImage()?.let { croppedImage ->
+                        val uri = bitmapToUri(context, croppedImage)
+                        if (uri != null && selectedPhotoId != null) {
+                            onUpdatePhotoDrafts(selectedPhotoId, uri)
+                            showCropView = false
+                            selectedPhotoId = null
+                        }
+                    }
+                }
+            },
+            cropImageView = cropView,
+        )
+    }
 }
 
 @Composable

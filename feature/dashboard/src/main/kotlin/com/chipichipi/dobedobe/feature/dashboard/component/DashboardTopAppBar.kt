@@ -87,7 +87,7 @@ internal fun DashboardEditModeTopAppBar(
                     Text(
                         modifier = Modifier
                             .clickable(onClick = onToggleMode),
-                        text = stringResource(R.string.feature_dashboard_edit_mode_top_bar_cancel),
+                        text = stringResource(R.string.feature_dashboard_edit_mode_cancel),
                         style = DobeDobeTheme.typography.body1,
                         color = DobeDobeTheme.colors.white,
                     )
@@ -98,7 +98,7 @@ internal fun DashboardEditModeTopAppBar(
                     contentPadding = PaddingValues(horizontal = 24.dp),
                 ) {
                     Text(
-                        text = stringResource(R.string.feature_dashboard_edit_mode_top_bar_confirm),
+                        text = stringResource(R.string.feature_dashboard_edit_mode_confirm),
                         style = DobeDobeTheme.typography.body1,
                         color = DobeDobeTheme.colors.green2,
                     )

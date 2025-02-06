@@ -40,6 +40,7 @@ permission = "0.37.0"
 apng = "3.0.1"
 coil = "3.0.4"
 cloudy = "0.2.4"
+imageCropper = "4.6.0"
 moduleGraph = "2.7.1"
 koin = "4.0.1"
 ktlint = "12.1.0"
@@ -109,6 +110,7 @@ coil-kt = { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil" }
 coil-kt-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 coil-kt-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
 compose-cloudy = { module = "com.github.skydoves:cloudy", version.ref = "cloudy" }
+image-cropper = { module = "com.vanniktech:android-image-cropper", version.ref = "imageCropper" }
 koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
 koin-android = { group = "io.insert-koin", name = "koin-android" }
 koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
