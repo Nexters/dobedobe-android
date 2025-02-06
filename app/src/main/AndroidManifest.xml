@@ -15,9 +15,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DobeDobe.Starting"
         tools:targetApi="31">
+        <!-- adjustResize ensures that the main window resizes to make room for the soft keyboard-->
+        <!--        TODO 참고 자료 정리해서 PR 에 적기-->
+        <!--        jetNews: https://github.com/android/compose-samples/blob/main/JetNews/app/src/main/AndroidManifest.xml-->
+        <!--        공식문서: https://developer.android.com/develop/ui/compose/layouts/insets#insets-setup-->
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
