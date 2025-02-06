@@ -1,17 +1,22 @@
 package com.chipichipi.dobedobe.feature.dashboard
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -23,38 +28,85 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeTextField
 import com.chipichipi.dobedobe.core.designsystem.icon.DobeDobeIcons
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.core.model.Goal
 import com.chipichipi.dobedobe.feature.dashboard.preview.GoalPreviewParameterProvider
 import com.chipichipi.dobedobe.feature.goal.component.GoalRow
+import com.chipichipi.dobedobe.feature.goal.component.GoalSearchBar
 import kotlinx.datetime.Instant
 
 @Composable
 internal fun GoalBottomSheetContent(
+    isExpanded: Boolean,
     goals: List<Goal>,
     onGoalToggled: (Long) -> Unit,
     onGoalClicked: (Long) -> Unit,
     onAddGoalClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier,
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .navigationBarsPadding()
+            .imePadding(),
     ) {
-        GoalBottomSheetHeader(onAddGoalClicked)
-        Spacer(modifier = Modifier.height(15.dp))
-        GoalBottomSheetBody(
-            goals = goals,
-            onGoalToggled = onGoalToggled,
-            onGoalClicked = onGoalClicked,
-        )
+        Column {
+            GoalBottomSheetHeader(onAddGoalClicked)
+            GoalBottomSheetBody(
+                goals = goals,
+                onGoalToggled = onGoalToggled,
+                onGoalClicked = onGoalClicked,
+            )
+            // TODO: 함수 분리하기
+            AnimatedVisibility(
+                visible = isExpanded,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White),
+            ) {
+                val borderStrokeColor = DobeDobeTheme.colors.gray200
+                GoalSearchBar(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.White)
+                        .drawBehind {
+                            drawLine(
+                                color = borderStrokeColor,
+                                start = Offset(0f, 0f),
+                                end = Offset(size.width, 0f),
+                                strokeWidth = 1.dp.toPx(),
+                            )
+                        }
+                        .padding(horizontal = 20.dp, vertical = 10.dp),
+                ) {
+                    DobeDobeTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        state = rememberTextFieldState(),
+                        hint = "목표 검색",
+                        textStyle = DobeDobeTheme.typography.body1,
+                        imeAction = ImeAction.Search,
+                    )
+                }
+                // TODO: 요런 형식으로 바꾸기
+//            GoalSearchBar(
+//                queryState = queryState,
+//                onQueryChanged = onSearchQueryChanged,
+//                onCloseSearch = onCloseSearch,
+//            )
+            }
+        }
     }
 }
 
@@ -94,7 +146,7 @@ private fun GoalBottomSheetHeader(
 }
 
 @Composable
-private fun GoalBottomSheetBody(
+private fun ColumnScope.GoalBottomSheetBody(
     goals: List<Goal>,
     onGoalToggled: (Long) -> Unit,
     onGoalClicked: (Long) -> Unit,
@@ -102,8 +154,7 @@ private fun GoalBottomSheetBody(
     if (goals.isEmpty()) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 80.dp),
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
@@ -115,9 +166,13 @@ private fun GoalBottomSheetBody(
         }
     } else {
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
             verticalArrangement = Arrangement.spacedBy(18.dp),
-            contentPadding = PaddingValues(horizontal = 24.dp),
+            contentPadding = PaddingValues(
+                horizontal = 24.dp, vertical = 15.dp,
+            ),
         ) {
             items(goals) { goal ->
                 GoalRow(
@@ -149,6 +204,7 @@ private fun GoalBottomSheetContentPreview(
         }
     }
     GoalBottomSheetContent(
+        isExpanded = true,
         goals = goals,
         onGoalToggled = onGoalDone,
         onGoalClicked = {},
