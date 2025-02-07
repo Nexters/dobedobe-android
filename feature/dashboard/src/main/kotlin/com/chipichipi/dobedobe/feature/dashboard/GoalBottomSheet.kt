@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.input.delete
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -76,15 +75,9 @@ internal fun GoalBottomSheetContent(
                     .background(Color.White),
             ) {
                 val borderStrokeColor = DobeDobeTheme.colors.gray200
-                val queryState = rememberTextFieldState()
                 GoalSearchBar(
-                    queryState = queryState,
-                    onCloseSearch = {},
-                    onCancelSearch = {
-                        queryState.edit {
-                            delete(0, this.length)
-                        }
-                    },
+                    queryState = rememberTextFieldState(),
+                    enabled = false,
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(DobeDobeTheme.colors.white)
@@ -96,8 +89,7 @@ internal fun GoalBottomSheetContent(
                                 strokeWidth = 1.dp.toPx(),
                             )
                         }
-                        .padding(start = 20.dp, end = 8.dp)
-                        .padding(vertical = 6.dp),
+                        .padding(horizontal = 20.dp, vertical = 10.dp),
                 )
             }
         }

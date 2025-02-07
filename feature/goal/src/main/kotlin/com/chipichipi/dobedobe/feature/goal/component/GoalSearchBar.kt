@@ -36,9 +36,11 @@ import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 @Composable
 fun GoalSearchBar(
     queryState: TextFieldState,
-    onCancelSearch: () -> Unit,
-    onCloseSearch: () -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    onCancelSearch: (() -> Unit)? = null,
+    onCloseSearch: (() -> Unit)? = null,
+    onFocusSearch: (() -> Unit)? = null,
     focusRequester: FocusRequester = remember { FocusRequester() },
 ) {
     val focusManager = LocalFocusManager.current
@@ -68,36 +70,49 @@ fun GoalSearchBar(
             DobeDobeTextField(
                 modifier = Modifier
                     .weight(1f)
+                    .pointerInput(Unit) {
+                        detectTapGestures {
+                            onFocusSearch?.invoke()
+                        }
+                    }
                     .focusRequester(focusRequester),
+                enabled = enabled,
                 state = queryState,
                 // TODO: StringRes 적용
                 hint = "목표 검색",
                 textStyle = DobeDobeTheme.typography.body1,
                 imeAction = ImeAction.Search,
             )
-            Icon(
-                modifier = Modifier
-                    .size(16.dp)
-                    .pointerInput(Unit) {
-                        detectTapGestures {
-                            onCancelSearch()
-                        }
-                    },
-                imageVector = ImageVector.vectorResource(DobeDobeIcons.Cancel),
-                contentDescription = "cancel search",
-                tint = Color.Unspecified,
-            )
+            if (enabled) {
+                Icon(
+                    modifier = Modifier
+                        .size(16.dp)
+                        .pointerInput(Unit) {
+                            detectTapGestures {
+                                onCancelSearch?.invoke()
+                            }
+                        },
+                    imageVector = ImageVector.vectorResource(DobeDobeIcons.Cancel),
+                    contentDescription = "cancel search",
+                    tint = Color.Unspecified,
+                )
+            }
         }
-        TextButton(onClick = {
-            onCloseSearch()
-            focusManager.clearFocus()
-        }) {
-            Text(
-                // TODO : StringRes 적용
-                text = "닫기",
-                style = DobeDobeTheme.typography.body1,
-                color = DobeDobeTheme.colors.gray800,
+        if (enabled) {
+            TextButton(
+                onClick = {
+                    onCloseSearch?.invoke()
+                    focusManager.clearFocus()
+                }
             )
+            {
+                Text(
+                    // TODO : StringRes 적용
+                    text = "닫기",
+                    style = DobeDobeTheme.typography.body1,
+                    color = DobeDobeTheme.colors.gray800,
+                )
+            }
         }
     }
 }
