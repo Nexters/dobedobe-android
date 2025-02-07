@@ -22,7 +22,7 @@ import com.chipichipi.dobedobe.feature.goal.GoalSnackBarType
 import com.chipichipi.dobedobe.feature.goal.navigation.goalGraph
 import com.chipichipi.dobedobe.feature.goal.navigation.navigateToAddGoal
 import com.chipichipi.dobedobe.feature.goal.navigation.navigateToGoalDetail
-import com.chipichipi.dobedobe.feature.goal.navigation.navigateToGoalSearch
+import com.chipichipi.dobedobe.feature.goal.navigation.navigateToSearchGoal
 import com.chipichipi.dobedobe.feature.setting.navigation.navigateToSetting
 import com.chipichipi.dobedobe.feature.setting.navigation.settingScreen
 import com.chipichipi.dobedobe.ui.DobeDobeAppState
@@ -48,7 +48,7 @@ internal fun DobeDobeNavHost(
             navigateToAddGoal = navController::navigateToAddGoal,
             navigateToGoalDetail = navController::navigateToGoalDetail,
             navigateToSetting = navController::navigateToSetting,
-            navigateToGoalSearch = navController::navigateToGoalSearch,
+            navigateToGoalSearch = navController::navigateToSearchGoal,
         )
 
         goalGraph(

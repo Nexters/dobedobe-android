@@ -19,4 +19,6 @@
 
     <string name="feature_goal_search_bar_cancel_button">닫기</string>
     <string name="feature_goal_search_bar_hint">목표 검색</string>
+    <string name="feature_goal_search_recent_goal_title">최근에 추가된</string>
+    <string name="feature_goal_search_queried_goal_title">검색 결과</string>
 </resources>
