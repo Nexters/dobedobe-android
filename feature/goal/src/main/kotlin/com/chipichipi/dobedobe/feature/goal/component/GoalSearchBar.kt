@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -40,7 +41,7 @@ fun GoalSearchBar(
     enabled: Boolean = true,
     onCancelSearch: (() -> Unit)? = null,
     onCloseSearch: (() -> Unit)? = null,
-    onFocusSearch: (() -> Unit)? = null,
+    onTapSearchBar: (() -> Unit)? = null,
     focusRequester: FocusRequester = remember { FocusRequester() },
 ) {
     val focusManager = LocalFocusManager.current
@@ -67,21 +68,11 @@ fun GoalSearchBar(
                 contentDescription = "search Goal",
                 tint = Color.Unspecified,
             )
-            DobeDobeTextField(
-                modifier = Modifier
-                    .weight(1f)
-                    .pointerInput(Unit) {
-                        detectTapGestures {
-                            onFocusSearch?.invoke()
-                        }
-                    }
-                    .focusRequester(focusRequester),
+            SearchBarInnerText(
+                queryState = queryState,
                 enabled = enabled,
-                state = queryState,
-                // TODO: StringRes 적용
-                hint = "목표 검색",
-                textStyle = DobeDobeTheme.typography.body1,
-                imeAction = ImeAction.Search,
+                onTapSearchBar = onTapSearchBar,
+                focusRequester = focusRequester,
             )
             if (enabled) {
                 Icon(
@@ -104,8 +95,7 @@ fun GoalSearchBar(
                     onCloseSearch?.invoke()
                     focusManager.clearFocus()
                 }
-            )
-            {
+            ) {
                 Text(
                     // TODO : StringRes 적용
                     text = "닫기",
@@ -114,6 +104,43 @@ fun GoalSearchBar(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun RowScope.SearchBarInnerText(
+    queryState: TextFieldState,
+    enabled: Boolean,
+    onTapSearchBar: (() -> Unit)? = null,
+    focusRequester: FocusRequester,
+) {
+    if (enabled) {
+        DobeDobeTextField(
+            state = queryState,
+            // TODO: StringRes 적용
+            hint = "목표 검색",
+            textStyle = DobeDobeTheme.typography.body1.copy(
+                color = DobeDobeTheme.colors.gray500,
+            ),
+            imeAction = ImeAction.Search,
+            modifier = Modifier
+                .weight(1f)
+                .focusRequester(focusRequester),
+        )
+    } else {
+        Text(
+            // TODO : StringRes 적용
+            text = "목표 검색",
+            style = DobeDobeTheme.typography.body1,
+            color = DobeDobeTheme.colors.gray500,
+            modifier = Modifier
+                .weight(1f)
+                .pointerInput(Unit) {
+                    detectTapGestures {
+                        onTapSearchBar?.invoke()
+                    }
+                },
+        )
     }
 }
 
