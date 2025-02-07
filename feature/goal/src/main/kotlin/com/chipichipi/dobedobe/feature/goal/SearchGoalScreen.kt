@@ -42,6 +42,7 @@ import org.koin.androidx.compose.koinViewModel
 internal fun SearchGoalRoute(
     onShowSnackbar: suspend (String, String?) -> Boolean,
     navigateToBack: () -> Unit,
+    navigateToGoalDetail: (Long) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SearchGoalViewModel = koinViewModel(),
 ) {
@@ -62,6 +63,7 @@ internal fun SearchGoalRoute(
         queryState = queryState,
         onCancelSearch = onCancelSearch,
         onCloseSearch = navigateToBack,
+        onClickGoal = navigateToGoalDetail,
         modifier = modifier,
     )
 }
@@ -73,7 +75,7 @@ private fun SearchGoalScreen(
     queryState: TextFieldState,
     onCancelSearch: () -> Unit,
     onCloseSearch: () -> Unit,
-    onClickGoal: (Long) -> Unit = {},
+    onClickGoal: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val focusRequester = remember { FocusRequester() }
@@ -194,6 +196,7 @@ private fun SearchGoalScreenPreview() {
             queryState = rememberTextFieldState(),
             onCancelSearch = {},
             onCloseSearch = {},
+            onClickGoal = {},
         )
     }
 }

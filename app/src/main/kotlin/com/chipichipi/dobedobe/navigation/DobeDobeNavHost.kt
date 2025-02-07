@@ -59,6 +59,12 @@ internal fun DobeDobeNavHost(
                     navOptions { popUpTo(DashboardRoute) { inclusive = true } },
                 )
             },
+            navigateToGoalDetail = { id ->
+                navController.navigateToGoalDetail(
+                    id,
+                    navOptions { popUpTo(DashboardRoute) },
+                )
+            },
             sendSnackBarEvent = navController::saveSnackBarEvent,
         )
 
