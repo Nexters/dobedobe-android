@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.input.delete
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,12 +34,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeTextField
 import com.chipichipi.dobedobe.core.designsystem.icon.DobeDobeIcons
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.core.model.Goal
@@ -77,10 +76,18 @@ internal fun GoalBottomSheetContent(
                     .background(Color.White),
             ) {
                 val borderStrokeColor = DobeDobeTheme.colors.gray200
+                val queryState = rememberTextFieldState()
                 GoalSearchBar(
+                    queryState = queryState,
+                    onCloseSearch = {},
+                    onCancelSearch = {
+                        queryState.edit {
+                            delete(0, this.length)
+                        }
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color.White)
+                        .background(DobeDobeTheme.colors.white)
                         .drawBehind {
                             drawLine(
                                 color = borderStrokeColor,
@@ -89,22 +96,9 @@ internal fun GoalBottomSheetContent(
                                 strokeWidth = 1.dp.toPx(),
                             )
                         }
-                        .padding(horizontal = 20.dp, vertical = 10.dp),
-                ) {
-                    DobeDobeTextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        state = rememberTextFieldState(),
-                        hint = "목표 검색",
-                        textStyle = DobeDobeTheme.typography.body1,
-                        imeAction = ImeAction.Search,
-                    )
-                }
-                // TODO: 요런 형식으로 바꾸기
-//            GoalSearchBar(
-//                queryState = queryState,
-//                onQueryChanged = onSearchQueryChanged,
-//                onCloseSearch = onCloseSearch,
-//            )
+                        .padding(start = 20.dp, end = 8.dp)
+                        .padding(vertical = 6.dp),
+                )
             }
         }
     }
