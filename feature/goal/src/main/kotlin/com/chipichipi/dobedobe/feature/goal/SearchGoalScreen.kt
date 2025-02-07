@@ -12,17 +12,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.delete
 import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.focus.FocusRequester
@@ -30,6 +34,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.core.model.Goal
@@ -46,22 +51,13 @@ internal fun SearchGoalRoute(
     modifier: Modifier = Modifier,
     viewModel: SearchGoalViewModel = koinViewModel(),
 ) {
-    val queryState = rememberTextFieldState()
-    val goals: List<Goal> = List(10) {
-        Goal.todo("Goal $it").copy(id = it.toLong())
-    }
-    val queriedGoals = goals.take(3)
-    val onCancelSearch = {
-        queryState.edit {
-            delete(0, this.length)
-        }
-    }
+    val queryState = viewModel.queryState
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     SearchGoalScreen(
-        goals = goals,
-        queriedGoals = queriedGoals,
+        uiState = uiState,
         queryState = queryState,
-        onCancelSearch = onCancelSearch,
+        onCancelSearch = viewModel::clearQuery,
         onCloseSearch = navigateToBack,
         onClickGoal = navigateToGoalDetail,
         modifier = modifier,
@@ -70,20 +66,13 @@ internal fun SearchGoalRoute(
 
 @Composable
 private fun SearchGoalScreen(
-    goals: List<Goal>,
-    queriedGoals: List<Goal>,
+    uiState: SearchGoalUiState,
     queryState: TextFieldState,
     onCancelSearch: () -> Unit,
     onCloseSearch: () -> Unit,
     onClickGoal: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val focusRequester = remember { FocusRequester() }
-
-    LaunchedEffect(Unit) {
-        focusRequester.requestFocus()
-    }
-
     Scaffold(modifier = modifier) { innerPadding ->
         SearchGoalBackGround {
             Column(
@@ -92,34 +81,76 @@ private fun SearchGoalScreen(
                     .padding(innerPadding)
                     .padding(top = 16.dp),
             ) {
-                SearchGoalHeader(
-                    isQueried = queriedGoals.isNotEmpty(),
-                    modifier = Modifier
-                        .padding(top = 16.dp)
-                        .padding(horizontal = 24.dp),
-                )
-                SearchGoalList(
-                    goals = goals,
-                    queriedGoals = queriedGoals,
-                    onClickGoal = onClickGoal,
-                )
-                HorizontalDivider(color = DobeDobeTheme.colors.gray200, thickness = 1.dp)
-                GoalSearchBar(
-                    queryState = queryState,
-                    onCloseSearch = onCloseSearch,
-                    onCancelSearch = onCancelSearch,
-                    focusRequester = focusRequester,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(DobeDobeTheme.colors.white)
-                        .padding(start = 20.dp, end = 8.dp)
-                        .padding(vertical = 4.dp)
-                        .imePadding()
-                        .navigationBarsPadding(),
-                )
+                when (uiState) {
+                    SearchGoalUiState.Loading -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(24.dp),
+                            )
+                        }
+                    }
+
+                    is SearchGoalUiState.Success -> {
+                        SearchGoalContent(
+                            goals = uiState.goals,
+                            queriedGoals = uiState.queriedGoals,
+                            queryState = queryState,
+                            onCancelSearch = onCancelSearch,
+                            onCloseSearch = onCloseSearch,
+                            onClickGoal = onClickGoal,
+                        )
+                    }
+                }
             }
         }
     }
+}
+
+@Composable
+private fun ColumnScope.SearchGoalContent(
+    goals: List<Goal>,
+    queriedGoals: List<Goal>,
+    queryState: TextFieldState,
+    onCancelSearch: () -> Unit,
+    onCloseSearch: () -> Unit,
+    onClickGoal: (Long) -> Unit,
+) {
+    val focusRequester = remember { FocusRequester() }
+    val isQueryEmpty by remember { derivedStateOf { queryState.text.isEmpty() } }
+
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
+
+    SearchGoalHeader(
+        isQueried = queriedGoals.isNotEmpty(),
+        modifier = Modifier
+            .padding(top = 16.dp)
+            .padding(horizontal = 24.dp),
+    )
+    SearchGoalList(
+        goals = goals,
+        queriedGoals = queriedGoals,
+        isQueryEmpty = isQueryEmpty,
+        onClickGoal = onClickGoal,
+    )
+    HorizontalDivider(color = DobeDobeTheme.colors.gray200, thickness = 1.dp)
+    GoalSearchBar(
+        queryState = queryState,
+        onCloseSearch = onCloseSearch,
+        onCancelSearch = onCancelSearch,
+        focusRequester = focusRequester,
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(DobeDobeTheme.colors.white)
+            .padding(start = 20.dp, end = 8.dp)
+            .padding(vertical = 4.dp)
+            .imePadding()
+            .navigationBarsPadding(),
+    )
 }
 
 @Composable
@@ -144,9 +175,9 @@ private fun SearchGoalHeader(
     modifier: Modifier = Modifier,
 ) {
     val title = if (isQueried) {
-        stringResource(R.string.feature_goal_search_recent_goal_title)
-    } else {
         stringResource(R.string.feature_goal_search_queried_goal_title)
+    } else {
+        stringResource(R.string.feature_goal_search_recent_goal_title)
     }
     Text(
         text = title,
@@ -160,8 +191,15 @@ private fun SearchGoalHeader(
 private fun ColumnScope.SearchGoalList(
     goals: List<Goal>,
     queriedGoals: List<Goal>,
+    isQueryEmpty: Boolean,
     onClickGoal: (Long) -> Unit,
 ) {
+    val goalsToShow: List<Goal> = if (isQueryEmpty) {
+        goals
+    } else {
+        queriedGoals
+    }
+
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -170,7 +208,7 @@ private fun ColumnScope.SearchGoalList(
         contentPadding = PaddingValues(vertical = 12.dp, horizontal = 24.dp),
     ) {
         items(
-            items = queriedGoals.ifEmpty { goals },
+            items = goalsToShow,
             key = { it.id },
         ) { goal ->
             GoalRow(
@@ -186,17 +224,21 @@ private fun ColumnScope.SearchGoalList(
 @Composable
 private fun SearchGoalScreenPreview() {
     DobeDobeTheme {
-        SearchGoalScreen(
-            goals = List(3) {
-                Goal.todo("Goal $it").copy(id = it.toLong())
-            },
-            queriedGoals = List(2) {
-                Goal.todo("Goal $it").copy(id = it.toLong())
-            },
-            queryState = rememberTextFieldState(),
-            onCancelSearch = {},
-            onCloseSearch = {},
-            onClickGoal = {},
-        )
+        Column(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            SearchGoalContent(
+                goals = List(3) {
+                    Goal.todo("Goal $it").copy(id = it.toLong())
+                },
+                queriedGoals = List(2) {
+                    Goal.todo("Goal $it").copy(id = it.toLong())
+                },
+                queryState = rememberTextFieldState(),
+                onCancelSearch = {},
+                onCloseSearch = {},
+                onClickGoal = {},
+            )
+        }
     }
 }
