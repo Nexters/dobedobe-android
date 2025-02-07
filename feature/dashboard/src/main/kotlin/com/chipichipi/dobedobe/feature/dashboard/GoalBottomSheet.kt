@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -28,8 +29,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -68,32 +67,14 @@ internal fun GoalBottomSheetContent(
                 onGoalToggled = onGoalToggled,
                 onGoalClicked = onGoalClicked,
             )
-            // TODO: 함수 분리하기
-            AnimatedVisibility(
+            GoalSearchBar(
                 visible = isExpanded,
+                onTapSearchBar = onTapSearchBar,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.White),
-            ) {
-                val borderStrokeColor = DobeDobeTheme.colors.gray200
-                GoalSearchBar(
-                    queryState = rememberTextFieldState(),
-                    enabled = false,
-                    onTapSearchBar = onTapSearchBar,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(DobeDobeTheme.colors.white)
-                        .drawBehind {
-                            drawLine(
-                                color = borderStrokeColor,
-                                start = Offset(0f, 0f),
-                                end = Offset(size.width, 0f),
-                                strokeWidth = 1.dp.toPx(),
-                            )
-                        }
-                        .padding(horizontal = 20.dp, vertical = 10.dp),
-                )
-            }
+                    .background(DobeDobeTheme.colors.white)
+                    .padding(horizontal = 20.dp, vertical = 10.dp),
+            )
         }
     }
 }
@@ -134,6 +115,27 @@ private fun GoalBottomSheetHeader(
 }
 
 @Composable
+private fun GoalSearchBar(
+    visible: Boolean,
+    onTapSearchBar: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    AnimatedVisibility(
+        visible = visible,
+    ) {
+        Column {
+            HorizontalDivider(color = DobeDobeTheme.colors.gray200, thickness = 1.dp)
+            GoalSearchBar(
+                queryState = rememberTextFieldState(),
+                enabled = false,
+                onTapSearchBar = onTapSearchBar,
+                modifier = modifier,
+            )
+        }
+    }
+}
+
+@Composable
 private fun ColumnScope.GoalBottomSheetBody(
     goals: List<Goal>,
     onGoalToggled: (Long) -> Unit,
@@ -157,7 +159,7 @@ private fun ColumnScope.GoalBottomSheetBody(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-            verticalArrangement = Arrangement.spacedBy(18.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = PaddingValues(
                 horizontal = 24.dp, vertical = 15.dp,
             ),
