@@ -56,7 +56,7 @@ fun GoalSearchBar(
                 .weight(1f)
                 .background(
                     color = DobeDobeTheme.colors.gray100,
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(12.dp),
                 )
                 .defaultMinSize(40.dp)
                 .padding(start = 12.dp, end = 10.dp)
@@ -96,7 +96,7 @@ fun GoalSearchBar(
                 onClick = {
                     onCloseSearch?.invoke()
                     focusManager.clearFocus()
-                }
+                },
             ) {
                 Text(
                     text = stringResource(R.string.feature_goal_search_bar_cancel_button),

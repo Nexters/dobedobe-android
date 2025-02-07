@@ -161,7 +161,8 @@ private fun ColumnScope.GoalBottomSheetBody(
                 .weight(1f),
             verticalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = PaddingValues(
-                horizontal = 24.dp, vertical = 15.dp,
+                horizontal = 24.dp,
+                vertical = 15.dp,
             ),
         ) {
             items(goals) { goal ->

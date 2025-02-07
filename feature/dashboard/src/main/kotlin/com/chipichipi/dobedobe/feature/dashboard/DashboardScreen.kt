@@ -191,7 +191,10 @@ private fun DashboardBody(
                 ),
             scaffoldState = bottomSheetScaffoldState,
             sheetContent = {
-                val isExpanded by remember { derivedStateOf { bottomSheetScaffoldState.bottomSheetState.targetValue == SheetValue.Expanded } }
+                val isExpanded by remember {
+                    derivedStateOf { bottomSheetScaffoldState.bottomSheetState.targetValue == SheetValue.Expanded }
+                }
+
                 GoalBottomSheetContent(
                     isExpanded = isExpanded,
                     goals = uiState.goals,
