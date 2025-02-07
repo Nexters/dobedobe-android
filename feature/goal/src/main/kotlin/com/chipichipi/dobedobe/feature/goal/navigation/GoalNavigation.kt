@@ -22,6 +22,7 @@ fun NavGraphBuilder.goalGraph(
     onShowSnackbar: suspend (String, String?) -> Boolean,
     sendSnackBarEvent: (GoalSnackBarType) -> Unit,
     navigateToBack: (NavBackStackEntry) -> Unit,
+    navigateToDashboard: () -> Unit,
 ) {
     composable<GoalRoute.Add> { from ->
         AddGoalRoute(

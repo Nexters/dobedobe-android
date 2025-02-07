@@ -13,13 +13,16 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.navOptions
 import com.chipichipi.dobedobe.feature.dashboard.R
 import com.chipichipi.dobedobe.feature.dashboard.navigation.DashboardRoute
 import com.chipichipi.dobedobe.feature.dashboard.navigation.dashboardScreen
+import com.chipichipi.dobedobe.feature.dashboard.navigation.navigateToDashboard
 import com.chipichipi.dobedobe.feature.goal.GoalSnackBarType
 import com.chipichipi.dobedobe.feature.goal.navigation.goalGraph
 import com.chipichipi.dobedobe.feature.goal.navigation.navigateToAddGoal
 import com.chipichipi.dobedobe.feature.goal.navigation.navigateToGoalDetail
+import com.chipichipi.dobedobe.feature.goal.navigation.navigateToGoalSearch
 import com.chipichipi.dobedobe.feature.setting.navigation.navigateToSetting
 import com.chipichipi.dobedobe.feature.setting.navigation.settingScreen
 import com.chipichipi.dobedobe.ui.DobeDobeAppState
@@ -45,11 +48,17 @@ internal fun DobeDobeNavHost(
             navigateToAddGoal = navController::navigateToAddGoal,
             navigateToGoalDetail = navController::navigateToGoalDetail,
             navigateToSetting = navController::navigateToSetting,
+            navigateToGoalSearch = navController::navigateToGoalSearch,
         )
 
         goalGraph(
             onShowSnackbar = onShowSnackbar,
             navigateToBack = appState::navigateToBack,
+            navigateToDashboard = {
+                navController.navigateToDashboard(
+                    navOptions { popUpTo(DashboardRoute) { inclusive = true } },
+                )
+            },
             sendSnackBarEvent = navController::saveSnackBarEvent,
         )
 
