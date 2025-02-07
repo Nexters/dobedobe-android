@@ -56,6 +56,7 @@ internal fun DashboardRoute(
     navigateToAddGoal: () -> Unit,
     navigateToGoalDetail: (Long) -> Unit,
     navigateToSetting: () -> Unit,
+    navigateToGoalSearch: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DashboardViewModel = koinViewModel(),
 ) {
@@ -70,6 +71,7 @@ internal fun DashboardRoute(
         disableSystemNotificationDialog = viewModel::disableSystemNotificationDialog,
         navigateToAddGoal = navigateToAddGoal,
         navigateToGoalDetail = navigateToGoalDetail,
+        navigateGoalSearch = navigateToGoalSearch,
         navigateToSetting = navigateToSetting,
         onGoalToggled = viewModel::toggleGoalCompletion,
         onToggleMode = viewModel::toggleMode,
@@ -90,6 +92,7 @@ private fun DashboardScreen(
     navigateToAddGoal: () -> Unit,
     navigateToGoalDetail: (Long) -> Unit,
     navigateToSetting: () -> Unit,
+    navigateGoalSearch: () -> Unit,
     onGoalToggled: (Long) -> Unit,
     onToggleMode: () -> Unit,
     onUpsertPhotos: (List<DashboardPhoto>) -> Unit,
@@ -121,6 +124,7 @@ private fun DashboardScreen(
                     navigateToAddGoal = navigateToAddGoal,
                     navigateToGoalDetail = navigateToGoalDetail,
                     navigateToSetting = navigateToSetting,
+                    navigateGoalSearch = navigateGoalSearch,
                     onGoalToggled = onGoalToggled,
                     // TODO: 캐릭터 누르면 말풍선 바뀌는걸로 옮기기!
                     onChangeBubble = onChangeBubble,
@@ -144,6 +148,7 @@ private fun DashboardBody(
     navigateToAddGoal: () -> Unit,
     navigateToGoalDetail: (Long) -> Unit,
     navigateToSetting: () -> Unit,
+    navigateGoalSearch: () -> Unit,
     onGoalToggled: (Long) -> Unit,
     onChangeBubble: () -> Unit,
     onToggleMode: () -> Unit,
@@ -193,6 +198,7 @@ private fun DashboardBody(
                     onGoalToggled = onGoalToggled,
                     onAddGoalClicked = navigateToAddGoal,
                     onGoalClicked = navigateToGoalDetail,
+                    onTapSearchBar = navigateGoalSearch,
                     modifier = Modifier
                         .padding(top = 8.dp),
                 )

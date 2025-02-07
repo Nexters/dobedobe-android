@@ -18,6 +18,10 @@ fun NavController.navigateToGoalDetail(
     navOptions: NavOptions? = null,
 ) = navigate(GoalRoute.Detail(id), navOptions)
 
+fun NavController.navigateToGoalSearch(
+    navOptions: NavOptions? = null,
+) = navigate(GoalRoute.Search, navOptions)
+
 fun NavGraphBuilder.goalGraph(
     onShowSnackbar: suspend (String, String?) -> Boolean,
     sendSnackBarEvent: (GoalSnackBarType) -> Unit,

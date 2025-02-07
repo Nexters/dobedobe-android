@@ -9,4 +9,7 @@ sealed interface GoalRoute {
 
     @Serializable
     data object Add : GoalRoute
+
+    @Serializable
+    data object Search : GoalRoute
 }

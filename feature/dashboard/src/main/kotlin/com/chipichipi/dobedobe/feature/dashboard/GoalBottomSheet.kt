@@ -52,6 +52,7 @@ internal fun GoalBottomSheetContent(
     onGoalToggled: (Long) -> Unit,
     onGoalClicked: (Long) -> Unit,
     onAddGoalClicked: () -> Unit,
+    onTapSearchBar: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -78,6 +79,7 @@ internal fun GoalBottomSheetContent(
                 GoalSearchBar(
                     queryState = rememberTextFieldState(),
                     enabled = false,
+                    onTapSearchBar = onTapSearchBar,
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(DobeDobeTheme.colors.white)
@@ -194,6 +196,7 @@ private fun GoalBottomSheetContentPreview(
         goals = goals,
         onGoalToggled = onGoalDone,
         onGoalClicked = {},
+        onTapSearchBar = {},
         onAddGoalClicked = {},
     )
 }
