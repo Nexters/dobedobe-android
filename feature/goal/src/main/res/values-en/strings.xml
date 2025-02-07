@@ -17,4 +17,7 @@
     <string name="feature_add_goal_action_button">Complete</string>
     <!-- 피그마에 없음-->
     <string name="feature_goal_title_error_message_blank">You can\'t save empty goals</string>
+    <!--    TODO 번역-->
+    <string name="feature_goal_search_bar_cancel_button">닫기</string>
+    <string name="feature_goal_search_bar_hint">목표 검색</string>
 </resources>

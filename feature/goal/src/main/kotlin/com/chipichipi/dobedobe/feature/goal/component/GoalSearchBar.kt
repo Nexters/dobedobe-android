@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -33,6 +34,7 @@ import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeTextField
 import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
 import com.chipichipi.dobedobe.core.designsystem.icon.DobeDobeIcons
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
+import com.chipichipi.dobedobe.feature.goal.R
 
 @Composable
 fun GoalSearchBar(
@@ -97,8 +99,7 @@ fun GoalSearchBar(
                 }
             ) {
                 Text(
-                    // TODO : StringRes 적용
-                    text = "닫기",
+                    text = stringResource(R.string.feature_goal_search_bar_cancel_button),
                     style = DobeDobeTheme.typography.body1,
                     color = DobeDobeTheme.colors.gray800,
                 )
@@ -117,8 +118,7 @@ private fun RowScope.SearchBarInnerText(
     if (enabled) {
         DobeDobeTextField(
             state = queryState,
-            // TODO: StringRes 적용
-            hint = "목표 검색",
+            hint = stringResource(R.string.feature_goal_search_bar_hint),
             textStyle = DobeDobeTheme.typography.body1.copy(
                 color = DobeDobeTheme.colors.gray500,
             ),
@@ -129,8 +129,7 @@ private fun RowScope.SearchBarInnerText(
         )
     } else {
         Text(
-            // TODO : StringRes 적용
-            text = "목표 검색",
+            text = stringResource(R.string.feature_goal_search_bar_hint),
             style = DobeDobeTheme.typography.body1,
             color = DobeDobeTheme.colors.gray500,
             modifier = Modifier
