@@ -1,6 +1,7 @@
 package com.chipichipi.dobedobe.feature.goal
 
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.delete
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
@@ -33,9 +34,7 @@ internal class SearchGoalViewModel(
             .stateIn(viewModelScope, SharingStarted.Lazily, SearchGoalUiState.Loading)
 
     fun clearQuery() {
-        queryState.edit {
-            delete(0, this.length)
-        }
+        queryState.clearText()
     }
 }
 
