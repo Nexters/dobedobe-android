@@ -47,7 +47,3 @@ sealed interface SearchGoalUiState {
         val queriedGoals: List<Goal>,
     ) : SearchGoalUiState
 }
-
-fun main() {
-    println("" in "123")
-}
