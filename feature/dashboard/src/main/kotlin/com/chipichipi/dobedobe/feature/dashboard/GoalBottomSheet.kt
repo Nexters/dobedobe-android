@@ -1,6 +1,5 @@
 package com.chipichipi.dobedobe.feature.dashboard
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -120,9 +119,7 @@ private fun GoalSearchBar(
     onTapSearchBar: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    AnimatedVisibility(
-        visible = visible,
-    ) {
+    if (visible) {
         Column {
             HorizontalDivider(color = DobeDobeTheme.colors.gray200, thickness = 1.dp)
             GoalSearchBar(
