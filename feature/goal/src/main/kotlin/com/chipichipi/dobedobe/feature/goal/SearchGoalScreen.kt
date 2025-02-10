@@ -40,7 +40,6 @@ import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.core.model.Goal
 import com.chipichipi.dobedobe.feature.goal.component.GoalRow
 import com.chipichipi.dobedobe.feature.goal.component.GoalSearchBar
-import com.skydoves.cloudy.cloudy
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
