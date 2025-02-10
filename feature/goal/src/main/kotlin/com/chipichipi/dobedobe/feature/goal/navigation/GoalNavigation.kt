@@ -1,6 +1,5 @@
 package com.chipichipi.dobedobe.feature.goal.navigation
 
-import androidx.activity.compose.BackHandler
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -28,7 +27,6 @@ fun NavGraphBuilder.goalGraph(
     onShowSnackbar: suspend (String, String?) -> Boolean,
     sendSnackBarEvent: (GoalSnackBarType) -> Unit,
     navigateToBack: (NavBackStackEntry) -> Unit,
-    navigateToDashboard: () -> Unit,
     navigateToGoalDetail: (Long) -> Unit,
 ) {
     composable<GoalRoute.Add> { from ->
@@ -48,13 +46,10 @@ fun NavGraphBuilder.goalGraph(
     }
 
     composable<GoalRoute.Search> { from ->
-        BackHandler {
-            navigateToDashboard()
-        }
         SearchGoalRoute(
             onShowSnackbar = onShowSnackbar,
             navigateToGoalDetail = navigateToGoalDetail,
-            navigateToBack = navigateToDashboard,
+            navigateToBack = { navigateToBack(from) },
         )
     }
 }

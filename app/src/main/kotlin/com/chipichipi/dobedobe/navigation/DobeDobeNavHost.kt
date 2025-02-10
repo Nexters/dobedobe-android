@@ -54,11 +54,6 @@ internal fun DobeDobeNavHost(
         goalGraph(
             onShowSnackbar = onShowSnackbar,
             navigateToBack = appState::navigateToBack,
-            navigateToDashboard = {
-//                navController.navigateToDashboard(
-//                    navOptions { popUpTo(DashboardRoute) { inclusive = true } },
-//                )
-            },
             navigateToGoalDetail = navController::navigateToGoalDetail,
             sendSnackBarEvent = navController::saveSnackBarEvent,
         )

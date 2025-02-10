@@ -194,14 +194,13 @@ private fun DashboardBody(
                 val isExpanded by remember {
                     derivedStateOf { bottomSheetScaffoldState.bottomSheetState.targetValue == SheetValue.Expanded }
                 }
-
                 GoalBottomSheetContent(
                     isExpanded = isExpanded,
                     goals = uiState.goals,
                     onGoalToggled = onGoalToggled,
                     onAddGoalClicked = navigateToAddGoal,
                     onGoalClicked = navigateToGoalDetail,
-                    onTapSearchBar = navigateGoalSearch,
+                    onTapSearchBar = navegateToSearchGoal,
                     modifier = Modifier
                         .padding(top = 8.dp),
                 )
