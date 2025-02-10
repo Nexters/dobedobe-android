@@ -195,7 +195,6 @@ private fun ColumnScope.SearchGoalList(
     goals: List<Goal>,
     onClickGoal: (Long) -> Unit,
 ) {
-
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()

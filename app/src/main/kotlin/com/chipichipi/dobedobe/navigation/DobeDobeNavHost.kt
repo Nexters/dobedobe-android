@@ -13,11 +13,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.navOptions
 import com.chipichipi.dobedobe.feature.dashboard.R
 import com.chipichipi.dobedobe.feature.dashboard.navigation.DashboardRoute
 import com.chipichipi.dobedobe.feature.dashboard.navigation.dashboardScreen
-import com.chipichipi.dobedobe.feature.dashboard.navigation.navigateToDashboard
 import com.chipichipi.dobedobe.feature.goal.GoalSnackBarType
 import com.chipichipi.dobedobe.feature.goal.navigation.goalGraph
 import com.chipichipi.dobedobe.feature.goal.navigation.navigateToAddGoal
