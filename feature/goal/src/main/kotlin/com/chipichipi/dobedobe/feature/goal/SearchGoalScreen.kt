@@ -23,7 +23,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -93,9 +92,17 @@ private fun SearchGoalScreen(
                     }
 
                     is SearchGoalUiState.Success -> {
+                        val isQueried = queryState.text.isNotBlank()
+                        val searchGoals =
+                            if (isQueried) {
+                                uiState.queriedGoals
+                            } else {
+                                uiState.goals
+                            }
+
                         SearchGoalContent(
-                            goals = uiState.goals,
-                            queriedGoals = uiState.queriedGoals,
+                            goals = searchGoals,
+                            isQueried = isQueried,
                             queryState = queryState,
                             onClearSearch = onClearSearch,
                             onCloseSearch = onCloseSearch,
@@ -111,29 +118,26 @@ private fun SearchGoalScreen(
 @Composable
 private fun ColumnScope.SearchGoalContent(
     goals: List<Goal>,
-    queriedGoals: List<Goal>,
     queryState: TextFieldState,
+    isQueried: Boolean,
     onClearSearch: () -> Unit,
     onCloseSearch: () -> Unit,
     onClickGoal: (Long) -> Unit,
 ) {
     val focusRequester = remember { FocusRequester() }
-    val isQueryEmpty by remember { derivedStateOf { queryState.text.isEmpty() } }
 
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
     }
 
     SearchGoalHeader(
-        isQueried = queriedGoals.isNotEmpty(),
+        isQueried = isQueried,
         modifier = Modifier
             .padding(top = 16.dp)
             .padding(horizontal = 24.dp),
     )
     SearchGoalList(
         goals = goals,
-        queriedGoals = queriedGoals,
-        isQueryEmpty = isQueryEmpty,
         onClickGoal = onClickGoal,
     )
     HorizontalDivider(color = DobeDobeTheme.colors.gray200, thickness = 1.dp)
@@ -159,6 +163,7 @@ private fun SearchGoalBackGround(
     Box(
         modifier = Modifier
             .fillMaxSize()
+            // TODO: 앰무새, 토끼 일때 배경 다르게 넣기
             .paint(
                 painterResource(id = R.drawable.rabbit_sheet_content_background),
                 contentScale = ContentScale.FillBounds,
@@ -188,15 +193,8 @@ private fun SearchGoalHeader(
 @Composable
 private fun ColumnScope.SearchGoalList(
     goals: List<Goal>,
-    queriedGoals: List<Goal>,
-    isQueryEmpty: Boolean,
     onClickGoal: (Long) -> Unit,
 ) {
-    val goalsToShow: List<Goal> = if (isQueryEmpty) {
-        goals
-    } else {
-        queriedGoals
-    }
 
     LazyColumn(
         modifier = Modifier
@@ -206,7 +204,7 @@ private fun ColumnScope.SearchGoalList(
         contentPadding = PaddingValues(vertical = 12.dp, horizontal = 24.dp),
     ) {
         items(
-            items = goalsToShow,
+            items = goals,
             key = { it.id },
         ) { goal ->
             GoalRow(
@@ -229,9 +227,7 @@ private fun SearchGoalScreenPreview() {
                 goals = List(3) {
                     Goal.todo("Goal $it").copy(id = it.toLong())
                 },
-                queriedGoals = List(2) {
-                    Goal.todo("Goal $it").copy(id = it.toLong())
-                },
+                isQueried = false,
                 queryState = rememberTextFieldState(),
                 onClearSearch = {},
                 onCloseSearch = {},
