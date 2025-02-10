@@ -25,7 +25,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
@@ -79,10 +78,7 @@ fun GoalSearchBar(
                 Icon(
                     modifier = Modifier
                         .size(16.dp)
-                        .clickable {
-                            onClearSearch?.invoke()
-
-                        },
+                        .clickable { onClearSearch?.invoke() },
                     imageVector = ImageVector.vectorResource(DobeDobeIcons.Cancel),
                     contentDescription = "cancel search",
                     tint = Color.Unspecified,
@@ -91,9 +87,7 @@ fun GoalSearchBar(
         }
         if (enabled) {
             TextButton(
-                onClick = {
-                    onCloseSearch?.invoke()
-                },
+                onClick = { onCloseSearch?.invoke() },
             ) {
                 Text(
                     text = stringResource(R.string.feature_goal_search_bar_cancel_button),
