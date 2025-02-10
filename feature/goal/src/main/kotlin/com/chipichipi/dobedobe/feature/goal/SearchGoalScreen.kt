@@ -57,7 +57,7 @@ internal fun SearchGoalRoute(
     SearchGoalScreen(
         uiState = uiState,
         queryState = queryState,
-        onCancelSearch = viewModel::clearQuery,
+        onClearSearch = viewModel::clearQuery,
         onCloseSearch = navigateToBack,
         onClickGoal = navigateToGoalDetail,
         modifier = modifier,
@@ -68,7 +68,7 @@ internal fun SearchGoalRoute(
 private fun SearchGoalScreen(
     uiState: SearchGoalUiState,
     queryState: TextFieldState,
-    onCancelSearch: () -> Unit,
+    onClearSearch: () -> Unit,
     onCloseSearch: () -> Unit,
     onClickGoal: (Long) -> Unit,
     modifier: Modifier = Modifier,
@@ -98,7 +98,7 @@ private fun SearchGoalScreen(
                             goals = uiState.goals,
                             queriedGoals = uiState.queriedGoals,
                             queryState = queryState,
-                            onCancelSearch = onCancelSearch,
+                            onClearSearch = onClearSearch,
                             onCloseSearch = onCloseSearch,
                             onClickGoal = onClickGoal,
                         )
@@ -114,7 +114,7 @@ private fun ColumnScope.SearchGoalContent(
     goals: List<Goal>,
     queriedGoals: List<Goal>,
     queryState: TextFieldState,
-    onCancelSearch: () -> Unit,
+    onClearSearch: () -> Unit,
     onCloseSearch: () -> Unit,
     onClickGoal: (Long) -> Unit,
 ) {
@@ -141,7 +141,7 @@ private fun ColumnScope.SearchGoalContent(
     GoalSearchBar(
         queryState = queryState,
         onCloseSearch = onCloseSearch,
-        onCancelSearch = onCancelSearch,
+        onClearSearch = onClearSearch,
         focusRequester = focusRequester,
         modifier = Modifier
             .fillMaxWidth()
@@ -235,7 +235,7 @@ private fun SearchGoalScreenPreview() {
                     Goal.todo("Goal $it").copy(id = it.toLong())
                 },
                 queryState = rememberTextFieldState(),
-                onCancelSearch = {},
+                onClearSearch = {},
                 onCloseSearch = {},
                 onClickGoal = {},
             )

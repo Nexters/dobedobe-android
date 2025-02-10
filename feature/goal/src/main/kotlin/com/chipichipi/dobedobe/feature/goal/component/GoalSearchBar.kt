@@ -41,7 +41,7 @@ fun GoalSearchBar(
     modifier: Modifier = Modifier,
     queryState: TextFieldState = rememberTextFieldState(),
     enabled: Boolean = true,
-    onCancelSearch: (() -> Unit)? = null,
+    onClearSearch: (() -> Unit)? = null,
     onCloseSearch: (() -> Unit)? = null,
     onTapSearchBar: (() -> Unit)? = null,
     focusRequester: FocusRequester = remember { FocusRequester() },
@@ -82,7 +82,7 @@ fun GoalSearchBar(
                         .size(16.dp)
                         .pointerInput(Unit) {
                             detectTapGestures {
-                                onCancelSearch?.invoke()
+                                onClearSearch?.invoke()
                             }
                         },
                     imageVector = ImageVector.vectorResource(DobeDobeIcons.Cancel),
@@ -151,7 +151,7 @@ private fun GoalSearchBarPreview() {
         GoalSearchBar(
             queryState = queryState,
             onCloseSearch = {},
-            onCancelSearch = {
+            onClearSearch = {
                 queryState.edit {
                     delete(0, this.length)
                 }
