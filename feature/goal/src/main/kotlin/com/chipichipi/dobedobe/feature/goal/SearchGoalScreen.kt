@@ -162,8 +162,7 @@ private fun SearchGoalBackGround(
             .paint(
                 painterResource(id = R.drawable.rabbit_sheet_content_background),
                 contentScale = ContentScale.FillBounds,
-            )
-            .cloudy(200),
+            ),
     )
     content()
 }
