@@ -2,7 +2,7 @@ package com.chipichipi.dobedobe.feature.goal.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -131,10 +131,11 @@ private fun RowScope.SearchBarInnerText(
             color = DobeDobeTheme.colors.gray500,
             modifier = Modifier
                 .weight(1f)
-                .pointerInput(Unit) {
-                    detectTapGestures {
-                        onTapSearchBar?.invoke()
-                    }
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() },
+                ) {
+                    onTapSearchBar?.invoke()
                 },
         )
     }
