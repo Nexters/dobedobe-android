@@ -18,7 +18,7 @@ fun NavGraphBuilder.dashboardScreen(
     onShowSnackbar: suspend (String, String?) -> Boolean,
     navigateToAddGoal: () -> Unit,
     navigateToGoalDetail: (Long) -> Unit,
-    navigateToGoalSearch: () -> Unit,
+    navigateToSearchGoal: () -> Unit,
     navigateToSetting: () -> Unit,
 ) {
     composable<DashboardRoute> {
@@ -27,7 +27,7 @@ fun NavGraphBuilder.dashboardScreen(
             navigateToAddGoal = navigateToAddGoal,
             navigateToGoalDetail = navigateToGoalDetail,
             navigateToSetting = navigateToSetting,
-            navigateToGoalSearch = navigateToGoalSearch,
+            navigateToSearchGoal = navigateToSearchGoal,
         )
     }
 }
