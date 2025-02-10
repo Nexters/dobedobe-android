@@ -123,7 +123,6 @@ private fun GoalSearchBar(
         Column {
             HorizontalDivider(color = DobeDobeTheme.colors.gray200, thickness = 1.dp)
             GoalSearchBar(
-                queryState = rememberTextFieldState(),
                 enabled = false,
                 onTapSearchBar = onTapSearchBar,
                 modifier = modifier,

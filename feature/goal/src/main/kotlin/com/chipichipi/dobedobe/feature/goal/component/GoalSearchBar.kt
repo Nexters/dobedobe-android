@@ -38,8 +38,8 @@ import com.chipichipi.dobedobe.feature.goal.R
 
 @Composable
 fun GoalSearchBar(
-    queryState: TextFieldState,
     modifier: Modifier = Modifier,
+    queryState: TextFieldState = rememberTextFieldState(),
     enabled: Boolean = true,
     onCancelSearch: (() -> Unit)? = null,
     onCloseSearch: (() -> Unit)? = null,
