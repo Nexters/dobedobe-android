@@ -1,6 +1,7 @@
 package com.chipichipi.dobedobe.feature.goal.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -25,7 +26,6 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
@@ -46,7 +46,6 @@ fun GoalSearchBar(
     onTapSearchBar: (() -> Unit)? = null,
     focusRequester: FocusRequester = remember { FocusRequester() },
 ) {
-    val focusManager = LocalFocusManager.current
     Row(
         modifier = modifier.padding(2.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -80,10 +79,9 @@ fun GoalSearchBar(
                 Icon(
                     modifier = Modifier
                         .size(16.dp)
-                        .pointerInput(Unit) {
-                            detectTapGestures {
-                                onClearSearch?.invoke()
-                            }
+                        .clickable {
+                            onClearSearch?.invoke()
+
                         },
                     imageVector = ImageVector.vectorResource(DobeDobeIcons.Cancel),
                     contentDescription = "cancel search",
@@ -95,7 +93,6 @@ fun GoalSearchBar(
             TextButton(
                 onClick = {
                     onCloseSearch?.invoke()
-                    focusManager.clearFocus()
                 },
             ) {
                 Text(
