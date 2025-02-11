@@ -2,6 +2,7 @@ package com.chipichipi.dobedobe.feature.dashboard
 
 import android.net.Uri
 import android.os.Build
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.core.Animatable
@@ -24,6 +25,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,6 +52,7 @@ import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.skydoves.cloudy.cloudy
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 private const val ANIMATION_DURATION = 500
@@ -183,7 +186,6 @@ private fun DashboardBody(
             }
         }
         val resources = CharacterResources.from(uiState.character)
-
         DobeDobeBottomSheetScaffold(
             modifier = Modifier
                 .fillMaxSize()
@@ -204,6 +206,8 @@ private fun DashboardBody(
                 val isExpanded by remember {
                     derivedStateOf { bottomSheetScaffoldState.bottomSheetState.targetValue == SheetValue.Expanded }
                 }
+                val coroutineScope = rememberCoroutineScope()
+
                 GoalBottomSheetContent(
                     isExpanded = isExpanded,
                     goals = uiState.goals,
@@ -214,6 +218,14 @@ private fun DashboardBody(
                     modifier = Modifier
                         .padding(top = 8.dp),
                 )
+
+                BackHandler(
+                    enabled = isExpanded,
+                ) {
+                    coroutineScope.launch {
+                        bottomSheetScaffoldState.bottomSheetState.partialExpand()
+                    }
+                }
             },
             sheetPeekHeight = 330.dp,
         ) { innerPadding ->
