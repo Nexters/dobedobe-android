@@ -13,12 +13,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SheetValue
-import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -57,9 +56,11 @@ import org.koin.androidx.compose.koinViewModel
 
 private const val ANIMATION_DURATION = 500
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun DashboardRoute(
     onShowSnackbar: suspend (String, String?) -> Boolean,
+    bottomSheetScaffoldState: BottomSheetScaffoldState,
     navigateToAddGoal: () -> Unit,
     navigateToGoalDetail: (Long) -> Unit,
     navigateToSetting: () -> Unit,
@@ -74,6 +75,7 @@ internal fun DashboardRoute(
         modifier = modifier.fillMaxSize(),
         onShowSnackbar = onShowSnackbar,
         uiState = uiState,
+        bottomSheetScaffoldState = bottomSheetScaffoldState,
         setGoalNotificationEnabled = viewModel::setGoalNotificationEnabled,
         disableSystemNotificationDialog = viewModel::disableSystemNotificationDialog,
         navigateToAddGoal = navigateToAddGoal,
@@ -90,10 +92,12 @@ internal fun DashboardRoute(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DashboardScreen(
     onShowSnackbar: suspend (String, String?) -> Boolean,
     uiState: DashboardUiState,
+    bottomSheetScaffoldState: BottomSheetScaffoldState,
     setGoalNotificationEnabled: (Boolean) -> Unit,
     disableSystemNotificationDialog: () -> Unit,
     navigateToAddGoal: () -> Unit,
@@ -126,6 +130,7 @@ private fun DashboardScreen(
                 DashboardBody(
                     modifier = modifier,
                     uiState = uiState,
+                    bottomSheetScaffoldState = bottomSheetScaffoldState,
                     setGoalNotificationEnabled = setGoalNotificationEnabled,
                     disableSystemNotificationDialog = disableSystemNotificationDialog,
                     navigateToAddGoal = navigateToAddGoal,
@@ -150,6 +155,7 @@ private fun DashboardScreen(
 @Composable
 private fun DashboardBody(
     uiState: DashboardUiState.Success,
+    bottomSheetScaffoldState: BottomSheetScaffoldState,
     setGoalNotificationEnabled: (Boolean) -> Unit,
     disableSystemNotificationDialog: () -> Unit,
     navigateToAddGoal: () -> Unit,
@@ -170,11 +176,6 @@ private fun DashboardBody(
     SharedTransitionLayout(
         modifier = modifier,
     ) {
-        val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-            bottomSheetState = rememberStandardBottomSheetState(
-                initialValue = SheetValue.PartiallyExpanded,
-            ),
-        )
         val photoFramesState = rememberDashboardPhotoFramesState(
             photoState = uiState.photoState,
         )
@@ -186,6 +187,7 @@ private fun DashboardBody(
             }
         }
         val resources = CharacterResources.from(uiState.character)
+
         DobeDobeBottomSheetScaffold(
             modifier = Modifier
                 .fillMaxSize()
