@@ -11,13 +11,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.paint
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
-import com.chipichipi.dobedobe.core.model.CharacterType
 import com.chipichipi.dobedobe.feature.dashboard.DashboardPhotoFramesState
 import com.chipichipi.dobedobe.feature.dashboard.model.CharacterResources
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
@@ -26,6 +22,7 @@ import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
 @Composable
 internal fun SharedTransitionScope.DashboardViewMode(
     isViewMode: Boolean,
+    resources: CharacterResources,
     photoState: List<DashboardPhotoState>,
     bubbleTitle: String,
     photoFramesState: DashboardPhotoFramesState,
@@ -33,18 +30,10 @@ internal fun SharedTransitionScope.DashboardViewMode(
     onToggleExpansion: (Int) -> Unit,
     onToggleMode: () -> Unit,
     navigateToSetting: () -> Unit,
-    character: CharacterType,
     modifier: Modifier = Modifier,
 ) {
-    val resources = CharacterResources.from(character)
-
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .paint(
-                painterResource(id = resources.backgroundRes),
-                contentScale = ContentScale.FillBounds,
-            ),
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         DashboardViewModeTopAppBar(

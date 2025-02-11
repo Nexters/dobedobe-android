@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -26,7 +27,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -39,6 +42,7 @@ import com.chipichipi.dobedobe.core.model.DashboardPhoto
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardEditMode
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardViewMode
 import com.chipichipi.dobedobe.feature.dashboard.component.ExpandedPhotoFrame
+import com.chipichipi.dobedobe.feature.dashboard.model.CharacterResources
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardModeState
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -109,7 +113,7 @@ private fun DashboardScreen(
         when (uiState) {
             is DashboardUiState.Error,
             is DashboardUiState.Loading,
-            -> {
+                -> {
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
                 )
@@ -178,10 +182,16 @@ private fun DashboardBody(
                 }
             }
         }
+        val resources = CharacterResources.from(uiState.character)
 
         DobeDobeBottomSheetScaffold(
             modifier = Modifier
                 .fillMaxSize()
+                .paint(
+                    painterResource(id = resources.backgroundRes),
+                    contentScale = ContentScale.FillBounds,
+                )
+                .statusBarsPadding()
                 .then(
                     if (isEditMode) {
                         Modifier.cloudy(35)
@@ -223,7 +233,13 @@ private fun DashboardBody(
                     onToggleExpansion = onToggleExpansion,
                     onToggleMode = onToggleMode,
                     navigateToSetting = navigateToSetting,
-                    character = uiState.character,
+                    resources = resources,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .paint(
+                            painterResource(id = resources.backgroundRes),
+                            contentScale = ContentScale.FillBounds,
+                        ),
                 )
             }
         }
