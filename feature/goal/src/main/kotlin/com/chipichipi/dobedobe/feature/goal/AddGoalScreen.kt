@@ -40,10 +40,6 @@ fun AddGoalRoute(
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val focusManager = LocalFocusManager.current
     val goalValidResult by viewModel.goalValidResult.collectAsStateWithLifecycle()
-    val onBack = {
-        focusManager.clearFocus()
-        navigateToBack()
-    }
     val errorMessage =
         goalValidResult.errorMessage()
             ?.let { stringResource(id = it) }
@@ -52,7 +48,7 @@ fun AddGoalRoute(
         viewModel.addGoalEvent
             .onEach {
                 sendSnackBarEvent(GoalSnackBarType.ADD)
-                onBack()
+                navigateToBack()
             }
             .flowWithLifecycle(lifecycle)
             .launchIn(this)
@@ -69,7 +65,7 @@ fun AddGoalRoute(
             .imePadding(),
         errorMessage = errorMessage,
         onShowSnackbar = onShowSnackbar,
-        navigateToBack = onBack,
+        navigateToBack = navigateToBack,
         onChangeGoalName = viewModel::changeGoalTitle,
         onAddGoal = viewModel::addGoal,
     )

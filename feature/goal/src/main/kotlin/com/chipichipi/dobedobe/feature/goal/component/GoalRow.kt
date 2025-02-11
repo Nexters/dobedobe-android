@@ -35,9 +35,10 @@ private val PinnedIconSize: DpSize = DpSize(24.dp, 30.dp)
 @Composable
 fun GoalRow(
     goal: Goal,
-    onToggleCompleted: () -> Unit,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    onToggleCompleted: (() -> Unit)? = null,
 ) {
     Surface(
         modifier = modifier.defaultMinSize(minHeight = 58.dp),
@@ -53,7 +54,8 @@ fun GoalRow(
         ) {
             DobeDobeCheckBox(
                 checked = goal.isCompleted,
-                onCheckedChange = { onToggleCompleted() },
+                enabled = enabled,
+                onCheckedChange = { onToggleCompleted?.invoke() },
             )
             Spacer(modifier = Modifier.width(3.dp))
             Text(

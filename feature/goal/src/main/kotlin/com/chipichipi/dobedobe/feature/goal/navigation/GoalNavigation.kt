@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import com.chipichipi.dobedobe.feature.goal.AddGoalRoute
 import com.chipichipi.dobedobe.feature.goal.DetailGoalRoute
 import com.chipichipi.dobedobe.feature.goal.GoalSnackBarType
+import com.chipichipi.dobedobe.feature.goal.SearchGoalRoute
 
 fun NavController.navigateToAddGoal(
     navOptions: NavOptions? = null,
@@ -18,10 +19,15 @@ fun NavController.navigateToGoalDetail(
     navOptions: NavOptions? = null,
 ) = navigate(GoalRoute.Detail(id), navOptions)
 
+fun NavController.navigateToSearchGoal(
+    navOptions: NavOptions? = null,
+) = navigate(GoalRoute.Search, navOptions)
+
 fun NavGraphBuilder.goalGraph(
     onShowSnackbar: suspend (String, String?) -> Boolean,
     sendSnackBarEvent: (GoalSnackBarType) -> Unit,
     navigateToBack: (NavBackStackEntry) -> Unit,
+    navigateToGoalDetail: (Long) -> Unit,
 ) {
     composable<GoalRoute.Add> { from ->
         AddGoalRoute(
@@ -36,6 +42,14 @@ fun NavGraphBuilder.goalGraph(
             onShowSnackbar = onShowSnackbar,
             navigateToBack = { navigateToBack(from) },
             sendSnackBarEvent = sendSnackBarEvent,
+        )
+    }
+
+    composable<GoalRoute.Search> { from ->
+        SearchGoalRoute(
+            onShowSnackbar = onShowSnackbar,
+            navigateToGoalDetail = navigateToGoalDetail,
+            navigateToBack = { navigateToBack(from) },
         )
     }
 }

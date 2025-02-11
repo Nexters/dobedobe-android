@@ -1,17 +1,21 @@
 package com.chipichipi.dobedobe.feature.dashboard
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -35,26 +39,42 @@ import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.core.model.Goal
 import com.chipichipi.dobedobe.feature.dashboard.preview.GoalPreviewParameterProvider
 import com.chipichipi.dobedobe.feature.goal.component.GoalRow
+import com.chipichipi.dobedobe.feature.goal.component.GoalSearchBar
 import kotlinx.datetime.Instant
 
 @Composable
 internal fun GoalBottomSheetContent(
+    isExpanded: Boolean,
     goals: List<Goal>,
     onGoalToggled: (Long) -> Unit,
     onGoalClicked: (Long) -> Unit,
     onAddGoalClicked: () -> Unit,
+    onTapSearchBar: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier,
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .navigationBarsPadding()
+            .imePadding(),
     ) {
-        GoalBottomSheetHeader(onAddGoalClicked)
-        Spacer(modifier = Modifier.height(15.dp))
-        GoalBottomSheetBody(
-            goals = goals,
-            onGoalToggled = onGoalToggled,
-            onGoalClicked = onGoalClicked,
-        )
+        Column {
+            GoalBottomSheetHeader(onAddGoalClicked)
+            GoalBottomSheetBody(
+                goals = goals,
+                onGoalToggled = onGoalToggled,
+                onGoalClicked = onGoalClicked,
+            )
+            if (isExpanded) {
+                SearchGoalNavigationBar(
+                    onTapSearchBar = onTapSearchBar,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(DobeDobeTheme.colors.white)
+                        .padding(horizontal = 20.dp, vertical = 10.dp),
+                )
+            }
+        }
     }
 }
 
@@ -94,7 +114,22 @@ private fun GoalBottomSheetHeader(
 }
 
 @Composable
-private fun GoalBottomSheetBody(
+private fun SearchGoalNavigationBar(
+    onTapSearchBar: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column {
+        HorizontalDivider(color = DobeDobeTheme.colors.gray200, thickness = 1.dp)
+        GoalSearchBar(
+            enabled = false,
+            onTapSearchBar = onTapSearchBar,
+            modifier = modifier,
+        )
+    }
+}
+
+@Composable
+private fun ColumnScope.GoalBottomSheetBody(
     goals: List<Goal>,
     onGoalToggled: (Long) -> Unit,
     onGoalClicked: (Long) -> Unit,
@@ -102,8 +137,7 @@ private fun GoalBottomSheetBody(
     if (goals.isEmpty()) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 80.dp),
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
@@ -115,9 +149,14 @@ private fun GoalBottomSheetBody(
         }
     } else {
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(18.dp),
-            contentPadding = PaddingValues(horizontal = 24.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            contentPadding = PaddingValues(
+                horizontal = 24.dp,
+                vertical = 16.dp,
+            ),
         ) {
             items(goals) { goal ->
                 GoalRow(
@@ -149,9 +188,11 @@ private fun GoalBottomSheetContentPreview(
         }
     }
     GoalBottomSheetContent(
+        isExpanded = true,
         goals = goals,
         onGoalToggled = onGoalDone,
         onGoalClicked = {},
+        onTapSearchBar = {},
         onAddGoalClicked = {},
     )
 }

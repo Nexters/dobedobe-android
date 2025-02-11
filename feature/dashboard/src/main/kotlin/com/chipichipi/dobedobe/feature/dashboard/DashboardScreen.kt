@@ -19,6 +19,7 @@ import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -55,6 +56,7 @@ internal fun DashboardRoute(
     navigateToAddGoal: () -> Unit,
     navigateToGoalDetail: (Long) -> Unit,
     navigateToSetting: () -> Unit,
+    navigateToSearchGoal: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DashboardViewModel = koinViewModel(),
 ) {
@@ -69,6 +71,7 @@ internal fun DashboardRoute(
         disableSystemNotificationDialog = viewModel::disableSystemNotificationDialog,
         navigateToAddGoal = navigateToAddGoal,
         navigateToGoalDetail = navigateToGoalDetail,
+        navigateToSearchGoal = navigateToSearchGoal,
         navigateToSetting = navigateToSetting,
         onGoalToggled = viewModel::toggleGoalCompletion,
         onToggleMode = viewModel::toggleMode,
@@ -89,6 +92,7 @@ private fun DashboardScreen(
     navigateToAddGoal: () -> Unit,
     navigateToGoalDetail: (Long) -> Unit,
     navigateToSetting: () -> Unit,
+    navigateToSearchGoal: () -> Unit,
     onGoalToggled: (Long) -> Unit,
     onToggleMode: () -> Unit,
     onUpsertPhotos: (List<DashboardPhoto>) -> Unit,
@@ -120,6 +124,7 @@ private fun DashboardScreen(
                     navigateToAddGoal = navigateToAddGoal,
                     navigateToGoalDetail = navigateToGoalDetail,
                     navigateToSetting = navigateToSetting,
+                    navigateToSearchGoal = navigateToSearchGoal,
                     onGoalToggled = onGoalToggled,
                     // TODO: 캐릭터 누르면 말풍선 바뀌는걸로 옮기기!
                     onChangeBubble = onChangeBubble,
@@ -143,6 +148,7 @@ private fun DashboardBody(
     navigateToAddGoal: () -> Unit,
     navigateToGoalDetail: (Long) -> Unit,
     navigateToSetting: () -> Unit,
+    navigateToSearchGoal: () -> Unit,
     onGoalToggled: (Long) -> Unit,
     onChangeBubble: () -> Unit,
     onToggleMode: () -> Unit,
@@ -185,16 +191,21 @@ private fun DashboardBody(
                 ),
             scaffoldState = bottomSheetScaffoldState,
             sheetContent = {
+                val isExpanded by remember {
+                    derivedStateOf { bottomSheetScaffoldState.bottomSheetState.targetValue == SheetValue.Expanded }
+                }
                 GoalBottomSheetContent(
+                    isExpanded = isExpanded,
                     goals = uiState.goals,
                     onGoalToggled = onGoalToggled,
                     onAddGoalClicked = navigateToAddGoal,
                     onGoalClicked = navigateToGoalDetail,
+                    onTapSearchBar = navigateToSearchGoal,
                     modifier = Modifier
                         .padding(top = 8.dp),
                 )
             },
-            sheetPeekHeight = 380.dp,
+            sheetPeekHeight = 330.dp,
         ) { innerPadding ->
             Box(
                 modifier = Modifier

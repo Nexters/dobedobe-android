@@ -57,7 +57,6 @@ internal fun DetailGoalRoute(
         if (isGoalChanged) {
             sendSnackBarEvent(GoalSnackBarType.EDIT)
         }
-        focusManager.clearFocus()
         navigateToBack()
     }
 
