@@ -65,14 +65,15 @@ internal fun GoalBottomSheetContent(
                 onGoalToggled = onGoalToggled,
                 onGoalClicked = onGoalClicked,
             )
-            GoalSearchBar(
-                visible = isExpanded,
-                onTapSearchBar = onTapSearchBar,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(DobeDobeTheme.colors.white)
-                    .padding(horizontal = 20.dp, vertical = 10.dp),
-            )
+            if (isExpanded) {
+                SearchGoalNavigationBar(
+                    onTapSearchBar = onTapSearchBar,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(DobeDobeTheme.colors.white)
+                        .padding(horizontal = 20.dp, vertical = 10.dp),
+                )
+            }
         }
     }
 }
@@ -113,20 +114,17 @@ private fun GoalBottomSheetHeader(
 }
 
 @Composable
-private fun GoalSearchBar(
-    visible: Boolean,
+private fun SearchGoalNavigationBar(
     onTapSearchBar: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    if (visible) {
-        Column {
-            HorizontalDivider(color = DobeDobeTheme.colors.gray200, thickness = 1.dp)
-            GoalSearchBar(
-                enabled = false,
-                onTapSearchBar = onTapSearchBar,
-                modifier = modifier,
-            )
-        }
+    Column {
+        HorizontalDivider(color = DobeDobeTheme.colors.gray200, thickness = 1.dp)
+        GoalSearchBar(
+            enabled = false,
+            onTapSearchBar = onTapSearchBar,
+            modifier = modifier,
+        )
     }
 }
 
