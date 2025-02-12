@@ -9,6 +9,7 @@ import com.chipichipi.dobedobe.core.data.repository.GoalRepository
 import com.chipichipi.dobedobe.core.data.repository.UserRepository
 import com.chipichipi.dobedobe.core.model.DashboardPhoto
 import com.chipichipi.dobedobe.core.model.Goal
+import com.chipichipi.dobedobe.feature.dashboard.model.BubbleGoal
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardModeState
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoConfig
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
@@ -74,7 +75,7 @@ internal class DashboardViewModel(
             photoState = dashboardPhotoStates,
             isSystemNotificationDialogDisabled = isSystemNotificationDialogDisabled,
             goals = goals,
-            bubbleTitle = bubbleGoal.title,
+            bubbleGoal = bubbleGoal,
             character = character,
         )
     }
@@ -236,21 +237,6 @@ internal class DashboardViewModel(
         } else {
             val newGoal = candidates.random()
             BubbleGoal.from(newGoal) to goals
-        }
-    }
-
-    private data class BubbleGoal(
-        val title: String,
-        val id: Long?,
-    ) {
-        companion object {
-            private val Empty = BubbleGoal(title = "", id = null)
-
-            fun empty(): BubbleGoal = Empty
-
-            fun from(goal: Goal): BubbleGoal {
-                return BubbleGoal(goal.title, goal.id)
-            }
         }
     }
 
