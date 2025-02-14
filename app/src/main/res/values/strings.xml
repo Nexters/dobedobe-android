@@ -5,4 +5,5 @@
     <string name="onboarding_goal_hint">ex) 1일 1책 읽기</string>
     <string name="onboarding_goal_support_message">목표가 간결할수록 집중력이 높아져요.</string>
     <string name="onboarding_goal_completed">작성 완료</string>
+    <string name="onboarding_all_completed">시작하기</string>
 </resources>

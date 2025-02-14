@@ -24,6 +24,7 @@ import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.core.model.CharacterType
 import com.chipichipi.dobedobe.core.ui.SelectCharacterScreen
+import com.chipichipi.dobedobe.feature.setting.R
 
 @Composable
 internal fun SelectCharacterDialog(
@@ -78,6 +79,7 @@ internal fun SelectCharacterDialog(
                             CharacterType.Rabbit
                         }
                     },
+                    buttonText = R.string.feature_setting_change_character_completed,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 24.dp)
