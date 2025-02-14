@@ -12,6 +12,7 @@ class AndroidFeaturePlugin : Plugin<Project> {
 
             dependencies {
                 "implementation"(project(":core:designsystem"))
+                "implementation"(project(":core:ui"))
 
                 "implementation"(libs.findLibrary("androidx.lifecycle.runtimeCompose").get())
                 "implementation"(libs.findLibrary("androidx.lifecycle.viewModelCompose").get())
