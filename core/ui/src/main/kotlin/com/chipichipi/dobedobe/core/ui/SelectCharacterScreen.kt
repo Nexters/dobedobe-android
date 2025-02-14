@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeTextButton
+import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.core.model.CharacterType
 
@@ -63,5 +64,17 @@ fun SelectCharacterScreen(
                 color = DobeDobeTheme.colors.white,
             )
         }
+    }
+}
+
+@ThemePreviews
+@Composable
+private fun SelectCharacterScreenPreview() {
+    DobeDobeTheme {
+        SelectCharacterScreen(
+            selectedCharacter = CharacterType.Rabbit,
+            onCharacterToggled = {},
+            onCompleted = {},
+        )
     }
 }
