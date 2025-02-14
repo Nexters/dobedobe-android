@@ -1,6 +1,5 @@
 package com.chipichipi.dobedobe.feature.setting.component
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,7 +12,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,7 +31,7 @@ internal fun SelectCharacterDialog(
     characterType: CharacterType,
     onCharacterChangeCompleted: (CharacterType) -> Unit,
 ) {
-    var selectedCharacterType by remember { mutableStateOf(characterType) }
+    var selectedCharacterType by rememberSaveable { mutableStateOf(characterType) }
 
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -52,18 +51,14 @@ internal fun SelectCharacterDialog(
                     .fillMaxWidth()
                     .padding(top = 10.dp, bottom = 32.dp),
             ) {
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.CenterEnd,
+                IconButton(
+                    modifier = Modifier.align(Alignment.End),
+                    onClick = onDismissRequest,
                 ) {
-                    IconButton(
-                        onClick = onDismissRequest,
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.Cancel,
-                            contentDescription = null,
-                        )
-                    }
+                    Icon(
+                        imageVector = Icons.Filled.Cancel,
+                        contentDescription = null,
+                    )
                 }
 
                 SelectCharacterScreen(
