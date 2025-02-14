@@ -120,7 +120,7 @@ private fun DashboardScreen(
         when (uiState) {
             is DashboardUiState.Error,
             is DashboardUiState.Loading,
-            -> {
+                -> {
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
                 )
@@ -186,7 +186,7 @@ private fun DashboardBody(
                 }
             }
         }
-        val resources = CharacterResources.from(uiState.character)
+        val resources = remember(uiState.character) { CharacterResources.from(uiState.character) }
 
         DobeDobeBottomSheetScaffold(
             modifier = Modifier
