@@ -6,5 +6,5 @@
     <string name="onboarding_goal_hint">ex) Read 1 book per day</string>
     <string name="onboarding_goal_support_message">The simpler the goal, the better the focus.</string>
     <string name="onboarding_goal_completed">Complete</string>
-    <string name="onboarding_all_completed">시작하기</string>
+    <string name="onboarding_all_completed">Start</string>
 </resources>
