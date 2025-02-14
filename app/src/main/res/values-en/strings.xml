@@ -6,9 +6,5 @@
     <string name="onboarding_goal_hint">ex) Read 1 book per day</string>
     <string name="onboarding_goal_support_message">The simpler the goal, the better the focus.</string>
     <string name="onboarding_goal_completed">Complete</string>
-
-    <string name="onboarding_select_character_title">함께 할 러닝메이트를\n선택해 주세요</string>
-    <string name="onboarding_all_complete">시작하기</string>
-    <string name="onboarding_bird_character_description">마구 쪼는 잔소리무새</string>
-    <string name="onboarding_rabbit_character_description">공감 만점 럭키 토끼</string>
+    <string name="onboarding_all_completed">Start</string>
 </resources>

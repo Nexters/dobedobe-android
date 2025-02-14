@@ -2,6 +2,7 @@ package com.chipichipi.dobedobe.feature.dashboard
 
 import com.chipichipi.dobedobe.core.model.CharacterType
 import com.chipichipi.dobedobe.core.model.Goal
+import com.chipichipi.dobedobe.feature.dashboard.model.BubbleGoal
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
 
 sealed interface DashboardUiState {
@@ -11,7 +12,7 @@ sealed interface DashboardUiState {
         val photoState: List<DashboardPhotoState>,
         val isSystemNotificationDialogDisabled: Boolean,
         val goals: List<Goal>,
-        val bubbleTitle: String,
+        val bubbleGoal: BubbleGoal,
         val character: CharacterType,
     ) : DashboardUiState
 

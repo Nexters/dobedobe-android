@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="select_character_title">함께 할 러닝메이트를\n선택해 주세요</string>
+    <string name="bird_character_description">마구 쪼는 잔소리무새</string>
+    <string name="rabbit_character_description">공감 만점 럭키 토끼</string>
+</resources>

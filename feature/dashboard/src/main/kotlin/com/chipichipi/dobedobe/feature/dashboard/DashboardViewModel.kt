@@ -9,6 +9,7 @@ import com.chipichipi.dobedobe.core.data.repository.GoalRepository
 import com.chipichipi.dobedobe.core.data.repository.UserRepository
 import com.chipichipi.dobedobe.core.model.DashboardPhoto
 import com.chipichipi.dobedobe.core.model.Goal
+import com.chipichipi.dobedobe.feature.dashboard.model.BubbleGoal
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardModeState
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoConfig
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
@@ -21,8 +22,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.runningFold
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -73,7 +75,7 @@ internal class DashboardViewModel(
             photoState = dashboardPhotoStates,
             isSystemNotificationDialogDisabled = isSystemNotificationDialogDisabled,
             goals = goals,
-            bubbleTitle = bubbleGoal.title,
+            bubbleGoal = bubbleGoal,
             character = character,
         )
     }
@@ -163,58 +165,82 @@ internal class DashboardViewModel(
         }
     }
 
-    /**
-     * bubbleGoal 을 random 으로 변경하는 로직
-     *
-     * - todoGoals 가 empty 일 경우, Empty BubbleGoal 을 반환
-     * - todoGoals 가 empty 가 아닌 경우
-     *
-     * 1) goalRepository 에 있는 goal 이 변경될 경우
-     *      1-1) old goals 와 new goals 가 다르면 변경
-     *      1-2) 만약, bubbleGoal 의 id 가 todoGoals 에 포함되어 있으면 변경
-     *
-     * 2) changeBubbleEvent 가 발생할 경우
-     *      - 무조건 random 하게 변경
-     * */
     private fun bubbleGoalFlow(): Flow<BubbleGoal> {
-        val todoGoals: Flow<List<Goal>> = goalRepository.getTodoGoals()
-            .distinctUntilChanged()
-            .distinctUntilChanged { _, new ->
-                val id = bubbleGoal.value.id
-                val isBubbleGoalCompleted = new.any { it.id == id }
-                isBubbleGoalCompleted
-            }
+        val events: Flow<BubbleGoalEvent> = merge(
+            goalRepository.getTodoGoals().map { goals -> BubbleGoalEvent.GoalsChanged(goals) },
+            changeBubbleEvent.receiveAsFlow().map { BubbleGoalEvent.BubbleChanged },
+        )
 
-        return combine(
-            todoGoals,
-            changeBubbleEvent.receiveAsFlow().onStart {
-                emit(Unit)
-            },
-        ) { goals, _ ->
-            goals.filter { it.id != bubbleGoal.value.id }.shuffled()
-        }
-            .map(List<Goal>::firstOrNull)
-            .map { goal ->
-                if (goal != null) {
-                    BubbleGoal.from(goal)
-                } else {
-                    BubbleGoal.empty()
+        return events
+            .runningFold(BubbleGoal.empty() to emptyList<Goal>()) { acc, event ->
+                val (currentBubble, latestGoals) = acc
+
+                when (event) {
+                    is BubbleGoalEvent.GoalsChanged -> handleGoalsChangedEvent(
+                        event.goals,
+                        currentBubble,
+                    )
+
+                    is BubbleGoalEvent.BubbleChanged -> handleBubbleChangedEvent(
+                        latestGoals,
+                        currentBubble,
+                    )
                 }
             }
+            .map { it.first }
     }
 
-    private data class BubbleGoal(
-        val title: String,
-        val id: Long?,
-    ) {
-        companion object {
-            private val Empty = BubbleGoal(title = "", id = null)
+    /**
+     * goals 이 변경될 때(e. toggle, delete) BubbleGoal 을 업데이트하는 함수.
+     *
+     * 1) BubbleGoal 이 goals 에 포함되어 있으면 그대로 유지
+     * 2) BubbleGoal 이 goals 에 포함 x
+     *    - goals 이 비어있으면 empty 상태로 반환
+     *    - goals 이 존재하면 랜덤으로 선택하여 새로운 BubbleGoal 을 생성
+     * */
+    private fun handleGoalsChangedEvent(
+        goals: List<Goal>,
+        currentBubble: BubbleGoal,
+    ): Pair<BubbleGoal, List<Goal>> {
+        val containsCurrentBubble = goals.any { it.id == currentBubble.id }
 
-            fun empty(): BubbleGoal = Empty
-
-            fun from(goal: Goal): BubbleGoal {
-                return BubbleGoal(goal.title, goal.id)
-            }
+        if (containsCurrentBubble) {
+            return currentBubble to goals
         }
+
+        if (goals.isEmpty()) {
+            return BubbleGoal.empty() to goals
+        }
+
+        val newGoal = goals.random()
+        return BubbleGoal.from(newGoal) to goals
+    }
+
+    /**
+     * 버블 변경 이벤트(BubbleChanged)가 발생했을 때 현재 BubbleGoal 을 업데이트하는 함수.
+     *
+     * candidates: 현재 BubbleGoal 을 제외한 후보 목록
+     *
+     * 1) 후보 목록이 비어있으면 현재 BubbleGoal 을 그대로 반환
+     * 2) 후보 목록이 존재하면 후보 목록 중 랜덤으로 선택하여 새로운 BubbleGoal 을 생성
+     * */
+    private fun handleBubbleChangedEvent(
+        goals: List<Goal>,
+        currentBubble: BubbleGoal,
+    ): Pair<BubbleGoal, List<Goal>> {
+        val candidates = goals.filter { it.id != currentBubble.id }
+
+        return if (candidates.isEmpty()) {
+            currentBubble to goals
+        } else {
+            val newGoal = candidates.random()
+            BubbleGoal.from(newGoal) to goals
+        }
+    }
+
+    private sealed class BubbleGoalEvent {
+        data class GoalsChanged(val goals: List<Goal>) : BubbleGoalEvent()
+
+        data object BubbleChanged : BubbleGoalEvent()
     }
 }

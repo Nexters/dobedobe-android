@@ -120,7 +120,7 @@ private fun DashboardScreen(
         when (uiState) {
             is DashboardUiState.Error,
             is DashboardUiState.Loading,
-                -> {
+            -> {
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
                 )
@@ -138,7 +138,6 @@ private fun DashboardScreen(
                     navigateToSetting = navigateToSetting,
                     navigateToSearchGoal = navigateToSearchGoal,
                     onGoalToggled = onGoalToggled,
-                    // TODO: 캐릭터 누르면 말풍선 바뀌는걸로 옮기기!
                     onChangeBubble = onChangeBubble,
                     onToggleMode = onToggleMode,
                     onUpsertPhotos = onUpsertPhotos,
@@ -241,11 +240,12 @@ private fun DashboardBody(
                 DashboardViewMode(
                     isViewMode = !isEditMode,
                     photoState = uiState.photoState,
-                    bubbleTitle = uiState.bubbleTitle,
+                    bubbleGoal = uiState.bubbleGoal,
                     photoFramesState = photoFramesState,
                     onChangeBubble = onChangeBubble,
                     onToggleExpansion = onToggleExpansion,
                     onToggleMode = onToggleMode,
+                    navigateToGoalDetail = navigateToGoalDetail,
                     navigateToSetting = navigateToSetting,
                     resources = resources,
                     modifier = Modifier

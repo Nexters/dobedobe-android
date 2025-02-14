@@ -32,6 +32,7 @@ include(":core:database")
 include(":core:datastore")
 include(":core:datastore-proto")
 include(":core:notifications")
+include(":core:ui")
 
 include(":feature:dashboard")
 include(":feature:goal")

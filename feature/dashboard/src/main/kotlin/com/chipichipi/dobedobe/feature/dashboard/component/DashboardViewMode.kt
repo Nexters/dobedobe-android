@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.feature.dashboard.DashboardPhotoFramesState
+import com.chipichipi.dobedobe.feature.dashboard.model.BubbleGoal
 import com.chipichipi.dobedobe.feature.dashboard.model.CharacterResources
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
 
@@ -24,12 +25,13 @@ internal fun SharedTransitionScope.DashboardViewMode(
     isViewMode: Boolean,
     resources: CharacterResources,
     photoState: List<DashboardPhotoState>,
-    bubbleTitle: String,
+    bubbleGoal: BubbleGoal,
     photoFramesState: DashboardPhotoFramesState,
     onChangeBubble: () -> Unit,
     onToggleExpansion: (Int) -> Unit,
     onToggleMode: () -> Unit,
     navigateToSetting: () -> Unit,
+    navigateToGoalDetail: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -65,13 +67,17 @@ internal fun SharedTransitionScope.DashboardViewMode(
                 ) {
                     Spacer(Modifier.height(14.dp))
                     DashboardBubble(
-                        title = bubbleTitle,
+                        title = bubbleGoal.title,
                         textStyle = DobeDobeTheme.typography.body2,
                         modifier = Modifier
                             .background(
                                 color = DobeDobeTheme.colors.white,
                             ),
-                        onClick = onChangeBubble,
+                        onClick = {
+                            if (bubbleGoal.id != null) {
+                                navigateToGoalDetail(bubbleGoal.id)
+                            }
+                        },
                     )
                     DashboardCharacter(
                         modifier = Modifier
@@ -80,6 +86,7 @@ internal fun SharedTransitionScope.DashboardViewMode(
                         defaultApngRes = resources.defaultApngRes,
                         reactionApngRes = resources.reactionApngRes,
                         placeholder = resources.placeholderRes,
+                        onChangeBubble = onChangeBubble,
                     )
                 }
             }
