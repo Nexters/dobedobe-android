@@ -25,7 +25,7 @@ fun SelectCharacterScreen(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
+        modifier = modifier,
     ) {
         Text(
             text = stringResource(R.string.select_character_title),
@@ -69,7 +69,7 @@ private fun SelectCharacterScreenPreview() {
             selectedCharacter = CharacterType.Rabbit,
             onCharacterToggled = {},
             onCompleted = {},
-            buttonText = R.string.select_character_title
+            buttonText = R.string.select_character_title,
         )
     }
 }

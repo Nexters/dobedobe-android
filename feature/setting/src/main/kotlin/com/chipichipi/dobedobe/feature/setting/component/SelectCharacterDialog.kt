@@ -37,7 +37,7 @@ internal fun SelectCharacterDialog(
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(
-            usePlatformDefaultWidth = false
+            usePlatformDefaultWidth = false,
         ),
     ) {
         Surface(
@@ -54,14 +54,14 @@ internal fun SelectCharacterDialog(
             ) {
                 Box(
                     modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.CenterEnd
+                    contentAlignment = Alignment.CenterEnd,
                 ) {
                     IconButton(
                         onClick = onDismissRequest,
                     ) {
                         Icon(
                             imageVector = Icons.Filled.Cancel,
-                            contentDescription = null
+                            contentDescription = null,
                         )
                     }
                 }
@@ -82,7 +82,7 @@ internal fun SelectCharacterDialog(
                     buttonText = R.string.feature_setting_change_character_completed,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 24.dp)
+                        .padding(horizontal = 24.dp),
                 )
             }
         }

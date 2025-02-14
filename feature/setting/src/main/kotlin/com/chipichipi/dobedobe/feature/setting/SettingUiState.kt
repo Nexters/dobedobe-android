@@ -7,6 +7,6 @@ sealed interface SettingUiState {
 
     data class Success(
         val isGoalNotificationEnabled: Boolean,
-        val characterType: CharacterType
+        val characterType: CharacterType,
     ) : SettingUiState
 }

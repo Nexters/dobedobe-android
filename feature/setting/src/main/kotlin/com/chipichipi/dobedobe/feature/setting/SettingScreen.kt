@@ -48,7 +48,7 @@ internal fun SettingRoute(
         uiState = settingUiState,
         navigateToBack = navigateToBack,
         onNotificationToggled = viewModel::setGoalNotificationEnabled,
-        onCharacterChangeCompleted = viewModel::changeCharacterCompleted
+        onCharacterChangeCompleted = viewModel::changeCharacterCompleted,
     )
 }
 
@@ -86,7 +86,7 @@ private fun SettingScreen(
                         isGoalNotificationEnabled = uiState.isGoalNotificationEnabled,
                         onNotificationToggled = onNotificationToggled,
                         characterType = uiState.characterType,
-                        onCharacterChangeCompleted = onCharacterChangeCompleted
+                        onCharacterChangeCompleted = onCharacterChangeCompleted,
                     )
                 }
             }

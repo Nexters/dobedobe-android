@@ -16,7 +16,7 @@ internal class SettingViewModel(
         .map { user ->
             SettingUiState.Success(
                 isGoalNotificationEnabled = user.isGoalNotificationEnabled,
-                characterType = user.characterType
+                characterType = user.characterType,
             )
         }
         .stateIn(
