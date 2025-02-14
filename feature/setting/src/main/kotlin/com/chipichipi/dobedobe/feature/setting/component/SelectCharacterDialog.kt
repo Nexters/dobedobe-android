@@ -57,7 +57,7 @@ internal fun SelectCharacterDialog(
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Cancel,
-                        contentDescription = null,
+                        contentDescription = "close",
                     )
                 }
 
