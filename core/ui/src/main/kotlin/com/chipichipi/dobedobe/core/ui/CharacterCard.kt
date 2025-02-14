@@ -1,4 +1,4 @@
-package com.chipichipi.dobedobe.onboarding
+package com.chipichipi.dobedobe.core.ui
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
@@ -23,21 +23,20 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.chipichipi.dobedobe.R
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 
 @Composable
-internal fun OnboardingBirdCard(
+internal fun BirdCard(
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     CharacterCard(
         modifier = modifier,
-        title = stringResource(R.string.onboarding_bird_character_description),
+        title = stringResource(R.string.bird_character_description),
         characterAlignment = Alignment.BottomStart,
         bubbleAlignment = Alignment.TopEnd,
-        characterRes = R.drawable.onboarding_bird,
+        characterRes = R.drawable.bird_character,
         bubbleRes = R.drawable.bubble_bird,
         selected = selected,
         onClick = onClick,
@@ -45,17 +44,17 @@ internal fun OnboardingBirdCard(
 }
 
 @Composable
-internal fun OnboardingRabbitCard(
+internal fun RabbitCard(
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     CharacterCard(
         modifier = modifier,
-        title = stringResource(R.string.onboarding_rabbit_character_description),
+        title = stringResource(R.string.rabbit_character_description),
         characterAlignment = Alignment.BottomEnd,
         bubbleAlignment = Alignment.TopStart,
-        characterRes = R.drawable.onboarding_rabbit,
+        characterRes = R.drawable.rabbit_character,
         bubbleRes = R.drawable.bubble_rabbit,
         selected = selected,
         onClick = onClick,

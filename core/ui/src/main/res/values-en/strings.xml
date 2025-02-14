@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="select_character_title">Please select your running mate</string>
+    <string name="all_complete">Start</string>
+    <string name="bird_character_description">Nagging Bird</string>
+    <string name="rabbit_character_description">Empathetic Lucky Rabbit</string>
+</resources>
