@@ -31,6 +31,7 @@ internal fun DashboardCharacter(
     @RawRes defaultApngRes: Int,
     @RawRes reactionApngRes: Int,
     @DrawableRes placeholder: Int,
+    onChangeBubble: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -45,6 +46,7 @@ internal fun DashboardCharacter(
 
     LaunchedEffect(isResetTrigger) {
         if (isResetTrigger) {
+            onChangeBubble()
             delay(4000)
             currentRaw = defaultApngRes
             isResetTrigger = false
@@ -81,6 +83,7 @@ private fun DashboardCharacterPreview() {
             defaultApngRes = R.raw.rabbit01,
             reactionApngRes = R.raw.rabbit02,
             placeholder = R.drawable.rabbit_placeholder,
+            onChangeBubble = {},
         )
     }
 }
