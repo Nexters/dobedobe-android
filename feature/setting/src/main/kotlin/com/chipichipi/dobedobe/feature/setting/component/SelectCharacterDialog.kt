@@ -11,6 +11,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -25,9 +29,10 @@ import com.chipichipi.dobedobe.core.ui.SelectCharacterScreen
 internal fun SelectCharacterDialog(
     onDismissRequest: () -> Unit,
     characterType: CharacterType,
-    onCharacterChangeCompleted: () -> Unit,
-    onCharacterToggled: () -> Unit
+    onCharacterChangeCompleted: (CharacterType) -> Unit,
 ) {
+    var selectedCharacterType by remember { mutableStateOf(characterType) }
+
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(
@@ -61,12 +66,18 @@ internal fun SelectCharacterDialog(
                 }
 
                 SelectCharacterScreen(
-                    selectedCharacter = characterType,
+                    selectedCharacter = selectedCharacterType,
                     onCompleted = {
-                        onCharacterChangeCompleted()
+                        onCharacterChangeCompleted(selectedCharacterType)
                         onDismissRequest()
                     },
-                    onCharacterToggled = onCharacterToggled,
+                    onCharacterToggled = {
+                        selectedCharacterType = if (selectedCharacterType == CharacterType.Rabbit) {
+                            CharacterType.Bird
+                        } else {
+                            CharacterType.Rabbit
+                        }
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 24.dp)
@@ -84,7 +95,6 @@ private fun SelectCharacterDialogPreview() {
             onDismissRequest = {},
             characterType = CharacterType.Rabbit,
             onCharacterChangeCompleted = {},
-            onCharacterToggled = {}
         )
     }
 }
