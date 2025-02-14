@@ -3,10 +3,12 @@ package com.chipichipi.dobedobe
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -27,11 +29,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         ActivityInfo.SCREEN_ORIENTATION_PORTRAIT.also { requestedOrientation = it }
 
-        enableEdgeToEdge()
-        WindowInsetsControllerCompat(window, window.decorView).apply {
-            // enforce light status bar
-            isAppearanceLightStatusBars = true
-        }
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.light(
+                Color.Transparent.toArgb(),
+                Color.Transparent.toArgb(),
+            ),
+        )
 
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
