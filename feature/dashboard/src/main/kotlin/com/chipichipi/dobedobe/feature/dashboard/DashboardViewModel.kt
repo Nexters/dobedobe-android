@@ -205,12 +205,10 @@ internal class DashboardViewModel(
         val containsCurrentBubble = goals.any { it.id == currentBubble.id }
 
         if (containsCurrentBubble) {
-            // 현재 버블이 여전히 목록에 있으면 그대로 유지
             return currentBubble to goals
         }
 
         if (goals.isEmpty()) {
-            // 목록이 비었으면 empty 상태로 반환
             return BubbleGoal.empty() to goals
         }
 
