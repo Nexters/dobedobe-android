@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,8 +26,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeSwitch
 import com.chipichipi.dobedobe.core.designsystem.icon.DobeDobeIcons
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
+import com.chipichipi.dobedobe.core.model.CharacterType
 import com.chipichipi.dobedobe.core.notifications.NotificationUtil
 import com.chipichipi.dobedobe.core.notifications.NotificationUtil.areNotificationsEnabled
+import com.chipichipi.dobedobe.feature.setting.component.SelectCharacterDialog
 import com.chipichipi.dobedobe.feature.setting.component.SettingRow
 import com.chipichipi.dobedobe.feature.setting.component.SettingTopAppBar
 import com.chipichipi.dobedobe.feature.setting.util.openPlayStore
@@ -46,6 +49,7 @@ internal fun SettingRoute(
         uiState = settingUiState,
         navigateToBack = navigateToBack,
         onNotificationToggled = viewModel::setGoalNotificationEnabled,
+        onCharacterChangeCompleted = viewModel::changeCharacterCompleted,
     )
 }
 
@@ -54,6 +58,7 @@ private fun SettingScreen(
     uiState: SettingUiState,
     navigateToBack: () -> Unit,
     onNotificationToggled: (Boolean) -> Unit,
+    onCharacterChangeCompleted: (CharacterType) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -81,6 +86,8 @@ private fun SettingScreen(
                     SettingBody(
                         isGoalNotificationEnabled = uiState.isGoalNotificationEnabled,
                         onNotificationToggled = onNotificationToggled,
+                        characterType = uiState.characterType,
+                        onCharacterChangeCompleted = onCharacterChangeCompleted,
                     )
                 }
             }
@@ -96,15 +103,26 @@ private fun SettingScreen(
 private fun SettingBody(
     isGoalNotificationEnabled: Boolean,
     onNotificationToggled: (Boolean) -> Unit,
+    characterType: CharacterType,
+    onCharacterChangeCompleted: (CharacterType) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
+    var showSelectCharacterDialog by rememberSaveable { mutableStateOf(false) }
 
     val handleNotificationToggle: (Boolean) -> Unit = { enabled ->
         NotificationUtil.handleNotificationToggle(
             context = context,
             enabled = enabled,
             onNotificationToggled = onNotificationToggled,
+        )
+    }
+
+    if (showSelectCharacterDialog) {
+        SelectCharacterDialog(
+            onDismissRequest = { showSelectCharacterDialog = false },
+            characterType = characterType,
+            onCharacterChangeCompleted = onCharacterChangeCompleted,
         )
     }
 
@@ -130,6 +148,17 @@ private fun SettingBody(
         SettingRow(
             label = stringResource(R.string.feature_setting_app_feedback),
             onClick = { openPlayStore(context) },
+        ) {
+            Icon(
+                painter = painterResource(DobeDobeIcons.ArrowForward),
+                contentDescription = null,
+                tint = Color.Unspecified,
+            )
+        }
+
+        SettingRow(
+            label = stringResource(R.string.feature_setting_change_character),
+            onClick = { showSelectCharacterDialog = true },
         ) {
             Icon(
                 painter = painterResource(DobeDobeIcons.ArrowForward),

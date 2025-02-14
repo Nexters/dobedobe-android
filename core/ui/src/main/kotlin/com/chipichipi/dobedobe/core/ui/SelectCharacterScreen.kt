@@ -1,12 +1,11 @@
 package com.chipichipi.dobedobe.core.ui
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,16 +21,11 @@ fun SelectCharacterScreen(
     selectedCharacter: CharacterType,
     onCharacterToggled: () -> Unit,
     onCompleted: () -> Unit,
+    @StringRes buttonText: Int,
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 24.dp)
-            .padding(
-                top = 48.dp,
-                bottom = 32.dp,
-            ),
+        modifier = modifier,
     ) {
         Text(
             text = stringResource(R.string.select_character_title),
@@ -59,7 +53,7 @@ fun SelectCharacterScreen(
             onClick = onCompleted,
         ) {
             Text(
-                text = stringResource(R.string.all_complete),
+                text = stringResource(buttonText),
                 style = DobeDobeTheme.typography.heading2,
                 color = DobeDobeTheme.colors.white,
             )
@@ -75,6 +69,7 @@ private fun SelectCharacterScreenPreview() {
             selectedCharacter = CharacterType.Rabbit,
             onCharacterToggled = {},
             onCompleted = {},
+            buttonText = R.string.select_character_title,
         )
     }
 }

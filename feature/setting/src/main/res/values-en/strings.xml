@@ -3,4 +3,6 @@
     <string name="feature_setting">Setting</string>
     <string name="feature_setting_app_feedback">Leave App Feedback</string>
     <string name="feature_setting_goal_notifications">Notification</string>
+    <string name="feature_setting_change_character">Change Character</string>
+    <string name="feature_setting_change_character_completed">Confirm Change</string>
 </resources>
