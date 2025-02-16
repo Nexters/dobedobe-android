@@ -1,6 +1,8 @@
 package com.chipichipi.dobedobe.core.designsystem.component
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -11,6 +13,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.dp
 import com.chipichipi.dobedobe.core.designsystem.icon.DobeDobeIcons
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 
@@ -25,9 +28,11 @@ fun DobeDobeCheckBox(
 ) {
     IconButton(
         onClick = { onCheckedChange?.invoke(!checked) },
-        modifier = modifier.semantics {
-            role = Role.Checkbox
-        },
+        modifier = modifier
+            .size(44.dp)
+            .semantics {
+                role = Role.Checkbox
+            },
         enabled = enabled,
     ) {
         val iconRes = if (checked) checkedIconRes else uncheckedIconRes

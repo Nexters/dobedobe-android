@@ -12,8 +12,8 @@ object DobeDobeIcons {
     val Party = R.drawable.ic_party_24
     val Fire = R.drawable.ic_fire_24
     val Cancel = R.drawable.ic_cancel_circle_16
-    val Checked = R.drawable.ic_checked_24
-    val Unchecked = R.drawable.ic_unchecked_24
+    val Checked = R.drawable.ic_checked_36
+    val Unchecked = R.drawable.ic_unchecked_36
     val Edit = R.drawable.ic_edit_24
     val EditPlaceholder = R.drawable.ic_edit_placeholder_58
     val Search = R.drawable.ic_search_24
