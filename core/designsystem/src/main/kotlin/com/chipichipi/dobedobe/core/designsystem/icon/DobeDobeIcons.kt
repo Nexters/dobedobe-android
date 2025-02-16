@@ -6,9 +6,9 @@ object DobeDobeIcons {
     val Add = R.drawable.ic_add_14
     val ArrowBack = R.drawable.ic_arrow_back_24
     val PinnedFilled = R.drawable.ic_pin_fill_24
-    val PinnedOutLined = R.drawable.ic_pin_24
+    val PinnedOutLine = R.drawable.ic_pin_24
     val FlagFilled = R.drawable.ic_flag_fill_24
-    val FlagOutLined = R.drawable.ic_flag_24
+    val FlagOutLine = R.drawable.ic_flag_24
     val Party = R.drawable.ic_party_24
     val Fire = R.drawable.ic_fire_24
     val Cancel = R.drawable.ic_cancel_circle_16
