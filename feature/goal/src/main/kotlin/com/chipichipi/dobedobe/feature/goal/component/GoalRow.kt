@@ -76,7 +76,7 @@ fun GoalRow(
 private fun RowScope.TrailingIcon(isPinned: Boolean) {
     if (isPinned) {
         Icon(
-            imageVector = ImageVector.vectorResource(DobeDobeIcons.Bookmark),
+            imageVector = ImageVector.vectorResource(DobeDobeIcons.PinnedFilled),
             modifier = Modifier
                 .size(PinnedIconSize)
                 .align(Alignment.Top),
