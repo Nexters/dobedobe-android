@@ -17,9 +17,11 @@ import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 @Composable
 fun DobeDobeCheckBox(
     checked: Boolean,
-    onCheckedChange: ((Boolean) -> Unit)? = null,
     modifier: Modifier = Modifier,
+    onCheckedChange: ((Boolean) -> Unit)? = null,
     enabled: Boolean = true,
+    @DrawableRes checkedIconRes: Int = DobeDobeIcons.Checked,
+    @DrawableRes uncheckedIconRes: Int = DobeDobeIcons.Unchecked,
 ) {
     IconButton(
         onClick = { onCheckedChange?.invoke(!checked) },
@@ -28,7 +30,7 @@ fun DobeDobeCheckBox(
         },
         enabled = enabled,
     ) {
-        val iconRes = if (checked) DobeDobeIcons.Checked else DobeDobeIcons.Unchecked
+        val iconRes = if (checked) checkedIconRes else uncheckedIconRes
         Icon(
             imageVector = ImageVector.vectorResource(iconRes),
             contentDescription = "checked",
