@@ -44,7 +44,7 @@ import kotlinx.datetime.Instant
 
 @Composable
 internal fun GoalBottomSheetContent(
-    isExpanded: Boolean,
+    isNotPartiallyExpanded: Boolean,
     goals: List<Goal>,
     onGoalToggled: (Long) -> Unit,
     onGoalClicked: (Long) -> Unit,
@@ -65,7 +65,7 @@ internal fun GoalBottomSheetContent(
                 onGoalToggled = onGoalToggled,
                 onGoalClicked = onGoalClicked,
             )
-            if (isExpanded) {
+            if (isNotPartiallyExpanded) {
                 SearchGoalNavigationBar(
                     onTapSearchBar = onTapSearchBar,
                     modifier = Modifier
@@ -188,7 +188,7 @@ private fun GoalBottomSheetContentPreview(
         }
     }
     GoalBottomSheetContent(
-        isExpanded = true,
+        isNotPartiallyExpanded = true,
         goals = goals,
         onGoalToggled = onGoalDone,
         onGoalClicked = {},

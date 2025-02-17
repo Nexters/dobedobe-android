@@ -204,13 +204,17 @@ private fun DashboardBody(
                 ),
             scaffoldState = bottomSheetScaffoldState,
             sheetContent = {
-                val isExpanded by remember {
-                    derivedStateOf { bottomSheetScaffoldState.bottomSheetState.targetValue == SheetValue.Expanded }
+                val isNotPartiallyExpanded by remember {
+                    derivedStateOf {
+                        bottomSheetScaffoldState.bottomSheetState.let { state ->
+                            state.currentValue == SheetValue.Expanded || state.targetValue == SheetValue.Expanded
+                        }
+                    }
                 }
                 val coroutineScope = rememberCoroutineScope()
 
                 GoalBottomSheetContent(
-                    isExpanded = isExpanded,
+                    isNotPartiallyExpanded = isNotPartiallyExpanded,
                     goals = uiState.goals,
                     onGoalToggled = onGoalToggled,
                     onAddGoalClicked = navigateToAddGoal,
@@ -221,7 +225,7 @@ private fun DashboardBody(
                 )
 
                 BackHandler(
-                    enabled = isExpanded,
+                    enabled = isNotPartiallyExpanded,
                 ) {
                     coroutineScope.launch {
                         bottomSheetScaffoldState.bottomSheetState.partialExpand()
