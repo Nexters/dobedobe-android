@@ -63,7 +63,7 @@ internal fun DashboardCharacter(
             imageLoader = imageLoader,
             placeholder = painterResource(placeholder),
             modifier = Modifier
-                .size(180.dp, 225.dp)
+                .size(262.dp, 328.dp)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null,

@@ -232,7 +232,7 @@ private fun DashboardBody(
                     }
                 }
             },
-            sheetPeekHeight = 330.dp,
+            sheetPeekHeight = 215.dp,
         ) { innerPadding ->
             Box(
                 modifier = Modifier
