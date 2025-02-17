@@ -3,12 +3,9 @@ package com.chipichipi.dobedobe.feature.dashboard
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -44,10 +41,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
@@ -111,7 +105,7 @@ private fun GoalBottomSheetHeader(
     ) {
         Text(
             text = stringResource(R.string.feature_dashboard_goal_bottom_sheet_title),
-            style = DobeDobeTheme.typography.heading2,
+            style = DobeDobeTheme.typography.heading1,
             color = DobeDobeTheme.colors.gray900,
         )
 
@@ -270,26 +264,18 @@ private fun GoalInfoCard(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        val heading1 = DobeDobeTheme.typography.heading1
-
-        Text(
-            text = buildAnnotatedString {
-                append(
-                    "$title\n"
-                )
-                withStyle(
-                    style = SpanStyle(
-                        fontStyle = heading1.fontStyle,
-                        fontWeight = heading1.fontWeight,
-                        fontSize = heading1.fontSize,
-                    )
-                ) {
-                    append("$count")
-                }
-            },
-            style = DobeDobeTheme.typography.body3,
-            color = DobeDobeTheme.colors.black
-        )
+        Column {
+            Text(
+                text = title,
+                style = DobeDobeTheme.typography.body3,
+                color = DobeDobeTheme.colors.gray600
+            )
+            Text(
+                text = "$count",
+                style = DobeDobeTheme.typography.heading1,
+                color = DobeDobeTheme.colors.gray900
+            )
+        }
 
         Icon(
             painter = painterResource(icon),
