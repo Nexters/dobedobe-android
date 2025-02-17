@@ -165,14 +165,14 @@ private fun GoalBottomSheetBody(
         ) {
             GoalInfoCard(
                 modifier = Modifier.weight(1f),
-                title = "올해의 목표", // TODO :
+                title = stringResource(R.string.feature_dashboard_label_yearly_goal),
                 count = goals.size,
                 icon = DobeDobeIcons.Year2025,
                 dropShadowColor = Color(0xFF6CD2FF),
             )
             GoalInfoCard(
                 modifier = Modifier.weight(1f),
-                title = "완료한 목표", // TODO :
+                title = stringResource(R.string.feature_dashboard_label_completed_goal),
                 count = goals.filter { it.isCompleted }.size,
                 icon = DobeDobeIcons.Checked,
                 dropShadowColor = Color(0xFF58FF92),
@@ -208,7 +208,7 @@ private fun ColumnScope.GoalListSection(
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
-                text = "목표 리스트", // TODO :
+                text = stringResource(R.string.feature_dashboard_goal_list),
                 style = DobeDobeTheme.typography.heading2,
                 color = DobeDobeTheme.colors.black,
             )
