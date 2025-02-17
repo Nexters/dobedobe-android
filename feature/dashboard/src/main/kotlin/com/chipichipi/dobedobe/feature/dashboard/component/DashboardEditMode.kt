@@ -190,7 +190,7 @@ private fun DashboardEditModeBody(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(342.dp),
+                .height(450.dp),
             contentAlignment = Alignment.Center,
         ) {
             photoDraftsState.forEach { photo ->
