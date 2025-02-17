@@ -1,5 +1,6 @@
 package com.chipichipi.dobedobe.feature.dashboard
 
+import androidx.compose.animation.core.snap
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -61,6 +62,7 @@ internal fun GoalBottomSheetContent(
         Column {
             GoalBottomSheetHeader(onAddGoalClicked)
             GoalBottomSheetBody(
+                isNotPartiallyExpanded = isNotPartiallyExpanded,
                 goals = goals,
                 onGoalToggled = onGoalToggled,
                 onGoalClicked = onGoalClicked,
@@ -130,6 +132,7 @@ private fun SearchGoalNavigationBar(
 
 @Composable
 private fun ColumnScope.GoalBottomSheetBody(
+    isNotPartiallyExpanded: Boolean,
     goals: List<Goal>,
     onGoalToggled: (Long) -> Unit,
     onGoalClicked: (Long) -> Unit,
@@ -158,12 +161,17 @@ private fun ColumnScope.GoalBottomSheetBody(
                 vertical = 16.dp,
             ),
         ) {
-            items(goals) { goal ->
-                GoalRow(
-                    goal = goal,
-                    onToggleCompleted = { onGoalToggled(goal.id) },
-                    onClick = { onGoalClicked(goal.id) },
-                )
+            if (isNotPartiallyExpanded) {
+                items(goals) { goal ->
+                    GoalRow(
+                        goal = goal,
+                        modifier = Modifier.animateItem(
+                            fadeOutSpec = snap(),
+                        ),
+                        onToggleCompleted = { onGoalToggled(goal.id) },
+                        onClick = { onGoalClicked(goal.id) },
+                    )
+                }
             }
         }
     }
