@@ -41,10 +41,10 @@ fun DobeDobeCheckBox(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = ripple(
                     bounded = false,
-                    radius = size / 2
-                )
+                    radius = size / 2,
+                ),
             ),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         val iconRes = if (checked) checkedIconRes else uncheckedIconRes
 

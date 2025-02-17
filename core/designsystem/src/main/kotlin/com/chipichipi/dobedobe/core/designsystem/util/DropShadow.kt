@@ -25,12 +25,12 @@ fun Modifier.dropShadow(
 
     val shadowSize = Size(
         width = size.width + spreadPx,
-        height = size.height + spreadPx
+        height = size.height + spreadPx,
     )
     val shadowOutline = shape.createOutline(
         size = shadowSize,
         layoutDirection = layoutDirection,
-        density = this
+        density = this,
     )
 
     val paint = Paint().apply {

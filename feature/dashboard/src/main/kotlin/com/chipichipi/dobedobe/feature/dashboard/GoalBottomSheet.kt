@@ -77,7 +77,7 @@ internal fun GoalBottomSheetContent(
                 goals = goals,
                 onGoalToggled = onGoalToggled,
                 onGoalClicked = onGoalClicked,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             )
             if (isNotPartiallyExpanded) {
                 SearchGoalNavigationBar(
@@ -148,34 +148,34 @@ private fun GoalBottomSheetBody(
     goals: List<Goal>,
     onGoalToggled: (Long) -> Unit,
     onGoalClicked: (Long) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(
                 vertical = 16.dp,
-                horizontal = 24.dp
+                horizontal = 24.dp,
             ),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             GoalInfoCard(
                 modifier = Modifier.weight(1f),
                 title = "올해의 목표", // TODO :
                 count = goals.size,
                 icon = DobeDobeIcons.Year2025,
-                dropShadowColor = Color(0xFF6CD2FF)
+                dropShadowColor = Color(0xFF6CD2FF),
             )
             GoalInfoCard(
                 modifier = Modifier.weight(1f),
                 title = "완료한 목표", // TODO :
                 count = goals.filter { it.isCompleted }.size,
                 icon = DobeDobeIcons.Checked,
-                dropShadowColor = Color(0xFF58FF92)
+                dropShadowColor = Color(0xFF58FF92),
             )
         }
 
@@ -185,7 +185,7 @@ private fun GoalBottomSheetBody(
             isNotPartiallyExpanded = isNotPartiallyExpanded,
             goals = goals,
             onGoalToggled = onGoalToggled,
-            onGoalClicked = onGoalClicked
+            onGoalClicked = onGoalClicked,
         )
     }
 }
@@ -195,17 +195,17 @@ private fun ColumnScope.GoalListSection(
     isNotPartiallyExpanded: Boolean,
     goals: List<Goal>,
     onGoalToggled: (Long) -> Unit,
-    onGoalClicked: (Long) -> Unit
+    onGoalClicked: (Long) -> Unit,
 ) {
     AnimatedVisibility(
         visible = isNotPartiallyExpanded,
         enter = fadeIn(),
         exit = fadeOut(
-            animationSpec = spring(stiffness = Spring.StiffnessHigh)
-        )
+            animationSpec = spring(stiffness = Spring.StiffnessHigh),
+        ),
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
                 text = "목표 리스트", // TODO :
@@ -254,7 +254,7 @@ private fun GoalInfoCard(
             .border(
                 BorderStroke(
                     width = 0.3.dp,
-                    color = DobeDobeTheme.colors.gray100
+                    color = DobeDobeTheme.colors.gray100,
                 ),
                 shape = RoundedCornerShape(15.dp),
             )
@@ -268,12 +268,12 @@ private fun GoalInfoCard(
             Text(
                 text = title,
                 style = DobeDobeTheme.typography.body3,
-                color = DobeDobeTheme.colors.gray600
+                color = DobeDobeTheme.colors.gray600,
             )
             Text(
                 text = "$count",
                 style = DobeDobeTheme.typography.heading1,
-                color = DobeDobeTheme.colors.gray900
+                color = DobeDobeTheme.colors.gray900,
             )
         }
 

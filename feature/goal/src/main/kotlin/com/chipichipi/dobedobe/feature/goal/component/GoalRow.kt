@@ -50,9 +50,9 @@ fun GoalRow(
                 .fillMaxWidth()
                 .padding(
                     vertical = 16.dp,
-                    horizontal = 14.dp
+                    horizontal = 14.dp,
                 ),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             DobeDobeCheckBox(
                 size = 36.dp,

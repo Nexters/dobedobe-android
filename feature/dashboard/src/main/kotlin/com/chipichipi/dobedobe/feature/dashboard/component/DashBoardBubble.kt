@@ -35,7 +35,7 @@ internal fun DashboardBubble(
             style = textStyle,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.widthIn(max = 240.dp)
+            modifier = Modifier.widthIn(max = 240.dp),
         )
     }
 }
