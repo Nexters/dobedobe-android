@@ -1,7 +1,14 @@
 package com.chipichipi.dobedobe.feature.dashboard
 
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.snap
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -9,7 +16,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,9 +45,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -79,6 +83,7 @@ internal fun GoalBottomSheetContent(
                 goals = goals,
                 onGoalToggled = onGoalToggled,
                 onGoalClicked = onGoalClicked,
+                modifier = Modifier.weight(1f)
             )
             if (isNotPartiallyExpanded) {
                 SearchGoalNavigationBar(
@@ -144,84 +149,98 @@ private fun SearchGoalNavigationBar(
 }
 
 @Composable
-private fun ColumnScope.GoalBottomSheetBody(
+private fun GoalBottomSheetBody(
     isNotPartiallyExpanded: Boolean,
     goals: List<Goal>,
     onGoalToggled: (Long) -> Unit,
     onGoalClicked: (Long) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    if (goals.isEmpty()) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(
+                vertical = 16.dp,
+                horizontal = 24.dp
+            ),
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Text(
-                text = stringResource(R.string.feature_dashboard_goal_bottom_sheet_empty_message),
-                style = DobeDobeTheme.typography.body1,
-                color = DobeDobeTheme.colors.gray500,
-                textAlign = TextAlign.Center,
+            GoalInfoCard(
+                modifier = Modifier.weight(1f),
+                title = "올해의 목표", // TODO :
+                count = goals.size,
+                icon = DobeDobeIcons.Year2025,
+                dropShadowColor = Color(0xFF6CD2FF)
+            )
+            GoalInfoCard(
+                modifier = Modifier.weight(1f),
+                title = "완료한 목표", // TODO :
+                count = goals.filter { it.isCompleted }.size,
+                icon = DobeDobeIcons.Checked,
+                dropShadowColor = Color(0xFF58FF92)
             )
         }
-    } else {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = PaddingValues(
-                horizontal = 24.dp,
-                vertical = 16.dp,
-            ),
+
+        Spacer(modifier = Modifier.height(28.dp))
+
+        GoalListSection(
+            isNotPartiallyExpanded = isNotPartiallyExpanded,
+            goals = goals,
+            onGoalToggled = onGoalToggled,
+            onGoalClicked = onGoalClicked
+        )
+    }
+}
+
+@Composable
+private fun ColumnScope.GoalListSection(
+    isNotPartiallyExpanded: Boolean,
+    goals: List<Goal>,
+    onGoalToggled: (Long) -> Unit,
+    onGoalClicked: (Long) -> Unit
+) {
+    AnimatedVisibility(
+        visible = isNotPartiallyExpanded,
+        enter = fadeIn(),
+        exit = fadeOut(
+            animationSpec = spring(stiffness = Spring.StiffnessHigh)
+        )
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth()
         ) {
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+            Text(
+                text = "목표 리스트", // TODO :
+                style = DobeDobeTheme.typography.heading2,
+                color = DobeDobeTheme.colors.black,
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            if (goals.isEmpty()) {
+                Text(
+                    text = stringResource(R.string.feature_dashboard_goal_bottom_sheet_empty_message),
+                    style = DobeDobeTheme.typography.body1,
+                    color = DobeDobeTheme.colors.gray500,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxSize(),
+                )
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
-                    GoalInfoCard(
-                        modifier = Modifier.weight(1f),
-                        title = "올해의 목표", // TODO :
-                        count = goals.size,
-                        icon = DobeDobeIcons.Year2025,
-                        dropShadowColor = Color(0xFF6CD2FF)
-                    )
-                    GoalInfoCard(
-                        modifier = Modifier.weight(1f),
-                        title = "완료한 목표", // TODO :
-                        count = goals.filter { it.isCompleted }.size,
-                        icon = DobeDobeIcons.Checked,
-                        dropShadowColor = Color(0xFF58FF92)
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-
-            if (isNotPartiallyExpanded) {
-                item {
-                    Text(
-                        text = "목표 리스트", // TODO :
-                        style = DobeDobeTheme.typography.heading2,
-                        color = DobeDobeTheme.colors.black,
-                        modifier = Modifier.animateItem(
-                            fadeOutSpec = snap(),
-                        ),
-                    )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-                }
-
-                items(goals) { goal ->
-                    GoalRow(
-                        goal = goal,
-                        modifier = Modifier.animateItem(
-                            fadeOutSpec = snap(),
-                        ),
-                        onToggleCompleted = { onGoalToggled(goal.id) },
-                        onClick = { onGoalClicked(goal.id) },
-                    )
+                    items(goals) { goal ->
+                        GoalRow(
+                            goal = goal,
+                            onToggleCompleted = { onGoalToggled(goal.id) },
+                            onClick = { onGoalClicked(goal.id) },
+                        )
+                    }
                 }
             }
         }
