@@ -200,6 +200,19 @@ private fun ColumnScope.GoalBottomSheetBody(
             }
 
             if (isNotPartiallyExpanded) {
+                item {
+                    Text(
+                        text = "목표 리스트", // TODO :
+                        style = DobeDobeTheme.typography.heading2,
+                        color = DobeDobeTheme.colors.black,
+                        modifier = Modifier.animateItem(
+                            fadeOutSpec = snap(),
+                        ),
+                    )
+
+                    Spacer(modifier = Modifier.height(4.dp))
+                }
+
                 items(goals) { goal ->
                     GoalRow(
                         goal = goal,
