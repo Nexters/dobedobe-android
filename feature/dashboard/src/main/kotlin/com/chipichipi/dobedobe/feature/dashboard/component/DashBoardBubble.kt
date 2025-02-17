@@ -5,25 +5,19 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBubble
 import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
-import com.chipichipi.dobedobe.feature.dashboard.R
 
 @Composable
 internal fun DashboardBubble(
@@ -36,87 +30,15 @@ internal fun DashboardBubble(
         modifier = modifier.clickable(onClick = onClick),
         contentAlignment = Alignment.TopCenter,
     ) {
-        val textMeasurer = rememberTextMeasurer()
-        val density = LocalDensity.current
-
-        val maxTitleWidthPx = with(density) { 240.dp.toPx() }
-        val suffix = " " + stringResource(R.string.feature_dashboard_bubble_suffix)
-
-        val ellipsizedResult = textMeasurer.ellipsizeTextWithSuffix(
-            title = title,
-            maxWidthPx = maxTitleWidthPx,
-            suffix = suffix,
-            textStyle = textStyle,
-        )
-
-        val annotatedString = buildAnnotatedString {
-            withStyle(
-                SpanStyle(
-                    color = DobeDobeTheme.colors.green3,
-                ),
-            ) {
-                append(ellipsizedResult.title)
-            }
-            append(ellipsizedResult.suffix)
-        }
-
         Text(
-            text = annotatedString,
+            text = title,
             style = textStyle,
             maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.widthIn(max = 240.dp)
         )
     }
 }
-
-/**
- * `title`이 너무 길면 `maxWidthPx` 내에서 "..."을 붙여 잘라내고, `suffix`(해낼 거야!)는 유지
- */
-private fun TextMeasurer.ellipsizeTextWithSuffix(
-    title: String,
-    maxWidthPx: Float,
-    suffix: String,
-    textStyle: TextStyle,
-    ellipsis: String = "...",
-): EllipsizedTextResult {
-    val fullTextWidth = measure(text = title + suffix, style = textStyle).size.width
-
-    // 1) title 이 maxWidthPx를 초과하지 않으면 그대로 반환
-    if (fullTextWidth <= maxWidthPx) {
-        return EllipsizedTextResult(
-            title = title,
-            suffix = suffix,
-        )
-    }
-
-    // 2) maxWidthPx를 초과하는 경우, title ellipsis 처리
-    var end = title.length
-    while (end > 0) {
-        val truncatedTitle = buildString {
-            append(title.substring(0, end))
-            append(ellipsis)
-        }
-
-        val measuredWidth = measure(text = truncatedTitle + suffix, style = textStyle).size.width
-
-        if (measuredWidth <= maxWidthPx) {
-            return EllipsizedTextResult(
-                title = truncatedTitle,
-                suffix = suffix,
-            )
-        }
-        end--
-    }
-
-    return EllipsizedTextResult(
-        title = title,
-        suffix = suffix,
-    )
-}
-
-private data class EllipsizedTextResult(
-    val title: String,
-    val suffix: String,
-)
 
 @ThemePreviews
 @Composable
