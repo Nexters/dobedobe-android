@@ -10,7 +10,7 @@
     <string name="feature_detail_goal_complete_editor_header">Achieved Goal</string>
     <string name="feature_detail_goal_uncompleted_editor_header">Ongoing Goals</string>
     <string name="feature_detail_goal_todo_editor_header">What goal do you want to achieve?</string>
-    <string name="feature_detail_goal_editor_hint">Goal Name</string>
+    <string name="feature_detail_goal_editor_hint">Please Write Goal Name</string>
     <string name="feature_detail_goal_editor_support_message">The simpler the goal, the better the focus.</string>
     <string name="feature_goal_title_error_message_too_long">Up to 20 characters incl. spaces</string>
     <string name="feature_goal_navigate_back_icon_content_description">Back</string>
