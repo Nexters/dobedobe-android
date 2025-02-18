@@ -132,7 +132,7 @@ private fun DetailGoalScreen(
                 val goal = uiState.goal
                 val errorMessage =
                     uiState.goalValidResult
-                        .errorMessage()
+                        .detailGoalErrorMessage()
                         ?.let { stringResource(id = it) }
 
                 DetailGoalContent(

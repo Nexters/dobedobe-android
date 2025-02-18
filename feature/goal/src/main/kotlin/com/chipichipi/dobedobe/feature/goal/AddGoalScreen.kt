@@ -41,7 +41,7 @@ fun AddGoalRoute(
     val focusManager = LocalFocusManager.current
     val goalValidResult by viewModel.goalValidResult.collectAsStateWithLifecycle()
     val errorMessage =
-        goalValidResult.errorMessage()
+        goalValidResult.addGoalErrorMessage()
             ?.let { stringResource(id = it) }
 
     LaunchedEffect(Unit) {
