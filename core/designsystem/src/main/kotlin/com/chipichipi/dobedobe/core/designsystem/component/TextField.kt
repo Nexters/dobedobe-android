@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.KeyboardActionHandler
+import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Surface
@@ -29,6 +30,7 @@ fun DobeDobeTextField(
     onKeyboardAction: KeyboardActionHandler? = null,
     imeAction: ImeAction = ImeAction.Done,
     errorMessage: String? = null,
+    maxLines: Int = 1,
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = DobeDobeTheme.typography.title1.copy(
@@ -40,6 +42,7 @@ fun DobeDobeTextField(
         enabled = enabled,
         readOnly = readOnly,
         textStyle = textStyle,
+        lineLimits = TextFieldLineLimits.MultiLine(maxHeightInLines = maxLines),
         decorator = { innerTextField ->
             Column(
                 modifier = Modifier.fillMaxWidth(),
