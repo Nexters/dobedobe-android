@@ -1,5 +1,7 @@
 package com.chipichipi.dobedobe.feature.goal
 
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,13 +11,11 @@ import com.chipichipi.dobedobe.core.model.Goal
 import com.chipichipi.dobedobe.feature.goal.navigation.GoalRoute
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -24,46 +24,30 @@ internal class DetailGoalViewModel(
     savedStateHandle: SavedStateHandle,
     private val goalRepository: GoalRepository,
 ) : ViewModel() {
-    private val originalGoal: MutableStateFlow<Goal?> = MutableStateFlow(null)
-    private val goalTitleDraft: MutableStateFlow<String> = MutableStateFlow("")
+    private var originalGoal: Goal? = null
 
     val uiState: StateFlow<DetailGoalUiState> = savedStateHandle.getGoalFlow()
-        .combine(goalTitleDraft) { goal, draftTitle ->
-            DetailGoalUiState.Success(goal, draftTitle)
-        }
-        .onEach { changeGoalTitleIfNeeded(it.goal, it.draftTitle) }
+        .map(DetailGoalUiState::Success)
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000L),
             initialValue = DetailGoalUiState.Loading,
         )
 
-    val isGoalChanged: StateFlow<Boolean> =
-        combine(originalGoal, uiState) { original, current ->
-            if (current is DetailGoalUiState.Success) {
-                original != current.goal
-            } else {
-                false
-            }
+    val isGoalChanged by derivedStateOf {
+        when (val uiState = uiState.value) {
+            is DetailGoalUiState.Success -> uiState.goal != originalGoal
+            is DetailGoalUiState.Loading, DetailGoalUiState.Error -> false
         }
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.Eagerly,
-                initialValue = false,
-            )
+    }
 
     private val _deleteGoalEvent = Channel<Unit>(capacity = Channel.BUFFERED)
     val deleteGoalEvent: Flow<Unit> = _deleteGoalEvent.receiveAsFlow()
 
     init {
         viewModelScope.launch {
-            val initialGoal = savedStateHandle.getGoalFlow().first()
-            originalGoal.value = initialGoal
+            originalGoal = savedStateHandle.getGoalFlow().first()
         }
-    }
-
-    fun changeGoalTitle(title: String) {
-        goalTitleDraft.value = title
     }
 
     fun togglePinned(id: Long) {
@@ -92,14 +76,17 @@ internal class DetailGoalViewModel(
             .let { route -> goalRepository.getGoal(route.id) }
             .filterNotNull()
     }
+}
 
-    private fun changeGoalTitleIfNeeded(goal: Goal, newTitle: String) {
-        if (Goal.isValid(newTitle).not()) return
+sealed interface DetailGoalUiState {
+    data object Loading : DetailGoalUiState
 
-        if (goal.title != newTitle) {
-            viewModelScope.launch {
-                goalRepository.changeGoalTitle(goal.id, newTitle)
-            }
-        }
-    }
+    data class Success(
+        val goal: Goal,
+    ) : DetailGoalUiState
+
+    data object Error : DetailGoalUiState
+
+    val isSuccess: Boolean
+        get() = this is Success
 }
