@@ -36,7 +36,7 @@ fun DobeDobeTopAppBar(
         modifier = modifier,
         title = title,
         navigationIcon = navigationIcon,
-        expandedHeight = 48.dp,
+        expandedHeight = 60.dp,
         actions = actions,
         windowInsets = windowInsets,
         colors = colors,
@@ -59,7 +59,7 @@ fun DobeDobeCenterAlignedTopAppBar(
         modifier = modifier,
         title = title,
         navigationIcon = navigationIcon,
-        expandedHeight = 48.dp,
+        expandedHeight = 60.dp,
         actions = actions,
         windowInsets = windowInsets,
         colors = colors,
@@ -99,7 +99,6 @@ private fun DobeDobeTopAppBarPreview() {
         )
     }
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @ThemePreviews
