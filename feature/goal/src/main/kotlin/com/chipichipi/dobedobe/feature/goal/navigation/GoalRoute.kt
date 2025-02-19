@@ -8,6 +8,9 @@ sealed interface GoalRoute {
     data class Detail(val id: Long) : GoalRoute
 
     @Serializable
+    data class Edit(val id: Long) : GoalRoute
+
+    @Serializable
     data object Add : GoalRoute
 
     @Serializable
