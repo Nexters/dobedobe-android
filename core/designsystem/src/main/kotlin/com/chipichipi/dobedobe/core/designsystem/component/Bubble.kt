@@ -17,7 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Matrix
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
@@ -32,11 +34,12 @@ fun DobeDobeBubble(
     contentAlignment: Alignment,
     modifier: Modifier = Modifier,
     tailPositionX: Float = 0.3f,
+    tailPosition: TailPosition = TailPosition.Bottom,
     tailSize: DpSize = BubbleDefaults.tailSize(),
     content: @Composable BoxScope.() -> Unit,
 ) {
     val density = LocalDensity.current
-    val bubbleShape = bubbleShape(density, tailPositionX, tailSize)
+    val bubbleShape = bubbleShape(density, tailPosition, tailPositionX, tailSize)
     Box(
         modifier = Modifier
             .sizeIn(
@@ -48,7 +51,7 @@ fun DobeDobeBubble(
             .clip(bubbleShape)
             .then(modifier)
             .padding(BubbleDefaults.ContentPadding)
-            .padding(bottom = tailSize.height),
+            .padding(BubbleDefaults.bubbleTailPadding(tailSize, tailPosition)),
         contentAlignment = contentAlignment,
         content = content,
     )
@@ -56,6 +59,7 @@ fun DobeDobeBubble(
 
 private fun bubbleShape(
     density: Density,
+    tailPosition: TailPosition,
     tailPositionX: Float = 0.3f,
     tailSize: DpSize = BubbleDefaults.tailSize(),
 ) = GenericShape { size, _ ->
@@ -76,8 +80,7 @@ private fun bubbleShape(
         drawBubbleTail(bubbleHeight, tailStartX, tailEndX, tailHeightPx, density)
         drawLeftEdge(bubbleHeight, cornerRadius)
         drawBottomEdge(cornerRadius)
-
-        close()
+        symmetricallyTransformed(size, tailPosition)
     }
 }
 
@@ -177,6 +180,22 @@ private fun Path.drawBottomEdge(cornerRadius: Float) {
     )
 }
 
+/**
+ * 상하 대칭 변환
+ * */
+private fun Path.symmetricallyTransformed(
+    size: Size,
+    tailDirection: TailPosition,
+) {
+    if (tailDirection == TailPosition.Bottom) return
+
+    val matrix = Matrix().apply {
+        translate(0f, size.height)
+        scale(1f, -1f)
+    }
+    transform(matrix)
+}
+
 object BubbleDefaults {
     val MinWidth = 135.dp
     val MinHeight = 75.dp
@@ -195,6 +214,22 @@ object BubbleDefaults {
 
     fun tailSize(tailHeight: Dp = TailHeight, tailWidth: Dp = TailWidth) =
         DpSize(tailWidth, tailHeight)
+
+    fun bubbleTailPadding(
+        tailSize: DpSize,
+        tailPosition: TailPosition,
+    ): PaddingValues {
+        val tailHeight = tailSize.height
+        return PaddingValues(
+            top = if (tailPosition == TailPosition.Top) tailHeight else 0.dp,
+            bottom = if (tailPosition == TailPosition.Bottom) tailHeight else 0.dp,
+        )
+    }
+}
+
+enum class TailPosition {
+    Top,
+    Bottom,
 }
 
 @ThemePreviews
@@ -212,6 +247,7 @@ private fun PreviewBubbleWithTail() {
                     .background(Color.White)
                     .clickable { },
                 tailPositionX = 0.5f,
+                tailPosition = TailPosition.Bottom,
                 contentAlignment = Alignment.TopCenter,
             ) {
                 Text("꿈은 이루어진다 꿈은 이루어진다 꿈은 이루어진다 꿈은 이루어진다 꿈은 이루어진다 꿈은 이루어진다 ⭐️", fontSize = 15.sp)
@@ -222,6 +258,7 @@ private fun PreviewBubbleWithTail() {
                     .background(Color.White)
                     .clickable { },
                 tailPositionX = 0.5f,
+                tailPosition = TailPosition.Top,
                 contentAlignment = Alignment.TopCenter,
             ) {
                 Text("꿈은 이루어진다️", fontSize = 15.sp)
