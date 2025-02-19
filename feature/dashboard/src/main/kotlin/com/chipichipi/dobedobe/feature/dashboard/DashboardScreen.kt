@@ -220,6 +220,13 @@ private fun DashboardBody(
                     onAddGoalClicked = navigateToAddGoal,
                     onGoalClicked = navigateToGoalDetail,
                     onTapSearchBar = navigateToSearchGoal,
+                    onInfoCardClicked = {
+                        coroutineScope.launch {
+                            if (!isNotPartiallyExpanded) {
+                                bottomSheetScaffoldState.bottomSheetState.expand()
+                            }
+                        }
+                    },
                     modifier = Modifier
                         .padding(top = 8.dp),
                 )

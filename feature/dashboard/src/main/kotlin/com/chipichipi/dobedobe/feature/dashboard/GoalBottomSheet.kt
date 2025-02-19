@@ -9,6 +9,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -62,6 +63,7 @@ internal fun GoalBottomSheetContent(
     onGoalClicked: (Long) -> Unit,
     onAddGoalClicked: () -> Unit,
     onTapSearchBar: () -> Unit,
+    onInfoCardClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -77,6 +79,7 @@ internal fun GoalBottomSheetContent(
                 goals = goals,
                 onGoalToggled = onGoalToggled,
                 onGoalClicked = onGoalClicked,
+                onInfoCardClicked = onInfoCardClicked,
                 modifier = Modifier.weight(1f),
             )
             if (isNotPartiallyExpanded) {
@@ -148,6 +151,7 @@ private fun GoalBottomSheetBody(
     goals: List<Goal>,
     onGoalToggled: (Long) -> Unit,
     onGoalClicked: (Long) -> Unit,
+    onInfoCardClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -169,6 +173,7 @@ private fun GoalBottomSheetBody(
                 count = goals.size,
                 icon = DobeDobeIcons.Year2025,
                 dropShadowColor = Color(0xFF6CD2FF),
+                onClick = onInfoCardClicked,
             )
             GoalInfoCard(
                 modifier = Modifier.weight(1f),
@@ -176,6 +181,7 @@ private fun GoalBottomSheetBody(
                 count = goals.filter { it.isCompleted }.size,
                 icon = DobeDobeIcons.Checked,
                 dropShadowColor = Color(0xFF58FF92),
+                onClick = onInfoCardClicked,
             )
         }
 
@@ -247,6 +253,7 @@ private fun GoalInfoCard(
     @DrawableRes icon: Int,
     dropShadowColor: Color,
     count: Int,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -260,6 +267,7 @@ private fun GoalInfoCard(
             )
             .clip(RoundedCornerShape(15.dp))
             .background(DobeDobeTheme.colors.white)
+            .clickable(onClick = onClick)
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -320,5 +328,6 @@ private fun GoalBottomSheetContentPreview(
         onGoalClicked = {},
         onTapSearchBar = {},
         onAddGoalClicked = {},
+        onInfoCardClicked = {},
     )
 }
