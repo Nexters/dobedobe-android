@@ -26,7 +26,7 @@ import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBackground
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeTextButton
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeTextField
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
-import com.chipichipi.dobedobe.feature.goal.errorMessage
+import com.chipichipi.dobedobe.feature.goal.addGoalErrorMessage
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -37,7 +37,7 @@ internal fun OnboardingAddGoalRoute(
 ) {
     val titleValidResult by viewModel.titleValidResult.collectAsStateWithLifecycle()
     val errorMessage =
-        titleValidResult.errorMessage()
+        titleValidResult.addGoalErrorMessage()
             ?.let { stringResource(id = it) }
 
     OnboardingAddGoalScreen(

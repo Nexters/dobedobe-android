@@ -8,7 +8,7 @@ fun GoalTitleValidResult.addGoalErrorMessage(): Int? = when (this) {
     GoalTitleValidResult.TooLong -> R.string.feature_goal_title_error_message_too_long
 }
 
-fun GoalTitleValidResult.detailGoalErrorMessage(): Int? = when (this) {
+fun GoalTitleValidResult.editGoalErrorMessage(): Int? = when (this) {
     GoalTitleValidResult.Valid -> null
     GoalTitleValidResult.Blank, GoalTitleValidResult.Empty -> R.string.feature_goal_title_error_message_blank
     GoalTitleValidResult.TooLong -> R.string.feature_goal_title_error_message_too_long
