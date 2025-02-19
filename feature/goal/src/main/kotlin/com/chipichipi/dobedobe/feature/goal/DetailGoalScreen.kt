@@ -263,6 +263,7 @@ private fun DetailGoalHeader(isCompleted: Boolean) {
             tint = Color.Unspecified,
             contentDescription = "current goal status",
         )
+
         Text(
             text = title,
             color = DobeDobeTheme.colors.gray400,
@@ -290,6 +291,7 @@ private fun GoalToggleChipGroup(
             unCheckedIcon = ImageVector.vectorResource(DobeDobeIcons.FlagOutLine),
             modifier = Modifier.weight(1f),
         )
+
         GoalToggleChip(
             text = stringResource(R.string.feature_detail_goal_pinned_chip),
             isChecked = isPinned,
