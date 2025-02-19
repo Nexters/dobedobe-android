@@ -9,10 +9,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSizeIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
@@ -23,6 +23,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -41,10 +43,11 @@ import com.chipichipi.dobedobe.feature.goal.R
 @Composable
 fun GoalEditor(
     titleState: TextFieldState,
-    supportMessage: String,
     buttonText: String,
     modifier: Modifier = Modifier,
+    supportMessage: String = "",
     errorMessage: String? = null,
+    focusRequester: FocusRequester,
     onDone: (() -> Unit)? = null,
 ) {
     Column(
@@ -73,7 +76,8 @@ fun GoalEditor(
                 contentAlignment = Alignment.TopCenter,
             ) {
                 Text(
-                    text = titleState.text.toString(),
+                    text = titleState.text.toString()
+                        .ifBlank { stringResource(R.string.feature_detail_goal_editor_empty_bubble) },
                     style = DobeDobeTheme.typography.body2,
                     color = DobeDobeTheme.colors.gray700,
                     maxLines = 1,
@@ -88,16 +92,19 @@ fun GoalEditor(
             state = titleState,
             hint = stringResource(R.string.feature_detail_goal_editor_hint),
             supportMessage = supportMessage,
+            maxLines = 2,
             onKeyboardAction = { onDone?.invoke() },
             errorMessage = errorMessage,
+            modifier = Modifier.focusRequester(focusRequester),
         )
 
+        Spacer(modifier = Modifier.height(12.dp))
         Spacer(Modifier.weight(1f))
 
         DobeDobeTextButton(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(54.dp),
+                .requiredSizeIn(minHeight = 56.dp),
             onClick = { onDone?.invoke() },
         ) {
             Text(
@@ -111,10 +118,10 @@ fun GoalEditor(
 
 @Preview
 @Composable
-private fun GoalDetailPreview() {
+private fun GoalDetailEmptyPreview() {
     DobeDobeTheme {
         DobeDobeBackground {
-            val titleState = rememberTextFieldState("토익 900점 제발 맞게 해주세요")
+            val titleState = rememberTextFieldState("")
             GoalEditor(
                 modifier = Modifier
                     .fillMaxSize()
@@ -122,6 +129,27 @@ private fun GoalDetailPreview() {
                     .imePadding(),
                 supportMessage = stringResource(R.string.feature_detail_goal_editor_support_message),
                 titleState = titleState,
+                focusRequester = FocusRequester(),
+                buttonText = "Done",
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun GoalDetailPreview() {
+    DobeDobeTheme {
+        DobeDobeBackground {
+            val titleState = rememberTextFieldState("살을 좀 빼야할 것 같다 운동 언제 가지 ㅜㅜ")
+            GoalEditor(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(vertical = 32.dp, horizontal = 24.dp)
+                    .imePadding(),
+                supportMessage = stringResource(R.string.feature_detail_goal_editor_support_message),
+                titleState = titleState,
+                focusRequester = FocusRequester(),
                 buttonText = "Done",
             )
         }
