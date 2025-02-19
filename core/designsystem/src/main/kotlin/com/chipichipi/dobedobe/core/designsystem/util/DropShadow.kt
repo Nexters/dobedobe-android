@@ -2,7 +2,7 @@ package com.chipichipi.dobedobe.core.designsystem.util
 
 import android.graphics.BlurMaskFilter
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
@@ -19,7 +19,7 @@ fun Modifier.dropShadow(
     offsetY: Dp = 0.dp,
     offsetX: Dp = 0.dp,
     spread: Dp = 0.dp,
-) = this.drawBehind {
+) = this.drawWithCache {
     val spreadPx = spread.toPx()
     val blurPx = blur.toPx()
 
@@ -43,12 +43,14 @@ fun Modifier.dropShadow(
         }
     }
 
-    drawIntoCanvas { canvas ->
-        canvas.save()
-        (spreadPx / 2f).let {
-            canvas.translate(offsetX.toPx() - it, offsetY.toPx() - it)
+    onDrawBehind {
+        drawIntoCanvas { canvas ->
+            canvas.save()
+            (spreadPx / 2f).let {
+                canvas.translate(offsetX.toPx() - it, offsetY.toPx() - it)
+            }
+            canvas.drawOutline(shadowOutline, paint)
+            canvas.restore()
         }
-        canvas.drawOutline(shadowOutline, paint)
-        canvas.restore()
     }
 }
