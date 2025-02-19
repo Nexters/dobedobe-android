@@ -204,31 +204,42 @@ private fun DashboardBody(
                 ),
             scaffoldState = bottomSheetScaffoldState,
             sheetContent = {
-                val isExpanded by remember {
-                    derivedStateOf { bottomSheetScaffoldState.bottomSheetState.targetValue == SheetValue.Expanded }
+                val isNotPartiallyExpanded by remember {
+                    derivedStateOf {
+                        bottomSheetScaffoldState.bottomSheetState.let { state ->
+                            state.currentValue == SheetValue.Expanded || state.targetValue == SheetValue.Expanded
+                        }
+                    }
                 }
                 val coroutineScope = rememberCoroutineScope()
 
                 GoalBottomSheetContent(
-                    isExpanded = isExpanded,
+                    isNotPartiallyExpanded = isNotPartiallyExpanded,
                     goals = uiState.goals,
                     onGoalToggled = onGoalToggled,
                     onAddGoalClicked = navigateToAddGoal,
                     onGoalClicked = navigateToGoalDetail,
                     onTapSearchBar = navigateToSearchGoal,
+                    onInfoCardClicked = {
+                        coroutineScope.launch {
+                            if (!isNotPartiallyExpanded) {
+                                bottomSheetScaffoldState.bottomSheetState.expand()
+                            }
+                        }
+                    },
                     modifier = Modifier
                         .padding(top = 8.dp),
                 )
 
                 BackHandler(
-                    enabled = isExpanded,
+                    enabled = isNotPartiallyExpanded,
                 ) {
                     coroutineScope.launch {
                         bottomSheetScaffoldState.bottomSheetState.partialExpand()
                     }
                 }
             },
-            sheetPeekHeight = 330.dp,
+            sheetPeekHeight = 215.dp,
         ) { innerPadding ->
             Box(
                 modifier = Modifier

@@ -21,4 +21,5 @@ object DobeDobeIcons {
     val Setting = R.drawable.ic_setting_24
     val ArrowForward = R.drawable.ic_arrow_forward_24
     val Tap = R.drawable.ic_tap_24
+    val Year2025 = R.drawable.ic_year_36
 }

@@ -65,7 +65,7 @@ internal fun SharedTransitionScope.DashboardViewMode(
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    Spacer(Modifier.height(14.dp))
+                    Spacer(Modifier.height(60.dp))
                     DashboardBubble(
                         title = bubbleGoal.title,
                         textStyle = DobeDobeTheme.typography.body2,

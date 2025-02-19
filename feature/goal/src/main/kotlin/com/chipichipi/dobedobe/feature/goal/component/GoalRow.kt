@@ -3,7 +3,6 @@ package com.chipichipi.dobedobe.feature.goal.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,7 +29,7 @@ import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.core.model.Goal
 import kotlinx.datetime.Instant
 
-private val PinnedIconSize: DpSize = DpSize(24.dp, 30.dp)
+private val PinnedIconSize: DpSize = DpSize(24.dp, 24.dp)
 
 @Composable
 fun GoalRow(
@@ -41,23 +40,28 @@ fun GoalRow(
     onToggleCompleted: (() -> Unit)? = null,
 ) {
     Surface(
-        modifier = modifier.defaultMinSize(minHeight = 58.dp),
-        color = DobeDobeTheme.colors.gray50,
-        shape = RoundedCornerShape(24.dp),
+        modifier = modifier.defaultMinSize(minHeight = 68.dp),
+        color = DobeDobeTheme.colors.white,
+        shape = RoundedCornerShape(16.dp),
         onClick = onClick,
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 6.dp, end = 14.dp),
+                .padding(
+                    vertical = 16.dp,
+                    horizontal = 14.dp,
+                ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             DobeDobeCheckBox(
+                size = 36.dp,
                 checked = goal.isCompleted,
                 enabled = enabled,
                 onCheckedChange = { onToggleCompleted?.invoke() },
             )
-            Spacer(modifier = Modifier.width(3.dp))
+            Spacer(modifier = Modifier.width(12.dp))
+
             Text(
                 modifier = Modifier.weight(1f),
                 text = goal.title,
@@ -66,26 +70,26 @@ fun GoalRow(
                 style = DobeDobeTheme.typography.heading2,
                 color = DobeDobeTheme.colors.gray800,
             )
-            Spacer(modifier = Modifier.width(4.dp))
+
+            Spacer(modifier = Modifier.width(12.dp))
+
             TrailingIcon(goal.isPinned)
         }
     }
 }
 
 @Composable
-private fun RowScope.TrailingIcon(isPinned: Boolean) {
+private fun TrailingIcon(isPinned: Boolean) {
     if (isPinned) {
         Icon(
             imageVector = ImageVector.vectorResource(DobeDobeIcons.PinnedFilled),
-            modifier = Modifier
-                .size(PinnedIconSize)
-                .align(Alignment.Top),
+            modifier = Modifier.size(PinnedIconSize),
             contentDescription = "Favorites",
-            tint = Color.Unspecified,
+            tint = DobeDobeTheme.colors.gray600,
         )
-        Spacer(modifier = Modifier.width(10.dp))
+        Spacer(modifier = Modifier.width(4.dp))
     } else {
-        Spacer(modifier = Modifier.width(PinnedIconSize.width + 10.dp))
+        Spacer(modifier = Modifier.width(PinnedIconSize.width + 4.dp))
     }
 
     Icon(
