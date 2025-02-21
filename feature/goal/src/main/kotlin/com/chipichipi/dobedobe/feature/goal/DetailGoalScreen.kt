@@ -191,7 +191,7 @@ private fun DetailGoalContent(
     onClickEdit: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(modifier.padding(top = 36.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         DetailGoalHeader(isCompleted = goal.isCompleted)
 
         Spacer(modifier = Modifier.height(20.dp))
