@@ -116,6 +116,7 @@ private fun DetailGoalEventEffect(
 ) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val coroutineScope = rememberCoroutineScope()
+    val snackBarMsg = stringResource(R.string.feature_detail_goal_snackbar_message)
 
     LaunchedEffect(Unit) {
         viewModel.goalUiEvent
@@ -124,7 +125,7 @@ private fun DetailGoalEventEffect(
                     is DetailGoalUiEvent.UnDoGoal -> {
                         coroutineScope.launch {
                             onShowSnackbar(
-                                "목표를 다시 시작할게요",
+                                snackBarMsg,
                                 null,
                             )
                         }

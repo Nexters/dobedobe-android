@@ -25,6 +25,7 @@
     <string name="feature_goal_search_queried_goal_title">Search Result</string>
     <string name="feature_goal_complete_dialog_title">Goal Completed</string>
     <string name="feature_goal_complete_dialog_button_title">OK</string>
+    <string name="feature_detail_goal_snackbar_message">Let’s restart the goal</string>
     <!-- 피그마에 없음-->
     <string name="feature_goal_title_error_message_blank">You can\'t save empty goals</string>
 </resources>

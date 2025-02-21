@@ -27,4 +27,5 @@
     <string name="feature_goal_search_queried_goal_title">검색 결과</string>
     <string name="feature_goal_complete_dialog_title">목표 달성 완료</string>
     <string name="feature_goal_complete_dialog_button_title">확인</string>
+    <string name="feature_detail_goal_snackbar_message">목표 다시 시작할게요</string>
 </resources>
