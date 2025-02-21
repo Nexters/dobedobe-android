@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_dashboard">Home</string>
-    <string name="feature_dashboard_edit_mode_top_bar_confirm">Save</string>
-    <string name="feature_dashboard_edit_mode_top_bar_cancel">Cancel</string>
+    <string name="feature_dashboard_edit_mode_confirm">Save</string>
+    <string name="feature_dashboard_edit_mode_cancel">Cancel</string>
     <string name="feature_dashboard_edit_mode_description">Please select the photo you want to change.</string>
     <string name="feature_dashboard_goal_notification_prompt">Notification permission is needed to remind\n you of your goals outside the app.</string>
     <string name="feature_dashboard_goal_notification_description">please allow Notification permission</string>
@@ -10,10 +10,12 @@
     <string name="feature_dashboard_edit_change_image_title">Change Image</string>
     <string name="feature_dashboard_edit_select_image_from_album">Find an image from album</string>
     <string name="feature_dashboard_edit_delete_image">Delete Image</string>
-    <string name="feature_dashboard_bubble_suffix">I can do it!</string>
     <string name="feature_dashboard_goal_bottom_sheet_title">My Goals</string>
     <string name="feature_dashboard_add_goal_snackbar_message">The goal has been registered.</string>
     <string name="feature_dashboard_remove_goal_snackbar_message">The goal has been deleted.</string>
     <string name="feature_dashboard_edit_goal_snackbar_message">The goal has been updated.</string>
     <string name="feature_dashboard_goal_bottom_sheet_empty_message">Set a goal\nand start with small actions.</string>
+    <string name="feature_dashboard_goal_list">Yearly Goal</string>
+    <string name="feature_dashboard_label_yearly_goal">Completed Goal</string>
+    <string name="feature_dashboard_label_completed_goal">Goal List</string>
 </resources>

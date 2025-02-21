@@ -1,63 +1,136 @@
 package com.chipichipi.dobedobe.feature.goal.component
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSizeIn
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBackground
+import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBubble
+import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeTextButton
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeTextField
+import com.chipichipi.dobedobe.core.designsystem.component.TailPosition
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
+import com.chipichipi.dobedobe.core.model.CharacterType
 import com.chipichipi.dobedobe.feature.goal.R
 
 @Composable
 fun GoalEditor(
-    title: String,
-    header: String,
-    onChangeTitle: (String) -> Unit,
+    titleState: TextFieldState,
+    buttonText: String,
     modifier: Modifier = Modifier,
+    supportMessage: String = "",
     errorMessage: String? = null,
+    characterType: CharacterType,
+    focusRequester: FocusRequester,
     onDone: (() -> Unit)? = null,
-    toggleContent: @Composable (() -> Unit)? = null,
 ) {
-    val goalTitleState = rememberTextFieldState(title)
-
-    LaunchedEffect(Unit) {
-        snapshotFlow { goalTitleState.text }
-            .collect {
-                onChangeTitle(goalTitleState.text.toString())
-            }
-    }
-
-    Column(modifier = modifier) {
-        Text(
-            text = header,
-            modifier = Modifier.fillMaxWidth(),
-            style = DobeDobeTheme.typography.heading1,
-            color = DobeDobeTheme.colors.gray900,
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Image(
+            painter = painterResource(id = characterType.toImageRes()),
+            contentDescription = "Avatar",
+            modifier = Modifier.size(80.dp),
+            contentScale = ContentScale.Crop,
         )
-        Spacer(Modifier.height(48.dp))
+
+        Box(modifier = Modifier.offset(y = (-11).dp)) {
+            DobeDobeBubble(
+                modifier = Modifier
+                    .width(220.dp)
+                    .background(Color.White),
+                tailPositionX = 0.43f,
+                tailPosition = TailPosition.Top,
+                contentAlignment = Alignment.TopCenter,
+            ) {
+                Text(
+                    text = titleState.text.toString()
+                        .ifBlank { stringResource(R.string.feature_detail_goal_editor_empty_bubble) },
+                    style = DobeDobeTheme.typography.body2,
+                    color = DobeDobeTheme.colors.gray700,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(28.dp))
 
         DobeDobeTextField(
-            state = goalTitleState,
+            state = titleState,
             hint = stringResource(R.string.feature_detail_goal_editor_hint),
-            supportMessage = stringResource(R.string.feature_detail_goal_editor_support_message),
+            supportMessage = supportMessage,
+            maxLines = 2,
             onKeyboardAction = { onDone?.invoke() },
             errorMessage = errorMessage,
+            modifier = Modifier.focusRequester(focusRequester),
         )
-        if (toggleContent != null) {
-            Spacer(Modifier.weight(1f))
-            toggleContent()
+
+        Spacer(Modifier.weight(1f))
+
+        DobeDobeTextButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .requiredSizeIn(minHeight = 56.dp),
+            onClick = { onDone?.invoke() },
+        ) {
+            Text(
+                text = buttonText,
+                style = DobeDobeTheme.typography.heading2,
+                color = DobeDobeTheme.colors.white,
+            )
+        }
+    }
+}
+
+private fun CharacterType.toImageRes(): Int = when (this) {
+    CharacterType.Bird -> R.drawable.bird_avatar
+    CharacterType.Rabbit -> R.drawable.rabbit_avatar
+}
+
+@Preview
+@Composable
+private fun GoalDetailEmptyPreview() {
+    DobeDobeTheme {
+        DobeDobeBackground {
+            val titleState = rememberTextFieldState("")
+            GoalEditor(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(vertical = 32.dp, horizontal = 24.dp)
+                    .imePadding(),
+                supportMessage = stringResource(R.string.feature_detail_goal_editor_support_message),
+                titleState = titleState,
+                characterType = CharacterType.Rabbit,
+                focusRequester = FocusRequester(),
+                buttonText = "Done",
+            )
         }
     }
 }
@@ -67,16 +140,17 @@ fun GoalEditor(
 private fun GoalDetailPreview() {
     DobeDobeTheme {
         DobeDobeBackground {
+            val titleState = rememberTextFieldState("살을 좀 빼야할 것 같다 운동 언제 가지 ㅜㅜ")
             GoalEditor(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 24.dp, vertical = 32.dp),
-                title = "스쿼트 50개",
-                header = "어떤 목표를 이루고 싶나요?",
-                onChangeTitle = {},
-                toggleContent = {
-                    Text(text = "Toggle Content")
-                },
+                    .padding(vertical = 32.dp, horizontal = 24.dp)
+                    .imePadding(),
+                supportMessage = stringResource(R.string.feature_detail_goal_editor_support_message),
+                titleState = titleState,
+                characterType = CharacterType.Bird,
+                focusRequester = FocusRequester(),
+                buttonText = "Done",
             )
         }
     }

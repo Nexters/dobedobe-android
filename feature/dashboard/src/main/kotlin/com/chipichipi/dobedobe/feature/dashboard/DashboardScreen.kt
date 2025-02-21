@@ -2,6 +2,7 @@ package com.chipichipi.dobedobe.feature.dashboard
 
 import android.net.Uri
 import android.os.Build
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.core.Animatable
@@ -11,21 +12,25 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SheetValue
-import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -38,6 +43,7 @@ import com.chipichipi.dobedobe.core.model.DashboardPhoto
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardEditMode
 import com.chipichipi.dobedobe.feature.dashboard.component.DashboardViewMode
 import com.chipichipi.dobedobe.feature.dashboard.component.ExpandedPhotoFrame
+import com.chipichipi.dobedobe.feature.dashboard.model.CharacterResources
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardModeState
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -45,16 +51,20 @@ import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.skydoves.cloudy.cloudy
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 private const val ANIMATION_DURATION = 500
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun DashboardRoute(
     onShowSnackbar: suspend (String, String?) -> Boolean,
+    bottomSheetScaffoldState: BottomSheetScaffoldState,
     navigateToAddGoal: () -> Unit,
     navigateToGoalDetail: (Long) -> Unit,
     navigateToSetting: () -> Unit,
+    navigateToSearchGoal: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DashboardViewModel = koinViewModel(),
 ) {
@@ -65,10 +75,12 @@ internal fun DashboardRoute(
         modifier = modifier.fillMaxSize(),
         onShowSnackbar = onShowSnackbar,
         uiState = uiState,
+        bottomSheetScaffoldState = bottomSheetScaffoldState,
         setGoalNotificationEnabled = viewModel::setGoalNotificationEnabled,
         disableSystemNotificationDialog = viewModel::disableSystemNotificationDialog,
         navigateToAddGoal = navigateToAddGoal,
         navigateToGoalDetail = navigateToGoalDetail,
+        navigateToSearchGoal = navigateToSearchGoal,
         navigateToSetting = navigateToSetting,
         onGoalToggled = viewModel::toggleGoalCompletion,
         onToggleMode = viewModel::toggleMode,
@@ -80,15 +92,18 @@ internal fun DashboardRoute(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DashboardScreen(
     onShowSnackbar: suspend (String, String?) -> Boolean,
     uiState: DashboardUiState,
+    bottomSheetScaffoldState: BottomSheetScaffoldState,
     setGoalNotificationEnabled: (Boolean) -> Unit,
     disableSystemNotificationDialog: () -> Unit,
     navigateToAddGoal: () -> Unit,
     navigateToGoalDetail: (Long) -> Unit,
     navigateToSetting: () -> Unit,
+    navigateToSearchGoal: () -> Unit,
     onGoalToggled: (Long) -> Unit,
     onToggleMode: () -> Unit,
     onUpsertPhotos: (List<DashboardPhoto>) -> Unit,
@@ -115,13 +130,14 @@ private fun DashboardScreen(
                 DashboardBody(
                     modifier = modifier,
                     uiState = uiState,
+                    bottomSheetScaffoldState = bottomSheetScaffoldState,
                     setGoalNotificationEnabled = setGoalNotificationEnabled,
                     disableSystemNotificationDialog = disableSystemNotificationDialog,
                     navigateToAddGoal = navigateToAddGoal,
                     navigateToGoalDetail = navigateToGoalDetail,
                     navigateToSetting = navigateToSetting,
+                    navigateToSearchGoal = navigateToSearchGoal,
                     onGoalToggled = onGoalToggled,
-                    // TODO: 캐릭터 누르면 말풍선 바뀌는걸로 옮기기!
                     onChangeBubble = onChangeBubble,
                     onToggleMode = onToggleMode,
                     onUpsertPhotos = onUpsertPhotos,
@@ -138,11 +154,13 @@ private fun DashboardScreen(
 @Composable
 private fun DashboardBody(
     uiState: DashboardUiState.Success,
+    bottomSheetScaffoldState: BottomSheetScaffoldState,
     setGoalNotificationEnabled: (Boolean) -> Unit,
     disableSystemNotificationDialog: () -> Unit,
     navigateToAddGoal: () -> Unit,
     navigateToGoalDetail: (Long) -> Unit,
     navigateToSetting: () -> Unit,
+    navigateToSearchGoal: () -> Unit,
     onGoalToggled: (Long) -> Unit,
     onChangeBubble: () -> Unit,
     onToggleMode: () -> Unit,
@@ -157,11 +175,6 @@ private fun DashboardBody(
     SharedTransitionLayout(
         modifier = modifier,
     ) {
-        val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-            bottomSheetState = rememberStandardBottomSheetState(
-                initialValue = SheetValue.PartiallyExpanded,
-            ),
-        )
         val photoFramesState = rememberDashboardPhotoFramesState(
             photoState = uiState.photoState,
         )
@@ -172,10 +185,16 @@ private fun DashboardBody(
                 }
             }
         }
+        val resources = remember(uiState.character) { CharacterResources.from(uiState.character) }
 
         DobeDobeBottomSheetScaffold(
             modifier = Modifier
                 .fillMaxSize()
+                .paint(
+                    painterResource(id = resources.backgroundRes),
+                    contentScale = ContentScale.FillBounds,
+                )
+                .statusBarsPadding()
                 .then(
                     if (isEditMode) {
                         Modifier.cloudy(35)
@@ -185,16 +204,42 @@ private fun DashboardBody(
                 ),
             scaffoldState = bottomSheetScaffoldState,
             sheetContent = {
+                val isNotPartiallyExpanded by remember {
+                    derivedStateOf {
+                        bottomSheetScaffoldState.bottomSheetState.let { state ->
+                            state.currentValue == SheetValue.Expanded || state.targetValue == SheetValue.Expanded
+                        }
+                    }
+                }
+                val coroutineScope = rememberCoroutineScope()
+
                 GoalBottomSheetContent(
+                    isNotPartiallyExpanded = isNotPartiallyExpanded,
                     goals = uiState.goals,
                     onGoalToggled = onGoalToggled,
                     onAddGoalClicked = navigateToAddGoal,
                     onGoalClicked = navigateToGoalDetail,
+                    onTapSearchBar = navigateToSearchGoal,
+                    onInfoCardClicked = {
+                        coroutineScope.launch {
+                            if (!isNotPartiallyExpanded) {
+                                bottomSheetScaffoldState.bottomSheetState.expand()
+                            }
+                        }
+                    },
                     modifier = Modifier
                         .padding(top = 8.dp),
                 )
+
+                BackHandler(
+                    enabled = isNotPartiallyExpanded,
+                ) {
+                    coroutineScope.launch {
+                        bottomSheetScaffoldState.bottomSheetState.partialExpand()
+                    }
+                }
             },
-            sheetPeekHeight = 380.dp,
+            sheetPeekHeight = 225.dp,
         ) { innerPadding ->
             Box(
                 modifier = Modifier
@@ -206,13 +251,20 @@ private fun DashboardBody(
                 DashboardViewMode(
                     isViewMode = !isEditMode,
                     photoState = uiState.photoState,
-                    bubbleTitle = uiState.bubbleTitle,
+                    bubbleGoal = uiState.bubbleGoal,
                     photoFramesState = photoFramesState,
                     onChangeBubble = onChangeBubble,
                     onToggleExpansion = onToggleExpansion,
                     onToggleMode = onToggleMode,
+                    navigateToGoalDetail = navigateToGoalDetail,
                     navigateToSetting = navigateToSetting,
-                    character = uiState.character,
+                    resources = resources,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .paint(
+                            painterResource(id = resources.backgroundRes),
+                            contentScale = ContentScale.FillBounds,
+                        ),
                 )
             }
         }

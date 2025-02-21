@@ -3,4 +3,6 @@
     <string name="feature_setting">설정</string>
     <string name="feature_setting_app_feedback">앱 피드백 남기기</string>
     <string name="feature_setting_goal_notifications">알림</string>
+    <string name="feature_setting_change_character">캐릭터 변경하기</string>
+    <string name="feature_setting_change_character_completed">변경하기</string>
 </resources>

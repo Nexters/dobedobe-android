@@ -46,8 +46,8 @@ fun DobeDobeBottomSheetScaffold(
             topBar = topBar,
             snackbarHost = snackbarHost,
             content = content,
-            sheetContainerColor = DobeDobeTheme.colors.white,
-            containerColor = DobeDobeTheme.colors.white,
+            sheetContainerColor = DobeDobeTheme.colors.gray50,
+            containerColor = DobeDobeTheme.colors.gray50,
         )
     }
 }

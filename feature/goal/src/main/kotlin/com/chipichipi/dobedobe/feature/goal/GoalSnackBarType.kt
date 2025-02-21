@@ -4,7 +4,7 @@ enum class GoalSnackBarType {
     IDLE,
     ADD,
     EDIT,
-    REMOVE,
+    DELETE,
     ;
 
     companion object {

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_dashboard">홈</string>
-    <string name="feature_dashboard_edit_mode_top_bar_confirm">저장</string>
-    <string name="feature_dashboard_edit_mode_top_bar_cancel">취소</string>
+    <string name="feature_dashboard_edit_mode_confirm">저장</string>
+    <string name="feature_dashboard_edit_mode_cancel">취소</string>
     <string name="feature_dashboard_edit_mode_description">변경하고 싶은 사진을 선택해 주세요</string>
     <string name="feature_dashboard_goal_notification_prompt">앱 밖에서도 목표를\n되새길 수 있어요</string>
     <string name="feature_dashboard_goal_notification_description">알림 권한이 필요해요</string>
@@ -10,10 +10,12 @@
     <string name="feature_dashboard_edit_change_image_title">이미지 변경</string>
     <string name="feature_dashboard_edit_select_image_from_album">앨범에서 이미지 찾기</string>
     <string name="feature_dashboard_edit_delete_image">이미지 삭제</string>
-    <string name="feature_dashboard_bubble_suffix">해낼 거야!</string>
     <string name="feature_dashboard_goal_bottom_sheet_title">나의 목표</string>
     <string name="feature_dashboard_add_goal_snackbar_message">목표가 추가되었습니다.</string>
     <string name="feature_dashboard_remove_goal_snackbar_message">목표가 삭제되었습니다.</string>
     <string name="feature_dashboard_edit_goal_snackbar_message">목표가 수정되었습니다.</string>
     <string name="feature_dashboard_goal_bottom_sheet_empty_message">목표를 설정하고\n작은 실천부터 시작해봐요.</string>
+    <string name="feature_dashboard_goal_list">목표 리스트</string>
+    <string name="feature_dashboard_label_yearly_goal">올해의 목표</string>
+    <string name="feature_dashboard_label_completed_goal">완료한 목표</string>
 </resources>

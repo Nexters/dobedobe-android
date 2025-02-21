@@ -47,8 +47,8 @@ data class DobeDobeTypography internal constructor(
         heading1: TextStyle = TextStyle(
             fontFamily = systemFontFamily,
             fontWeight = FontWeight.SemiBold,
-            fontSize = 22.sp,
-            lineHeight = 33.sp,
+            fontSize = 20.sp,
+            lineHeight = 30.sp,
             letterSpacing = -(0.396).sp,
             lineHeightStyle = LineHeightStyle(
                 alignment = LineHeightStyle.Alignment.Proportional,

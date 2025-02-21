@@ -3,8 +3,8 @@ applicationId = "com.chipichipi.dobedobe"
 compileSdk = "35"
 minSdk = "26"
 targetSdk = "35"
-versionCode = "3"
-appVersion = "1.0.1"
+versionCode = "4"
+appVersion = "1.1.0"
 
 # kotlin
 kotlin = "2.1.0"
@@ -15,19 +15,19 @@ ksp = "2.1.0-1.0.29"
 
 # android
 agp = "8.7.3"
-activityCompose = "1.9.3"
-androidxComposeFoundation = "1.8.0-alpha07"
+activityCompose = "1.10.0"
+androidxComposeFoundation = "1.8.0-beta01"
 androidxLifecycle = "2.8.7"
-androidxNavigation = "2.8.5"
+androidxNavigation = "2.8.6"
 androidxCoreSplashscreen = "1.0.1"
-androidxDataStore = "1.1.1"
+androidxDataStore = "1.1.2"
 androidxEspresso = "3.6.1"
 androidxTestCore = "1.6.1"
 androidxTestExt = "1.2.1"
 androidxTestRules = "1.6.1"
 androidxTestRunner = "1.6.2"
 coreKtx = "1.15.0"
-composeBom = "2024.12.01"
+composeBom = "2025.01.01"
 room = "2.6.1"
 robolectric = "4.14.1"
 
@@ -37,12 +37,13 @@ protobufPlugin = "0.9.4"
 permission = "0.37.0"
 
 # third-party
-apng = "3.0.1"
 coil = "3.0.4"
 cloudy = "0.2.4"
+imageCropper = "4.6.0"
 moduleGraph = "2.7.1"
 koin = "4.0.1"
 ktlint = "12.1.0"
+lottie = "6.6.2"
 
 # test
 androidJunit5Plugin = "1.10.0.0"
@@ -104,11 +105,11 @@ protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-
 protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
 
 # third-party
-apng = { module = "com.github.penfeizhou.android.animation:apng", version.ref = "apng"}
 coil-kt = { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil" }
 coil-kt-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 coil-kt-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
 compose-cloudy = { module = "com.github.skydoves:cloudy", version.ref = "cloudy" }
+image-cropper = { module = "com.vanniktech:android-image-cropper", version.ref = "imageCropper" }
 koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
 koin-android = { group = "io.insert-koin", name = "koin-android" }
 koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
@@ -117,6 +118,7 @@ koin-android-test = { group = "io.insert-koin", name = "koin-android-test" }
 koin-core = { group = "io.insert-koin", name = "koin-core" }
 koin-androidx-startup = { group = "io.insert-koin", name = "koin-androidx-startup" }
 koin-test-junit5 = { group = "io.insert-koin", name = "koin-test-junit5" }
+lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
 
 # test
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }

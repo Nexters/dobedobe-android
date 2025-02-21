@@ -11,14 +11,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.paint
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
-import com.chipichipi.dobedobe.core.model.CharacterType
 import com.chipichipi.dobedobe.feature.dashboard.DashboardPhotoFramesState
+import com.chipichipi.dobedobe.feature.dashboard.model.BubbleGoal
 import com.chipichipi.dobedobe.feature.dashboard.model.CharacterResources
 import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
 
@@ -26,25 +23,19 @@ import com.chipichipi.dobedobe.feature.dashboard.model.DashboardPhotoState
 @Composable
 internal fun SharedTransitionScope.DashboardViewMode(
     isViewMode: Boolean,
+    resources: CharacterResources,
     photoState: List<DashboardPhotoState>,
-    bubbleTitle: String,
+    bubbleGoal: BubbleGoal,
     photoFramesState: DashboardPhotoFramesState,
     onChangeBubble: () -> Unit,
     onToggleExpansion: (Int) -> Unit,
     onToggleMode: () -> Unit,
     navigateToSetting: () -> Unit,
-    character: CharacterType,
+    navigateToGoalDetail: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val resources = CharacterResources.from(character)
-
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .paint(
-                painterResource(id = resources.backgroundRes),
-                contentScale = ContentScale.FillBounds,
-            ),
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         DashboardViewModeTopAppBar(
@@ -74,23 +65,27 @@ internal fun SharedTransitionScope.DashboardViewMode(
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    Spacer(Modifier.height(14.dp))
+                    Spacer(Modifier.height(60.dp))
                     DashboardBubble(
-                        title = bubbleTitle,
+                        title = bubbleGoal.title,
                         textStyle = DobeDobeTheme.typography.body2,
                         modifier = Modifier
                             .background(
                                 color = DobeDobeTheme.colors.white,
                             ),
-                        onClick = onChangeBubble,
+                        onClick = {
+                            if (bubbleGoal.id != null) {
+                                navigateToGoalDetail(bubbleGoal.id)
+                            }
+                        },
                     )
                     DashboardCharacter(
                         modifier = Modifier
                             .fillMaxSize()
                             .zIndex(0.5f),
-                        defaultApngRes = resources.defaultApngRes,
-                        reactionApngRes = resources.reactionApngRes,
-                        placeholder = resources.placeholderRes,
+                        defaultRes = resources.defaultRes,
+                        reactionRes = resources.reactionRes,
+                        onChangeBubble = onChangeBubble,
                     )
                 }
             }
