@@ -79,7 +79,7 @@ internal fun DetailGoalRoute(
 
     LaunchedEffect(Unit) {
         viewModel.deleteGoalEvent
-            .onEach { event ->
+            .onEach {
                 sendSnackBarEvent(GoalSnackBarType.DELETE)
                 navigateToBack()
             }
