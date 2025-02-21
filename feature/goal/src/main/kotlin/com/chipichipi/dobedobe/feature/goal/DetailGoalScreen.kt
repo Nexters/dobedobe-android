@@ -3,7 +3,6 @@ package com.chipichipi.dobedobe.feature.goal
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,7 +32,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -67,7 +65,6 @@ internal fun DetailGoalRoute(
 ) {
     val uiState: DetailGoalUiState by viewModel.uiState.collectAsStateWithLifecycle()
     val (visibleCompleteDialog, setVisibleCompleteDialog) = rememberSaveable { mutableStateOf(false) }
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
     val focusManager = LocalFocusManager.current
     val onBack = {
         if (viewModel.isGoalChanged) {
@@ -75,11 +72,50 @@ internal fun DetailGoalRoute(
         }
         navigateToBack()
     }
-    val coroutineScope = rememberCoroutineScope()
 
     BackHandler {
         onBack()
     }
+
+    DetailGoalEventEffect(
+        viewModel = viewModel,
+        onShowCompleteDialog = { setVisibleCompleteDialog(true) },
+        sendSnackBarEvent = sendSnackBarEvent,
+        navigateToBack = navigateToBack,
+        onShowSnackbar = onShowSnackbar,
+    )
+
+    DetailGoalScreen(
+        uiState = uiState,
+        visibleCompleteDialog = visibleCompleteDialog,
+        onDismissCompleteDialog = { setVisibleCompleteDialog(false) },
+        onShowSnackbar = onShowSnackbar,
+        navigateToBack = onBack,
+        navigateToEditMode = navigateToEditMode,
+        onTogglePinned = viewModel::togglePinned,
+        onToggleCompleted = viewModel::toggleCompleted,
+        onRemoveGoal = viewModel::removeGoal,
+        modifier = modifier
+            .fillMaxSize()
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+            ) {
+                focusManager.clearFocus()
+            },
+    )
+}
+
+@Composable
+private fun DetailGoalEventEffect(
+    viewModel: DetailGoalViewModel,
+    onShowCompleteDialog: () -> Unit,
+    sendSnackBarEvent: (GoalSnackBarType) -> Unit,
+    navigateToBack: () -> Unit,
+    onShowSnackbar: suspend (String, String?) -> Boolean,
+) {
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         viewModel.goalUiEvent
@@ -95,7 +131,7 @@ internal fun DetailGoalRoute(
                     }
 
                     is DetailGoalUiEvent.CompleteGoal -> {
-                        setVisibleCompleteDialog(true)
+                        onShowCompleteDialog()
                         coroutineScope.coroutineContext.cancelChildren()
                     }
 
@@ -108,25 +144,6 @@ internal fun DetailGoalRoute(
             .flowWithLifecycle(lifecycle)
             .launchIn(this)
     }
-
-    DetailGoalScreen(
-        uiState = uiState,
-        visibleCompleteDialog = visibleCompleteDialog,
-        onDismissCompleteDialog = { setVisibleCompleteDialog(false) },
-        onShowSnackbar = onShowSnackbar,
-        navigateToBack = onBack,
-        navigateToEditMode = navigateToEditMode,
-        onTogglePinned = viewModel::togglePinned,
-        onToggleCompleted = viewModel::toggleCompleted,
-        onRemoveGoal = viewModel::removeGoal,
-        modifier = modifier
-            .fillMaxSize()
-            .pointerInput(Unit) {
-                detectTapGestures {
-                    focusManager.clearFocus()
-                }
-            },
-    )
 }
 
 @Composable
@@ -203,12 +220,12 @@ private fun DetailGoalScreen(
                     },
                     onDismiss = { setVisibleDialog(false) },
                 )
-                if (visibleCompleteDialog) {
-                    GoalCompleteDialog(
-                        onDismissRequest = onDismissCompleteDialog,
-                        characterType = uiState.characterType,
-                    )
-                }
+
+                GoalCompleteDialog(
+                    visible = visibleCompleteDialog,
+                    onDismissRequest = onDismissCompleteDialog,
+                    characterType = uiState.characterType,
+                )
             }
         }
     }
