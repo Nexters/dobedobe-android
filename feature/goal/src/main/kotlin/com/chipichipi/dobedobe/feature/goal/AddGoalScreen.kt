@@ -11,6 +11,7 @@ import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -19,9 +20,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeBackground
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
+import com.chipichipi.dobedobe.core.model.CharacterType
 import com.chipichipi.dobedobe.feature.goal.component.GoalEditor
 import com.chipichipi.dobedobe.feature.goal.component.GoalTopAppBar
 import kotlinx.coroutines.flow.launchIn
@@ -38,6 +41,7 @@ fun AddGoalRoute(
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
+    val characterType: CharacterType by viewModel.characterType.collectAsStateWithLifecycle()
     val errorMessage =
         viewModel.goalValidResult.addGoalErrorMessage()
             ?.let { stringResource(id = it) }
@@ -67,6 +71,7 @@ fun AddGoalRoute(
             }
             .imePadding(),
         errorMessage = errorMessage,
+        characterType = characterType,
         focusRequester = focusRequester,
         onShowSnackbar = onShowSnackbar,
         navigateToBack = navigateToBack,
@@ -79,6 +84,7 @@ fun AddGoalRoute(
 private fun AddGoalScreen(
     errorMessage: String?,
     titleState: TextFieldState,
+    characterType: CharacterType,
     focusRequester: FocusRequester,
     onShowSnackbar: suspend (String, String?) -> Boolean,
     navigateToBack: () -> Unit,
@@ -104,6 +110,7 @@ private fun AddGoalScreen(
             supportMessage = stringResource(id = R.string.feature_detail_goal_editor_support_message),
             buttonText = stringResource(id = R.string.feature_add_goal_action_button),
             errorMessage = errorMessage,
+            characterType = characterType,
             focusRequester = focusRequester,
             onDone = onAddGoal,
         )
@@ -120,6 +127,7 @@ private fun AddGoalScreenPreview() {
                 modifier = Modifier
                     .fillMaxSize(),
                 titleState = textFieldState,
+                characterType = CharacterType.Rabbit,
                 errorMessage = null,
                 focusRequester = FocusRequester(),
                 onShowSnackbar = { _, _ -> false },
