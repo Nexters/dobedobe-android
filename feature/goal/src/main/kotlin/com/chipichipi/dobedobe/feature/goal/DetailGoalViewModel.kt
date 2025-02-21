@@ -1,7 +1,5 @@
 package com.chipichipi.dobedobe.feature.goal
 
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -34,12 +32,12 @@ internal class DetailGoalViewModel(
             initialValue = DetailGoalUiState.Loading,
         )
 
-    val isGoalChanged by derivedStateOf {
-        when (val uiState = uiState.value) {
-            is DetailGoalUiState.Success -> uiState.goal != originalGoal
-            is DetailGoalUiState.Loading, DetailGoalUiState.Error -> false
-        }
-    }
+    val isGoalChanged
+        get() =
+            when (val uiState = uiState.value) {
+                is DetailGoalUiState.Success -> uiState.goal != originalGoal
+                is DetailGoalUiState.Loading, DetailGoalUiState.Error -> false
+            }
 
     private val _deleteGoalEvent = Channel<Unit>(capacity = Channel.BUFFERED)
     val deleteGoalEvent: Flow<Unit> = _deleteGoalEvent.receiveAsFlow()
