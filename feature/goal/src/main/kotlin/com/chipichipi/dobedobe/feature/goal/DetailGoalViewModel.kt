@@ -92,7 +92,7 @@ internal class DetailGoalViewModel(
                     if (isCompleted) {
                         _goalUiEvent.send(DetailGoalUiEvent.CompleteGoal)
                     } else {
-                        _goalUiEvent.send(DetailGoalUiEvent.UnDoGoal)
+                        _goalUiEvent.send(DetailGoalUiEvent.UndoGoal)
                     }
                 }
         }
@@ -124,5 +124,5 @@ sealed interface DetailGoalUiEvent {
 
     data object CompleteGoal : DetailGoalUiEvent
 
-    data object UnDoGoal : DetailGoalUiEvent
+    data object UndoGoal : DetailGoalUiEvent
 }

@@ -122,7 +122,7 @@ private fun DetailGoalEventEffect(
         viewModel.goalUiEvent
             .onEach { event ->
                 when (event) {
-                    is DetailGoalUiEvent.UnDoGoal -> {
+                    is DetailGoalUiEvent.UndoGoal -> {
                         coroutineScope.launch {
                             onShowSnackbar(
                                 snackBarMsg,
