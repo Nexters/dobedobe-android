@@ -85,14 +85,11 @@ internal class DetailGoalViewModel(
     private fun observeGoalCompletion() {
         viewModelScope.launch {
             uiState
-                .mapNotNull {
-                    val uiState = (it as? DetailGoalUiState.Success) ?: return@mapNotNull null
-                    uiState
-                }
-                .distinctUntilChanged { old, new -> old.goal.isCompleted == new.goal.isCompleted }
+                .mapNotNull { (it as? DetailGoalUiState.Success)?.goal?.isCompleted }
+                .distinctUntilChanged()
                 .drop(1)
-                .collectLatest { uiState ->
-                    if (uiState.goal.isCompleted) {
+                .collectLatest { isCompleted ->
+                    if (isCompleted) {
                         _goalUiEvent.send(DetailGoalUiEvent.CompleteGoal)
                     } else {
                         _goalUiEvent.send(DetailGoalUiEvent.UnDoGoal)
