@@ -10,14 +10,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.chipichipi.dobedobe.core.data.repository.GoalRepository
+import com.chipichipi.dobedobe.core.data.repository.UserRepository
+import com.chipichipi.dobedobe.core.model.CharacterType
 import com.chipichipi.dobedobe.core.model.Goal
 import com.chipichipi.dobedobe.feature.goal.navigation.GoalRoute
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
@@ -26,6 +28,7 @@ import kotlinx.coroutines.launch
 internal class EditGoalViewModel(
     savedStateHandle: SavedStateHandle,
     private val goalRepository: GoalRepository,
+    userRepository: UserRepository,
 ) : ViewModel() {
     val goalTitleDraft = TextFieldState("")
     val goalValidResult by derivedStateOf {
@@ -40,7 +43,12 @@ internal class EditGoalViewModel(
             }
 
     val uiState: StateFlow<EditGoalUiState> = savedStateHandle.getGoalFlow()
-        .map(EditGoalUiState::Success)
+        .combine(userRepository.userData) { goal, user ->
+            EditGoalUiState.Success(
+                goal = goal,
+                characterType = user.characterType,
+            )
+        }
         .onEach {
             goalTitleDraft.edit {
                 delete(0, length)
@@ -93,6 +101,7 @@ sealed interface EditGoalUiState {
 
     data class Success(
         val goal: Goal,
+        val characterType: CharacterType,
     ) : EditGoalUiState
 
     data object Error : EditGoalUiState

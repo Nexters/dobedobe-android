@@ -27,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
+import com.chipichipi.dobedobe.core.model.CharacterType
 import com.chipichipi.dobedobe.core.model.Goal
 import com.chipichipi.dobedobe.feature.goal.component.GoalEditor
 import com.chipichipi.dobedobe.feature.goal.component.GoalTopAppBar
@@ -124,6 +125,7 @@ private fun EditGoalScreen(
                         .padding(horizontal = 24.dp)
                         .padding(top = 8.dp, bottom = 12.dp),
                     titleState = goalTitleDraft,
+                    characterType = uiState.characterType,
                     supportMessage = stringResource(id = R.string.feature_detail_goal_editor_support_message),
                     buttonText = stringResource(id = R.string.feature_add_goal_action_button),
                     errorMessage = errorMessage,
@@ -140,7 +142,10 @@ private fun EditGoalScreen(
 private fun EditGoalScreenPreview() {
     DobeDobeTheme {
         EditGoalScreen(
-            uiState = EditGoalUiState.Success(Goal.todo("edit")),
+            uiState = EditGoalUiState.Success(
+                Goal.todo("edit"),
+                characterType = CharacterType.Bird,
+            ),
             goalTitleDraft = rememberTextFieldState("edit"),
             errorMessage = null,
             saveGoalTitle = {},

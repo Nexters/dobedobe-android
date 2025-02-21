@@ -2,7 +2,6 @@ package com.chipichipi.dobedobe.feature.goal.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,14 +14,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSizeIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -38,6 +35,7 @@ import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeTextButton
 import com.chipichipi.dobedobe.core.designsystem.component.DobeDobeTextField
 import com.chipichipi.dobedobe.core.designsystem.component.TailPosition
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
+import com.chipichipi.dobedobe.core.model.CharacterType
 import com.chipichipi.dobedobe.feature.goal.R
 
 @Composable
@@ -47,6 +45,7 @@ fun GoalEditor(
     modifier: Modifier = Modifier,
     supportMessage: String = "",
     errorMessage: String? = null,
+    characterType: CharacterType,
     focusRequester: FocusRequester,
     onDone: (() -> Unit)? = null,
 ) {
@@ -55,14 +54,9 @@ fun GoalEditor(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
-            painter = painterResource(id = R.drawable.rabit_avatar),
+            painter = painterResource(id = characterType.toImageRes()),
             contentDescription = "Avatar",
-            modifier = Modifier
-                .size(84.dp)
-                .border(1.dp, Color(0xFFFFA8E7), CircleShape)
-                .padding(1.dp)
-                .clip(CircleShape)
-                .background(Color(0xFFFFF2FF)),
+            modifier = Modifier.size(80.dp),
             contentScale = ContentScale.Crop,
         )
 
@@ -115,6 +109,11 @@ fun GoalEditor(
     }
 }
 
+private fun CharacterType.toImageRes(): Int = when (this) {
+    CharacterType.Bird -> R.drawable.bird_avatar
+    CharacterType.Rabbit -> R.drawable.rabbit_avatar
+}
+
 @Preview
 @Composable
 private fun GoalDetailEmptyPreview() {
@@ -128,6 +127,7 @@ private fun GoalDetailEmptyPreview() {
                     .imePadding(),
                 supportMessage = stringResource(R.string.feature_detail_goal_editor_support_message),
                 titleState = titleState,
+                characterType = CharacterType.Rabbit,
                 focusRequester = FocusRequester(),
                 buttonText = "Done",
             )
@@ -148,6 +148,7 @@ private fun GoalDetailPreview() {
                     .imePadding(),
                 supportMessage = stringResource(R.string.feature_detail_goal_editor_support_message),
                 titleState = titleState,
+                characterType = CharacterType.Bird,
                 focusRequester = FocusRequester(),
                 buttonText = "Done",
             )
