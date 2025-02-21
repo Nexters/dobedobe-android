@@ -3,7 +3,6 @@ package com.chipichipi.dobedobe.feature.goal
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,12 +26,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -46,10 +45,13 @@ import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
 import com.chipichipi.dobedobe.core.designsystem.icon.DobeDobeIcons
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.core.model.Goal
+import com.chipichipi.dobedobe.feature.goal.component.GoalCompleteDialog
 import com.chipichipi.dobedobe.feature.goal.component.GoalToggleChip
 import com.chipichipi.dobedobe.feature.goal.component.GoalTopAppBar
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -62,7 +64,7 @@ internal fun DetailGoalRoute(
     viewModel: DetailGoalViewModel = koinViewModel(),
 ) {
     val uiState: DetailGoalUiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    val (visibleCompleteDialog, setVisibleCompleteDialog) = rememberSaveable { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
     val onBack = {
         if (viewModel.isGoalChanged) {
@@ -75,18 +77,18 @@ internal fun DetailGoalRoute(
         onBack()
     }
 
-    LaunchedEffect(Unit) {
-        viewModel.deleteGoalEvent
-            .onEach {
-                sendSnackBarEvent(GoalSnackBarType.DELETE)
-                navigateToBack()
-            }
-            .flowWithLifecycle(lifecycle)
-            .launchIn(this)
-    }
+    DetailGoalEventEffect(
+        viewModel = viewModel,
+        onShowCompleteDialog = { setVisibleCompleteDialog(true) },
+        sendSnackBarEvent = sendSnackBarEvent,
+        navigateToBack = navigateToBack,
+        onShowSnackbar = onShowSnackbar,
+    )
 
     DetailGoalScreen(
         uiState = uiState,
+        visibleCompleteDialog = visibleCompleteDialog,
+        onDismissCompleteDialog = { setVisibleCompleteDialog(false) },
         onShowSnackbar = onShowSnackbar,
         navigateToBack = onBack,
         navigateToEditMode = navigateToEditMode,
@@ -95,17 +97,61 @@ internal fun DetailGoalRoute(
         onRemoveGoal = viewModel::removeGoal,
         modifier = modifier
             .fillMaxSize()
-            .pointerInput(Unit) {
-                detectTapGestures {
-                    focusManager.clearFocus()
-                }
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+            ) {
+                focusManager.clearFocus()
             },
     )
 }
 
 @Composable
+private fun DetailGoalEventEffect(
+    viewModel: DetailGoalViewModel,
+    onShowCompleteDialog: () -> Unit,
+    sendSnackBarEvent: (GoalSnackBarType) -> Unit,
+    navigateToBack: () -> Unit,
+    onShowSnackbar: suspend (String, String?) -> Boolean,
+) {
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    val coroutineScope = rememberCoroutineScope()
+    val snackBarMsg = stringResource(R.string.feature_detail_goal_snackbar_message)
+
+    LaunchedEffect(Unit) {
+        viewModel.goalUiEvent
+            .onEach { event ->
+                when (event) {
+                    is DetailGoalUiEvent.UndoGoal -> {
+                        coroutineScope.launch {
+                            onShowSnackbar(
+                                snackBarMsg,
+                                null,
+                            )
+                        }
+                    }
+
+                    is DetailGoalUiEvent.CompleteGoal -> {
+                        onShowCompleteDialog()
+                        coroutineScope.coroutineContext.cancelChildren()
+                    }
+
+                    is DetailGoalUiEvent.Delete -> {
+                        sendSnackBarEvent(GoalSnackBarType.DELETE)
+                        navigateToBack()
+                    }
+                }
+            }
+            .flowWithLifecycle(lifecycle)
+            .launchIn(this)
+    }
+}
+
+@Composable
 private fun DetailGoalScreen(
     uiState: DetailGoalUiState,
+    visibleCompleteDialog: Boolean,
+    onDismissCompleteDialog: () -> Unit,
     onShowSnackbar: suspend (String, String?) -> Boolean,
     navigateToBack: () -> Unit,
     navigateToEditMode: () -> Unit,
@@ -114,7 +160,7 @@ private fun DetailGoalScreen(
     onRemoveGoal: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val (visibleDialog, setVisibleDialog) = rememberSaveable { mutableStateOf(false) }
+    val (visibleDeleteDialog, setVisibleDeleteDialog) = rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
         modifier = modifier,
@@ -124,7 +170,7 @@ private fun DetailGoalScreen(
                 navigateToBack = navigateToBack,
                 actions = {
                     TextButton(
-                        onClick = { if (uiState.isSuccess) setVisibleDialog(true) },
+                        onClick = { if (uiState.isSuccess) setVisibleDeleteDialog(true) },
                         colors = ButtonDefaults.textButtonColors().copy(
                             contentColor = DobeDobeTheme.colors.red,
                         ),
@@ -155,12 +201,6 @@ private fun DetailGoalScreen(
                 val goal = uiState.goal
                 DetailGoalContent(
                     goal = goal,
-                    visibleDialog = visibleDialog,
-                    onDismissDialog = { setVisibleDialog(false) },
-                    onConfirmDialog = {
-                        setVisibleDialog(false)
-                        onRemoveGoal(goal.id)
-                    },
                     onShowSnackbar = onShowSnackbar,
                     onTogglePinned = { onTogglePinned(goal.id) },
                     onToggleCompleted = { onToggleCompleted(goal.id) },
@@ -172,6 +212,23 @@ private fun DetailGoalScreen(
                         .padding(horizontal = 24.dp)
                         .padding(top = 24.dp, bottom = 32.dp),
                 )
+
+                if (visibleDeleteDialog) {
+                    GoalDeleteDialog(
+                        onConfirm = {
+                            setVisibleDeleteDialog(false)
+                            onRemoveGoal(goal.id)
+                        },
+                        onDismiss = { setVisibleDeleteDialog(false) },
+                    )
+                }
+
+                if (visibleCompleteDialog) {
+                    GoalCompleteDialog(
+                        onDismissRequest = onDismissCompleteDialog,
+                        characterType = uiState.characterType,
+                    )
+                }
             }
         }
     }
@@ -180,9 +237,6 @@ private fun DetailGoalScreen(
 @Composable
 private fun DetailGoalContent(
     goal: Goal,
-    visibleDialog: Boolean,
-    onConfirmDialog: () -> Unit,
-    onDismissDialog: () -> Unit,
     onShowSnackbar: suspend (String, String?) -> Boolean,
     onTogglePinned: () -> Unit,
     onToggleCompleted: () -> Unit,
@@ -230,11 +284,6 @@ private fun DetailGoalContent(
             onTogglePinned = onTogglePinned,
         )
     }
-    GoalDeleteDialog(
-        visible = visibleDialog,
-        onConfirm = onConfirmDialog,
-        onDismiss = onDismissDialog,
-    )
 }
 
 @Composable
@@ -305,12 +354,10 @@ private fun GoalToggleChipGroup(
 
 @Composable
 private fun GoalDeleteDialog(
-    visible: Boolean,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    if (!visible) return
     DobeDobeDialog(
         title = stringResource(R.string.feature_detail_goal_delete_dialog_title),
         primaryText = stringResource(R.string.feature_detail_goal_delete_dialog_primary),
@@ -327,7 +374,6 @@ private fun GoalDeleteDialog(
 private fun DeleteDialogPreview() {
     DobeDobeTheme {
         GoalDeleteDialog(
-            visible = true,
             onConfirm = {},
             onDismiss = {},
         )
@@ -341,9 +387,6 @@ private fun DetailGoalContentPreview() {
         DobeDobeBackground {
             DetailGoalContent(
                 goal = Goal.todo("test"),
-                visibleDialog = false,
-                onConfirmDialog = {},
-                onDismissDialog = {},
                 onShowSnackbar = { _, _ -> false },
                 onTogglePinned = {},
                 onToggleCompleted = {},

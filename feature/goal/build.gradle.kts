@@ -10,5 +10,5 @@ android {
 dependencies {
     implementation(projects.core.data)
 
-    implementation(libs.compose.cloudy)
+    implementation(libs.lottie)
 }

@@ -19,11 +19,13 @@
     <string name="feature_goal_navigate_back_icon_content_description">Back</string>
     <string name="feature_add_goal_action_button">Complete</string>
     <string name="feature_detail_goal_edit_button_title">Edit</string>
+    <string name="feature_goal_search_bar_cancel_button">Close</string>
+    <string name="feature_goal_search_bar_hint">Search Goal</string>
+    <string name="feature_goal_search_recent_goal_title">Recently Added</string>
+    <string name="feature_goal_search_queried_goal_title">Search Result</string>
+    <string name="feature_goal_complete_dialog_title">Goal Completed</string>
+    <string name="feature_goal_complete_dialog_button_title">OK</string>
+    <string name="feature_detail_goal_snackbar_message">Let’s restart the goal</string>
     <!-- 피그마에 없음-->
     <string name="feature_goal_title_error_message_blank">You can\'t save empty goals</string>
-    <!--    TODO 번역-->
-    <string name="feature_goal_search_bar_cancel_button">닫기</string>
-    <string name="feature_goal_search_bar_hint">목표 검색</string>
-    <string name="feature_goal_search_recent_goal_title">최근에 추가된</string>
-    <string name="feature_goal_search_queried_goal_title">검색 결과</string>
 </resources>
