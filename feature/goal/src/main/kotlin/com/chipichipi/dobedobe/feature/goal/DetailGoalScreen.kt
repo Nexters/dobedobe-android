@@ -64,13 +64,11 @@ internal fun DetailGoalRoute(
     val uiState: DetailGoalUiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val focusManager = LocalFocusManager.current
-    val onBack = remember(viewModel) {
-        {
-            if (viewModel.isGoalChanged) {
-                sendSnackBarEvent(GoalSnackBarType.EDIT)
-            }
-            navigateToBack()
+    val onBack = {
+        if (viewModel.isGoalChanged) {
+            sendSnackBarEvent(GoalSnackBarType.EDIT)
         }
+        navigateToBack()
     }
 
     BackHandler {
