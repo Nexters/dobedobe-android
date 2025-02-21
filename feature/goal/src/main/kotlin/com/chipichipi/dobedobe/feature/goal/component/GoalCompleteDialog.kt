@@ -36,12 +36,9 @@ import com.chipichipi.dobedobe.feature.goal.R
 
 @Composable
 internal fun GoalCompleteDialog(
-    visible: Boolean,
     characterType: CharacterType,
     onDismissRequest: () -> Unit,
 ) {
-    if (!visible) return
-
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(
@@ -135,7 +132,6 @@ private fun CharacterType.rawRes(): Int = when (this) {
 private fun GoalCompleteBirdDialogPreview() {
     DobeDobeTheme {
         GoalCompleteDialog(
-            visible = true,
             characterType = CharacterType.Bird,
             onDismissRequest = {},
         )
@@ -147,7 +143,6 @@ private fun GoalCompleteBirdDialogPreview() {
 private fun GoalCompleteRabbitDialogPreview() {
     DobeDobeTheme {
         GoalCompleteDialog(
-            visible = true,
             characterType = CharacterType.Rabbit,
             onDismissRequest = {},
         )

@@ -213,20 +213,22 @@ private fun DetailGoalScreen(
                         .padding(top = 24.dp, bottom = 32.dp),
                 )
 
-                GoalDeleteDialog(
-                    visible = visibleDeleteDialog,
-                    onConfirm = {
-                        setVisibleDeleteDialog(false)
-                        onRemoveGoal(goal.id)
-                    },
-                    onDismiss = { setVisibleDeleteDialog(false) },
-                )
+                if (visibleDeleteDialog) {
+                    GoalDeleteDialog(
+                        onConfirm = {
+                            setVisibleDeleteDialog(false)
+                            onRemoveGoal(goal.id)
+                        },
+                        onDismiss = { setVisibleDeleteDialog(false) },
+                    )
+                }
 
-                GoalCompleteDialog(
-                    visible = visibleCompleteDialog,
-                    onDismissRequest = onDismissCompleteDialog,
-                    characterType = uiState.characterType,
-                )
+                if (visibleCompleteDialog) {
+                    GoalCompleteDialog(
+                        onDismissRequest = onDismissCompleteDialog,
+                        characterType = uiState.characterType,
+                    )
+                }
             }
         }
     }
@@ -352,12 +354,10 @@ private fun GoalToggleChipGroup(
 
 @Composable
 private fun GoalDeleteDialog(
-    visible: Boolean,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    if (!visible) return
     DobeDobeDialog(
         title = stringResource(R.string.feature_detail_goal_delete_dialog_title),
         primaryText = stringResource(R.string.feature_detail_goal_delete_dialog_primary),
@@ -374,7 +374,6 @@ private fun GoalDeleteDialog(
 private fun DeleteDialogPreview() {
     DobeDobeTheme {
         GoalDeleteDialog(
-            visible = true,
             onConfirm = {},
             onDismiss = {},
         )
