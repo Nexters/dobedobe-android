@@ -143,7 +143,7 @@ private fun EditGoalScreenPreview() {
     DobeDobeTheme {
         EditGoalScreen(
             uiState = EditGoalUiState.Success(
-                Goal.todo("edit"),
+                goal = Goal.todo("edit"),
                 characterType = CharacterType.Bird,
             ),
             goalTitleDraft = rememberTextFieldState("edit"),
