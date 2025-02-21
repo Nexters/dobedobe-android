@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_goal">Goals</string>
+    <string name="feature_add_goal_top_bar_title">Add Goal</string>
+    <string name="feature_detail_goal_top_bar_title">Goal Detail</string>
+    <string name="feature_detail_goal_top_bar_edit_title">Edit Goal</string>
     <string name="feature_detail_goal_top_bar_remove">delete</string>
     <string name="feature_detail_goal_complete_chip">Achieve Goal</string>
     <string name="feature_detail_goal_pinned_chip">Favorites</string>
@@ -9,12 +12,13 @@
     <string name="feature_detail_goal_delete_dialog_secondary">Delete</string>
     <string name="feature_detail_goal_complete_editor_header">Achieved Goal</string>
     <string name="feature_detail_goal_uncompleted_editor_header">Ongoing Goals</string>
-    <string name="feature_detail_goal_todo_editor_header">What goal do you want to achieve?</string>
-    <string name="feature_detail_goal_editor_hint">Goal Name</string>
+    <string name="feature_detail_goal_editor_empty_bubble">What goal do you want to achieve?</string>
+    <string name="feature_detail_goal_editor_hint">Please Write Goal Name</string>
     <string name="feature_detail_goal_editor_support_message">The simpler the goal, the better the focus.</string>
     <string name="feature_goal_title_error_message_too_long">Up to 20 characters incl. spaces</string>
     <string name="feature_goal_navigate_back_icon_content_description">Back</string>
     <string name="feature_add_goal_action_button">Complete</string>
+    <string name="feature_detail_goal_edit_button_title">Edit</string>
     <!-- 피그마에 없음-->
     <string name="feature_goal_title_error_message_blank">You can\'t save empty goals</string>
     <!--    TODO 번역-->

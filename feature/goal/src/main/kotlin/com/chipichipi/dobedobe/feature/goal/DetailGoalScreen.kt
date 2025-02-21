@@ -2,23 +2,35 @@ package com.chipichipi.dobedobe.feature.goal
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
@@ -34,9 +46,8 @@ import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
 import com.chipichipi.dobedobe.core.designsystem.icon.DobeDobeIcons
 import com.chipichipi.dobedobe.core.designsystem.theme.DobeDobeTheme
 import com.chipichipi.dobedobe.core.model.Goal
-import com.chipichipi.dobedobe.feature.goal.component.DetailGoalTopAppBar
-import com.chipichipi.dobedobe.feature.goal.component.GoalEditor
 import com.chipichipi.dobedobe.feature.goal.component.GoalToggleChip
+import com.chipichipi.dobedobe.feature.goal.component.GoalTopAppBar
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.compose.koinViewModel
@@ -46,15 +57,15 @@ internal fun DetailGoalRoute(
     onShowSnackbar: suspend (String, String?) -> Boolean,
     sendSnackBarEvent: (GoalSnackBarType) -> Unit,
     navigateToBack: () -> Unit,
+    navigateToEditMode: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DetailGoalViewModel = koinViewModel(),
 ) {
     val uiState: DetailGoalUiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val isGoalChanged: Boolean by viewModel.isGoalChanged.collectAsStateWithLifecycle()
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val focusManager = LocalFocusManager.current
     val onBack = {
-        if (isGoalChanged) {
+        if (viewModel.isGoalChanged) {
             sendSnackBarEvent(GoalSnackBarType.EDIT)
         }
         navigateToBack()
@@ -67,8 +78,8 @@ internal fun DetailGoalRoute(
     LaunchedEffect(Unit) {
         viewModel.deleteGoalEvent
             .onEach {
-                sendSnackBarEvent(GoalSnackBarType.REMOVE)
-                onBack()
+                sendSnackBarEvent(GoalSnackBarType.DELETE)
+                navigateToBack()
             }
             .flowWithLifecycle(lifecycle)
             .launchIn(this)
@@ -76,6 +87,12 @@ internal fun DetailGoalRoute(
 
     DetailGoalScreen(
         uiState = uiState,
+        onShowSnackbar = onShowSnackbar,
+        navigateToBack = onBack,
+        navigateToEditMode = navigateToEditMode,
+        onTogglePinned = viewModel::togglePinned,
+        onToggleCompleted = viewModel::toggleCompleted,
+        onRemoveGoal = viewModel::removeGoal,
         modifier = modifier
             .fillMaxSize()
             .pointerInput(Unit) {
@@ -83,12 +100,6 @@ internal fun DetailGoalRoute(
                     focusManager.clearFocus()
                 }
             },
-        onShowSnackbar = onShowSnackbar,
-        navigateToBack = onBack,
-        onChangeGoalName = viewModel::changeGoalTitle,
-        onTogglePinned = viewModel::togglePinned,
-        onToggleCompleted = viewModel::toggleCompleted,
-        onRemoveGoal = viewModel::removeGoal,
     )
 }
 
@@ -97,7 +108,7 @@ private fun DetailGoalScreen(
     uiState: DetailGoalUiState,
     onShowSnackbar: suspend (String, String?) -> Boolean,
     navigateToBack: () -> Unit,
-    onChangeGoalName: (String) -> Unit,
+    navigateToEditMode: () -> Unit,
     onTogglePinned: (Long) -> Unit,
     onToggleCompleted: (Long) -> Unit,
     onRemoveGoal: (Long) -> Unit,
@@ -108,10 +119,22 @@ private fun DetailGoalScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            DetailGoalTopAppBar(
+            GoalTopAppBar(
+                title = stringResource(R.string.feature_detail_goal_top_bar_title),
                 navigateToBack = navigateToBack,
-                onRemoveGoal = {
-                    if (uiState.isSuccess) setVisibleDialog(true)
+                actions = {
+                    TextButton(
+                        onClick = { if (uiState.isSuccess) setVisibleDialog(true) },
+                        colors = ButtonDefaults.textButtonColors().copy(
+                            contentColor = DobeDobeTheme.colors.red,
+                        ),
+                        contentPadding = PaddingValues(horizontal = 20.dp),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.feature_detail_goal_top_bar_remove),
+                            style = DobeDobeTheme.typography.body1,
+                        )
+                    }
                 },
             )
         },
@@ -130,11 +153,6 @@ private fun DetailGoalScreen(
 
             is DetailGoalUiState.Success -> {
                 val goal = uiState.goal
-                val errorMessage =
-                    uiState.goalValidResult
-                        .errorMessage()
-                        ?.let { stringResource(id = it) }
-
                 DetailGoalContent(
                     goal = goal,
                     visibleDialog = visibleDialog,
@@ -143,11 +161,10 @@ private fun DetailGoalScreen(
                         setVisibleDialog(false)
                         onRemoveGoal(goal.id)
                     },
-                    errorMessage = errorMessage,
                     onShowSnackbar = onShowSnackbar,
-                    onChangeGoalName = { title -> onChangeGoalName(title) },
                     onTogglePinned = { onTogglePinned(goal.id) },
                     onToggleCompleted = { onToggleCompleted(goal.id) },
+                    onClickEdit = navigateToEditMode,
                     modifier = modifier
                         .fillMaxSize()
                         .background(DobeDobeTheme.colors.white)
@@ -163,62 +180,127 @@ private fun DetailGoalScreen(
 @Composable
 private fun DetailGoalContent(
     goal: Goal,
-    errorMessage: String?,
     visibleDialog: Boolean,
     onConfirmDialog: () -> Unit,
     onDismissDialog: () -> Unit,
     onShowSnackbar: suspend (String, String?) -> Boolean,
-    onChangeGoalName: (String) -> Unit,
     onTogglePinned: () -> Unit,
     onToggleCompleted: () -> Unit,
+    onClickEdit: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val header =
-        if (goal.isCompleted) {
-            stringResource(R.string.feature_detail_goal_complete_editor_header)
-        } else {
-            stringResource(
-                R.string.feature_detail_goal_uncompleted_editor_header,
-            )
-        }
+    Column(modifier.padding(top = 36.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        DetailGoalHeader(isCompleted = goal.isCompleted)
 
-    GoalEditor(
-        modifier = modifier,
-        title = goal.title,
-        header = header,
-        errorMessage = errorMessage,
-        onChangeTitle = onChangeGoalName,
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Text(
+            text = goal.title,
+            style = DobeDobeTheme.typography.title1,
+            color = DobeDobeTheme.colors.gray900,
+            modifier = Modifier.clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = onClickEdit,
+            ),
+        )
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        TextButton(
+            onClick = onClickEdit,
+            colors = ButtonDefaults.buttonColors().copy(
+                containerColor = DobeDobeTheme.colors.gray100,
+                contentColor = DobeDobeTheme.colors.gray700,
+            ),
+            contentPadding = PaddingValues(vertical = 9.dp, horizontal = 16.dp),
         ) {
-            GoalToggleChip(
-                text = stringResource(R.string.feature_detail_goal_complete_chip),
-                isChecked = goal.isCompleted,
-                onCheckedChange = { onToggleCompleted() },
-                checkedIcon = ImageVector.vectorResource(DobeDobeIcons.Checked),
-                unCheckedIcon = ImageVector.vectorResource(DobeDobeIcons.Unchecked),
-                modifier = Modifier.weight(1f),
-            )
-            GoalToggleChip(
-                text = stringResource(R.string.feature_detail_goal_pinned_chip),
-                isChecked = goal.isPinned,
-                onCheckedChange = {
-                    onTogglePinned()
-                },
-                checkedIcon = ImageVector.vectorResource(R.drawable.ic_bookmark_gray900),
-                unCheckedIcon = ImageVector.vectorResource(R.drawable.ic_bookmark_unchecked_24),
-                modifier = Modifier.weight(1f),
+            Text(
+                text = stringResource(R.string.feature_detail_goal_edit_button_title),
+                style = DobeDobeTheme.typography.heading2,
             )
         }
-    }
 
+        Spacer(modifier = Modifier.weight(1f))
+
+        GoalToggleChipGroup(
+            isPinned = goal.isPinned,
+            isCompleted = goal.isCompleted,
+            onToggleCompleted = onToggleCompleted,
+            onTogglePinned = onTogglePinned,
+        )
+    }
     GoalDeleteDialog(
         visible = visibleDialog,
         onConfirm = onConfirmDialog,
         onDismiss = onDismissDialog,
     )
+}
+
+@Composable
+private fun DetailGoalHeader(isCompleted: Boolean) {
+    val title = if (isCompleted) {
+        stringResource(R.string.feature_detail_goal_complete_editor_header)
+    } else {
+        stringResource(
+            R.string.feature_detail_goal_uncompleted_editor_header,
+        )
+    }
+    val iconVector = if (isCompleted) {
+        ImageVector.vectorResource(DobeDobeIcons.Party)
+    } else {
+        ImageVector.vectorResource(DobeDobeIcons.Fire)
+    }
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(3.dp),
+    ) {
+        Icon(
+            imageVector = iconVector,
+            tint = Color.Unspecified,
+            contentDescription = "current goal status",
+        )
+
+        Text(
+            text = title,
+            color = DobeDobeTheme.colors.gray400,
+            style = DobeDobeTheme.typography.heading1,
+        )
+    }
+}
+
+@Composable
+private fun GoalToggleChipGroup(
+    isPinned: Boolean,
+    isCompleted: Boolean,
+    onToggleCompleted: () -> Unit,
+    onTogglePinned: () -> Unit,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        GoalToggleChip(
+            text = stringResource(R.string.feature_detail_goal_complete_chip),
+            isChecked = isCompleted,
+            onCheckedChange = { onToggleCompleted() },
+            checkedIcon = ImageVector.vectorResource(DobeDobeIcons.FlagFilled),
+            unCheckedIcon = ImageVector.vectorResource(DobeDobeIcons.FlagOutLine),
+            modifier = Modifier.weight(1f),
+        )
+
+        GoalToggleChip(
+            text = stringResource(R.string.feature_detail_goal_pinned_chip),
+            isChecked = isPinned,
+            onCheckedChange = {
+                onTogglePinned()
+            },
+            checkedIcon = ImageVector.vectorResource(DobeDobeIcons.PinnedFilled),
+            unCheckedIcon = ImageVector.vectorResource(DobeDobeIcons.PinnedOutLine),
+            modifier = Modifier.weight(1f),
+        )
+    }
 }
 
 @Composable
@@ -262,11 +344,10 @@ private fun DetailGoalContentPreview() {
                 visibleDialog = false,
                 onConfirmDialog = {},
                 onDismissDialog = {},
-                errorMessage = null,
                 onShowSnackbar = { _, _ -> false },
-                onChangeGoalName = {},
                 onTogglePinned = {},
                 onToggleCompleted = {},
+                onClickEdit = {},
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 24.dp)
