@@ -3,8 +3,8 @@ applicationId = "com.chipichipi.dobedobe"
 compileSdk = "35"
 minSdk = "26"
 targetSdk = "35"
-versionCode = "3"
-appVersion = "1.0.1"
+versionCode = "4"
+appVersion = "1.1.0"
 
 # kotlin
 kotlin = "2.1.0"
