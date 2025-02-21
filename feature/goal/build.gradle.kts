@@ -10,5 +10,5 @@ android {
 dependencies {
     implementation(projects.core.data)
 
-    implementation(libs.lottie.compose)
+    implementation(libs.lottie)
 }

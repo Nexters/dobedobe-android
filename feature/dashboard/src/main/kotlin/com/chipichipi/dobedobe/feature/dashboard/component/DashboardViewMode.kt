@@ -83,9 +83,8 @@ internal fun SharedTransitionScope.DashboardViewMode(
                         modifier = Modifier
                             .fillMaxSize()
                             .zIndex(0.5f),
-                        defaultApngRes = resources.defaultApngRes,
-                        reactionApngRes = resources.reactionApngRes,
-                        placeholder = resources.placeholderRes,
+                        defaultRes = resources.defaultRes,
+                        reactionRes = resources.reactionRes,
                         onChangeBubble = onChangeBubble,
                     )
                 }
