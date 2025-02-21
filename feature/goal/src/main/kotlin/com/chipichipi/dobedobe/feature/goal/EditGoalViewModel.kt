@@ -59,8 +59,6 @@ internal class EditGoalViewModel(
     val uiEvent: Flow<EditGoalUiEvent> = _uiEvent.receiveAsFlow()
 
     fun saveGoalTitle() {
-        val uiState = uiState.value
-
         if (goalValidResult.isValid().not()) return
 
         if (isGoalChanged.not()) {
@@ -70,6 +68,7 @@ internal class EditGoalViewModel(
             return
         }
 
+        val uiState = uiState.value
         if (uiState is EditGoalUiState.Success) {
             viewModelScope.launch {
                 goalRepository.changeGoalTitle(
