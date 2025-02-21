@@ -97,7 +97,7 @@ fun GoalEditor(
             errorMessage = errorMessage,
             modifier = Modifier.focusRequester(focusRequester),
         )
-        
+
         Spacer(Modifier.weight(1f))
 
         DobeDobeTextButton(
