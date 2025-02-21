@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.chipichipi.dobedobe.core.designsystem.component.ThemePreviews
@@ -44,7 +45,7 @@ internal fun DashboardCharacter(
 
     val progress by animateLottieCompositionAsState(
         composition = currentComposition,
-        iterations = Int.MAX_VALUE,
+        iterations = LottieConstants.IterateForever,
     )
 
     LaunchedEffect(isResetTrigger) {
