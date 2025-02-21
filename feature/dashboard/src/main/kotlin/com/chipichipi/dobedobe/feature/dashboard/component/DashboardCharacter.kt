@@ -33,10 +33,10 @@ internal fun DashboardCharacter(
     var isResetTrigger by remember { mutableStateOf(false) }
 
     val defaultComposition by rememberLottieComposition(
-        spec = LottieCompositionSpec.RawRes(defaultRes)
+        spec = LottieCompositionSpec.RawRes(defaultRes),
     )
     val reactionComposition by rememberLottieComposition(
-        spec = LottieCompositionSpec.RawRes(reactionRes)
+        spec = LottieCompositionSpec.RawRes(reactionRes),
     )
 
     val currentComposition =
@@ -44,7 +44,7 @@ internal fun DashboardCharacter(
 
     val progress by animateLottieCompositionAsState(
         composition = currentComposition,
-        iterations = Int.MAX_VALUE
+        iterations = Int.MAX_VALUE,
     )
 
     LaunchedEffect(isResetTrigger) {
