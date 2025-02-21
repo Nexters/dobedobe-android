@@ -157,10 +157,8 @@ private fun GoalBottomSheetBody(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(
-                vertical = 16.dp,
-                horizontal = 24.dp,
-            ),
+            .padding(top = 16.dp, bottom = 14.dp)
+            .padding(horizontal = 24.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -184,8 +182,6 @@ private fun GoalBottomSheetBody(
                 onClick = onInfoCardClicked,
             )
         }
-
-        Spacer(modifier = Modifier.height(28.dp))
 
         GoalListSection(
             isNotPartiallyExpanded = isNotPartiallyExpanded,
@@ -213,6 +209,8 @@ private fun ColumnScope.GoalListSection(
         Column(
             modifier = Modifier.fillMaxWidth(),
         ) {
+            Spacer(modifier = Modifier.height(38.dp))
+
             Text(
                 text = stringResource(R.string.feature_dashboard_goal_list),
                 style = DobeDobeTheme.typography.heading2,
