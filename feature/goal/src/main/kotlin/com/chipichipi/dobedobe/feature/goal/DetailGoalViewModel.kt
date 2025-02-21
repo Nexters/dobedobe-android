@@ -124,6 +124,8 @@ sealed interface DetailGoalUiState {
 
 sealed interface DetailGoalUiEvent {
     data object Delete : DetailGoalUiEvent
+
     data object CompleteGoal : DetailGoalUiEvent
+
     data object UnDoGoal : DetailGoalUiEvent
 }

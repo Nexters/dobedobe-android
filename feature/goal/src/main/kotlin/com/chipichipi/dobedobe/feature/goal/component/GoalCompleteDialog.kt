@@ -108,7 +108,6 @@ private fun DialogTitle() {
     }
 }
 
-
 @Composable
 private fun DialogCharacter(
     characterType: CharacterType,
@@ -130,7 +129,6 @@ private fun CharacterType.rawRes(): Int = when (this) {
     CharacterType.Bird -> R.raw.goal_complete_bird
     CharacterType.Rabbit -> R.raw.goal_complete_rabbit
 }
-
 
 @ThemePreviews
 @Composable

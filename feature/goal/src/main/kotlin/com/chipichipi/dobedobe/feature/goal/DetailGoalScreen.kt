@@ -159,7 +159,7 @@ private fun DetailGoalScreen(
     onRemoveGoal: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val (visibleDialog, setVisibleDialog) = rememberSaveable { mutableStateOf(false) }
+    val (visibleDeleteDialog, setVisibleDeleteDialog) = rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
         modifier = modifier,
@@ -169,7 +169,7 @@ private fun DetailGoalScreen(
                 navigateToBack = navigateToBack,
                 actions = {
                     TextButton(
-                        onClick = { if (uiState.isSuccess) setVisibleDialog(true) },
+                        onClick = { if (uiState.isSuccess) setVisibleDeleteDialog(true) },
                         colors = ButtonDefaults.textButtonColors().copy(
                             contentColor = DobeDobeTheme.colors.red,
                         ),
@@ -213,12 +213,12 @@ private fun DetailGoalScreen(
                 )
 
                 GoalDeleteDialog(
-                    visible = visibleDialog,
+                    visible = visibleDeleteDialog,
                     onConfirm = {
-                        setVisibleDialog(false)
+                        setVisibleDeleteDialog(false)
                         onRemoveGoal(goal.id)
                     },
-                    onDismiss = { setVisibleDialog(false) },
+                    onDismiss = { setVisibleDeleteDialog(false) },
                 )
 
                 GoalCompleteDialog(
