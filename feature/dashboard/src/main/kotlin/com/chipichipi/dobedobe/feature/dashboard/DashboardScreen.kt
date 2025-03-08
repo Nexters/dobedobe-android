@@ -34,6 +34,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chipichipi.dobedobe.core.designsystem.component.DRAG_HANDLER_HEIGHT
@@ -359,6 +360,11 @@ private fun GoalNotificationPermission(
                 notificationsPermissionState.launchPermissionRequest()
                 showGoalNotificationDialog = false
             },
+            properties = DialogProperties(
+                usePlatformDefaultWidth = false,
+                dismissOnBackPress = false,
+                dismissOnClickOutside = false,
+            ),
         )
     }
 }
